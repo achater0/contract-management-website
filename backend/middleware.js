@@ -1,6 +1,5 @@
-const jwt = import('jsonwebtoken')
-
-const AccessTokenSecret = 'secret' // TODO: env variable
+import { AccessTokenSecret, AccessTokenExpiry } from './env.js'
+import jwt from 'jsonwebtoken'
 
 export function authenticateToken(req, res, next) {
 	const auth_header = req.get('authorization')
@@ -9,11 +8,21 @@ export function authenticateToken(req, res, next) {
 	if (!auth_header.startsWith('Bearer '))
 		return res.status(401).json({ error: 'Authorization protocol is invalid' })
 
-	const token = auth_header.slice('Bearer'.length)
+	const token = auth_header.slice('Bearer '.length)
+	console.log(token)
 	try {
+		console.log("here")
 		jwt.verify(token, AccessTokenSecret)
+		console.log("here")
 	} catch (err) {
-		return res.status(401).json({ error: 'Invalid Access Toekn' })
+		console.error(err)
+		return res.status(401).json({ error: 'Invalid Access Token' })
 	}
+	console.log("here")
 	next()
+}
+
+export function generateAccessToken(login) {
+	const payload = { login }
+	return jwt.sign(payload, AccessTokenSecret, { expiresIn: AccessTokenExpiry })
 }

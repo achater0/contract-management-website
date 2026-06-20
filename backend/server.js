@@ -2,7 +2,9 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
-const { authenticateToken } = require('./middleware');
+const { authenticateToken, generateAccessToken } = require('./middleware');
+const { adminLogin, adminPassword, AccessTokenSecret, AccessTokenExpiry } = require('./env');
+const jwt = require('jsonwebtoken')
 
 const app = express();
 
@@ -47,25 +49,39 @@ app.get('/api/contracts/:id',
     });
   });
 
-// 3. CREATE NEW CONTRACT (Receives payload from the "Nouveau contrat" modal)
-app.post('/api/contracts', (req, res) => {
-  const { client_name, titre_foncier, work_type, price } = req.body;
-
-  // Guard clause to ensure no empty fields pass through
-  if (!client_name || !titre_foncier || !work_type || !price) {
+app.post('/login', (req, res) => {
+  const { login, password } = req.body
+  if (!login, !password)
     return res.status(400).json({ error: "Missing required fields." });
-  }
 
-  const query = `INSERT INTO contracts (client_name, titre_foncier, work_type, price) VALUES (?, ?, ?, ?)`;
+  if (login !== adminLogin || password !== adminPassword)
+    return res.status(403).json({ error: "Only admin has access to this route" })
 
-  db.run(query, [client_name, titre_foncier, work_type, parseFloat(price)], function(err) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    // Return the unique auto-incremented ID back to React
-    res.json({ id: this.lastID });
-  });
+  const access_token = jwt.sign({ login: login }, AccessTokenSecret, { expiresIn: AccessTokenExpiry })
+  return res.status(200).json({ access_token })
 });
+
+// 3. CREATE NEW CONTRACT (Receives payload from the "Nouveau contrat" modal)
+app.post('/api/contracts',
+  authenticateToken,
+  (req, res) => {
+    const { client_name, titre_foncier, work_type, price } = req.body;
+
+    // Guard clause to ensure no empty fields pass through
+    if (!client_name || !titre_foncier || !work_type || !price) {
+      return res.status(400).json({ error: "Missing required fields." });
+    }
+
+    const query = `INSERT INTO contracts (client_name, titre_foncier, work_type, price) VALUES (?, ?, ?, ?)`;
+
+    db.run(query, [client_name, titre_foncier, work_type, parseFloat(price)], function(err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      // Return the unique auto-incremented ID back to React
+      res.json({ id: this.lastID });
+    });
+  });
 
 const PORT = 5000;
 app.listen(PORT, () => {
