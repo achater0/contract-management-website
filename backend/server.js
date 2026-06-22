@@ -34,7 +34,6 @@ app.get('/api/contracts',
 
 // 2. GET SINGLE CONTRACT (For the mobile QR verification lookup)
 app.get('/api/contracts/:id',
-  authenticateToken,
   (req, res) => {
     const { id } = req.params;
     const query = `SELECT * FROM contracts WHERE id = ?`;
@@ -63,31 +62,30 @@ app.post('/login', (req, res) => {
 });
 
 // 3. CREATE NEW CONTRACT (Receives payload from the "Nouveau contrat" modal)
-app.post('/api/contracts',
-  authenticateToken,
-  (req, res) => {
-    const { client_name, titre_foncier, work_type, price } = req.body;
+// server.js
+app.post('/api/contracts', authenticateToken, (req, res) => {
+    // We expect the entire formData object to be sent
+    const { formData } = req.body;
 
-    // Guard clause to ensure no empty fields pass through
-    if (!client_name || !titre_foncier || !work_type || !price) {
-      return res.status(400).json({ error: "Missing required fields." });
+    if (!formData) {
+      return res.status(400).json({ error: "Missing contract data." });
     }
 
     const secureId = uuidv4();
 
-    // Get the next sequence number
     db.get(`SELECT MAX(sequence) as maxSequence FROM contracts`, [], (err, row) => {
       if (err) return res.status(500).json({ error: err.message });
       const nextSequence = (row?.maxSequence || 0) + 1;
 
-      const query = `INSERT INTO contracts (id, sequence, client_name, titre_foncier, work_type, price) VALUES (?, ?, ?, ?, ?, ?)`;
-
-      db.run(query, [secureId, nextSequence, client_name, titre_foncier, work_type, parseFloat(price)], function(err) {
-          if (err) return res.status(500).json({ error: err.message });
-          res.json({ id: secureId, sequence: nextSequence });
+      // Store the stringified version of your formData
+      const query = `INSERT INTO contracts (id, sequence, data) VALUES (?, ?, ?)`;
+      
+      db.run(query, [secureId, nextSequence, JSON.stringify(formData)], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ id: secureId, message: "Contrat sauvegardé avec succès" });
       });
     });
-  });
+});
 
 const PORT = 5000;
 app.listen(PORT, () => {

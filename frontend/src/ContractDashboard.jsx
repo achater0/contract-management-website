@@ -11,35 +11,27 @@ export default function ContractDashboard() {
   const [showConfirmStep, setShowConfirmStep] = useState(false);
   const [currentView, setCurrentView] = useState("mes-contrats");
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
-  const [isPrestationModalOpen, setIsPrestationModalOpen] = useState(false);
+ const [isPrestationModalOpen, setIsPrestationModalOpen] = useState(false);
+  // AJOUTER CES DEUX LIGNES :
+  const [isRefFonciereModalOpen, setIsRefFonciereModalOpen] = useState(false);
+  const [refFonciereForm, setRefFonciereForm] = useState({
+    commune: 'Agadir',
+    regimeFoncier: 'Délimitation administrative',
+    valeur: '',
+    zone: 'Zone 1',
+    x: '',
+    y: ''
+  });
   const [activeTab, setActiveTab] = useState("Prestation"); // To handle the tabs
+// Remplacez votre état actuel par celui-ci :
   const [formData, setFormData] = useState({
-  clients: [], // Array to store multiple clients
-  titre_foncier: '',
-  work_type: '',
-  price: ''
+   clients: [],
+   prestations: [], // Pour stocker vos prestations
+   references: []   // Pour stocker vos références foncières
   });
   const [tempClient, setTempClient] = useState({ client_name: '', cine: '', address: '', quality: '' });
   // Add this mapping object
 const PRESTATION_OPTIONS = {
-  "CONTRÔLE TOPOGRAPHIQUES ET GEOMETRIQUES A LA VACATION": [
-    "Assistance topographique par une équipe topographique (sous le contrôle d'un IGT non permanent)",
-    "Assistance topographique par un IGT permanent"
-  ],
-  "LA CARTOGRAPHIE ET PHOTOGRAMMETRIE": [
-    "Aérotriangulation & Traitement photogrammétrique",
-    "Complètement et toponymie",
-    "MNS",
-    "MNT",
-    "NUMERISATION OU DIGITALISATION",
-    "Orthophotoplan",
-    "Prise de vue (Rural)",
-    "Prise de vue (Urbain)",
-    "Rédaction cartographique",
-    "Restitution planimétrique et altimétrique (Rural)",
-    "Restitution planimétrique et altimétrique (Urbain)",
-    "Stéréo-préparation (points de calage)"
-  ],
   "PRESTATIONS CADASTRALES": [
     "Bornage complémentaire d'immatriculation",
     "DT de BC de distraction",
@@ -59,37 +51,6 @@ const PRESTATION_OPTIONS = {
     "DT de récollement de Bornage d'une propriété foncière/ DT de délimitation administrative",
     "Immatriculation foncière d'ensemble",
     "Rétablissement des bornes"
-  ],
-  "DOSSIER TECHNIQUES TOPOGRAPHIQUES DE MESURAGE": [
-    "Dossier technique de création d'un local pour location de voitures",
-    "Dossier technique pour la création d'Elevage avicole",
-    "Mesurage des distances pour la création d'établissement d'enseignement de la conduite",
-    "Mesurage des distances pour la création d'un local pour un bureau de change",
-    "Mesurage des distances pour la création des officines de pharmacie",
-    "Mesurage des distances pour l'obtention d'une autorisation d'exploitation d'un débit de tabac"
-  ],
-  "ETUDES TECHNIQUES TOPOGRAPHIQUES ET MISSION DIVERSES": [
-    "BIM/CIM",
-    "Coordination de chantier (Lotissement ou complexe immobilier)",
-    "Etude de ligne aérienne électrique",
-    "Etude de voirie (pistes rurales, communales, giratoires …) / Etude d'accès",
-    "Etudes Voirie assainissement et réseaux divers (Lotissement ou complexe immobilier)",
-    "Redistribution urbaine",
-    "Remembrement Rural",
-    "Systèmes d'informations géographiques",
-    "Télédétection et traitement d'images thématique"
-  ],
-  "EXPERTISE FONCIÈRE ET IMMOBILIERE": [
-    "Arbitrage",
-    "Les constats",
-    "Les estimations et évaluations immobilières"
-  ],
-  "LA GEODESIE": [
-    "Auscultation (barrage)",
-    "Auscultation (ouvrage d'art)",
-    "Nivellement de précision rattaché NGM",
-    "Polygonation (rattaché au système Lambert)",
-    "Triangulation et trilatération (par tout procédé)"
   ],
   "PLANS ET LEVES TOPOGRAPHIQUES": [
     "Délimitations Administratives",
@@ -121,6 +82,177 @@ const PRESTATION_OPTIONS = {
     "Profils en travers ou coupe"
   ]
 };
+const PRESTATION_PARAMS_CONFIG = {
+  // ==========================================
+  // 1. PRESTATIONS CADASTRALES
+  // ==========================================
+  "Bornage complémentaire d'immatriculation": [
+    { label: "Nombre de bornes", key: "nombre_bornes", unit: "Bornes", type: "number" }
+  ],
+  "DT de BC de distraction": [
+    { label: "Nombre de lots", key: "nombre_lots", unit: "Lots", type: "number" },
+    { label: "Superficie totale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "DT de levé régulier d'une Réquisition": [
+    { label: "Superficie totale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "DT de Lotissement": [
+    { label: "Nombre de lots", key: "nombre_lots", unit: "Lots", type: "number" },
+    { label: "Superficie totale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "DT de Mise à jour d'une unité industrielle": [
+    { label: "Superficie bâtie en m²", key: "superficie_batie", unit: "m²", type: "number" },
+    { label: "Nombre de niveaux", key: "nombre_niveaux", unit: "Niveaux", type: "number" }
+  ],
+  "Assistance, dépôt et suivi auprès de la conservation foncière": [
+    { label: "Nombre de dossiers", key: "nombre_dossiers", unit: "Dossiers", type: "number" }
+  ],
+  "Bornage d'immatriculation": [
+    { label: "Nombre de bornes", key: "nombre_bornes", unit: "Bornes", type: "number" }
+  ],
+  "Conseil et étude pour l'assainissement d'une assiette foncière": [
+    { label: "Superficie de l'assiette (Ha)", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "Consultation et fourniture des document cadastraux ou fonciers ou urbanistiques": [
+    { label: "Nombre de documents", key: "nombre_docs", unit: "Docs", type: "number" }
+  ],
+  "DT de copropriété": [
+    { label: "Nombre de lots de copropriété", key: "lots_copropriete", unit: "Lots", type: "number" },
+    { label: "Nombre de niveaux (Planchers)", key: "nombre_niveaux", unit: "Niveaux", type: "number" }
+  ],
+  "DT de Fusion totale": [
+    { label: "Nombre de parcelles à fusionner", key: "nombre_parcelles", unit: "Parcelles", type: "number" },
+    { label: "Superficie globale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "DT de Mise à jour d'un immeuble isolé": [
+    { label: "Superficie au sol (m²)", key: "superficie_sol", unit: "m²", type: "number" },
+    { label: "Nombre de niveaux", key: "nombre_niveaux", unit: "Niveaux", type: "number" }
+  ],
+  "DT de Mise à jour d'une villa": [
+    { label: "Superficie emprise au sol (m²)", key: "superficie_sol", unit: "m²", type: "number" }
+  ],
+  "DT de Mise à jour Rural": [
+    { label: "Superficie des bâtiments en m²", key: "superficie_bat_m2", unit: "m²", type: "number" },
+    { label: "Superficie du terrain en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "DT de Morcellement ou Morcellement-Fusion": [
+    { label: "Nombre de lots issus", key: "nombre_lots", unit: "Lots", type: "number" },
+    { label: "Superficie totale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "DT de récollement de Bornage d'une propriété foncière/ DT de délimitation administrative": [
+    { label: "Nombre de bornes contrôlées", key: "nombre_bornes", unit: "Bornes", type: "number" }
+  ],
+  "Immatriculation foncière d'ensemble": [
+    { label: "Nombre de parcelles (propriétés)", key: "nombre_parcelles", unit: "Propriétés", type: "number" },
+    { label: "Superficie globale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "Rétablissement des bornes": [
+    { label: "Nombre de bornes à rétablir", key: "nombre_bornes", unit: "Bornes", type: "number" }
+  ],
+
+  // ==========================================
+  // 2. PLANS ET LEVES TOPOGRAPHIQUES
+  // ==========================================
+  "Délimitations Administratives": [
+    { label: "Linéaire du périmètre en Km", key: "lineaire_km", unit: "Km", type: "number" }
+  ],
+  "Prestations pour carrière": [
+    { label: "Superficie de la carrière (Ha)", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "Profils en long": [
+    { label: "Linéaire de voirie en Km", key: "lineaire_voirie_km", unit: "Km", type: "number" }
+  ],
+  "Réalisation des états et plans parcellaires": [
+    { label: "Nombre de parcelles recensées", key: "nombre_parcelles", unit: "Parcelles", type: "number" },
+    { label: "Superficie globale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "Autorisation de Morcellement (dépôt et suivi)": [
+    { label: "Nombre de lots", key: "nombre_lots", unit: "Lots", type: "number" }
+  ],
+  "Calcul de Cubature": [
+    { label: "Volume estimé (m³)", key: "volume_m3", unit: "m³", type: "number" }
+  ],
+  "Etude topographique pour le calcul de la TNB": [
+    { label: "Superficie de la zone en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "Implantations Topographiques": [
+    { label: "Nombre de points d'axe/bornes", key: "nombre_points", unit: "Points", type: "number" }
+  ],
+  "Levé bathymétrique": [
+    { label: "Superficie du plan d'eau (Ha)", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "Levés de l'existant : Plan d'état des lieux d'un bien foncier": [
+    { label: "Superficie du terrain en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "Levés de l'existant : Plan de levé d'intérieur d'un bâtiment/ Coupe verticale": [
+    { label: "Superficie développée en m²", key: "superficie_m2", unit: "m²", type: "number" }
+  ],
+  "Levés de l'existant : Plan de levé des façades d'un bâtiment": [
+    { label: "Superficie de la façade en m²", key: "superficie_m2", unit: "m²", type: "number" }
+  ],
+  "Métré": [
+    { label: "Nombre d'éléments ou unités", key: "quantite_metre", unit: "Unités", type: "number" }
+  ],
+  "Plan après bornage de lotissement": [
+    { label: "Nombre de lots", key: "nombre_lots", unit: "Lots", type: "number" }
+  ],
+  "Plan coté": [
+    { label: "Superficie en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "Plan d'arrêté d'alignement": [
+    { label: "Linéaire concerné en Km", key: "lineaire_km", unit: "Km", type: "number" }
+  ],
+  "Plan de cession de voirie (Loi 25-90)": [
+    { label: "Linéaire de voirie en Km", key: "lineaire_km", unit: "Km", type: "number" }
+  ],
+  "Plan de cession de voirie (Lot individuel)": [
+    { label: "Superficie de l'emprise en m²", key: "superficie_m2", unit: "m²", type: "number" }
+  ],
+  "Plan de Délimitation": [
+    { label: "Superficie en Ha", key: "superficie_ha", unit: "m²", type: "number" }
+  ],
+  "Plan de Mitoyenneté des cours ou étude des cours": [
+    { label: "Nombre de cours", key: "nombre_cours", unit: "Cours", type: "number" }
+  ],
+  "Plan de Partage (provisoire spatial et à l'amiable)": [
+    { label: "Nombre des copartageants (Attributaires)", key: "nombre_parts", unit: "Parts", type: "number" },
+    { label: "Superficie globale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
+  ],
+  "Plan de projet de Morcellement": [
+    { label: "Nombre de parcelles projetées", key: "nombre_parcelles", unit: "Lots", type: "number" }
+  ],
+  "Plan de récement": [
+    { label: "Nombre de points", key: "nombre_points", unit: "Points", type: "number" }
+  ],
+  "Plan de situation d'une parcelle": [
+    { label: "Distance à l'axe principal le plus proche (m)", key: "distance_metres", unit: "m", type: "number" }
+  ],
+  "Plan de tracé d'accès à un projet": [
+    { label: "Longueur de l'accès en Km", key: "lineaire_km", unit: "Km", type: "number" }
+  ],
+  "Prestations pour Projet de Galerie": [
+    { label: "Longueur de la galerie en Km", key: "lineaire_km", unit: "Km", type: "number" }
+  ],
+  "Profils en travers ou coupe": [
+    { label: "Linéaire de voirie en Km", key: "lineaire_voirie_km", unit: "Km", type: "number" }
+  ]
+};
+const COMMUNES_MAROC = [
+  "Agadir", "Aïn Harrouda", "Aïn Taoujdate", "Aït Melloul", "Al Hoceïma", "Assilah", 
+  "Azemmour", "Azrou", "Ben Guerir", "Beni Ansar", "Beni Mellal", "Benslimane", 
+  "Berkane", "Berrechid", "Boujdour", "Bouskoura", "Casablanca", "Chefchaouen", 
+  "Chichaoua", "Dakhla", "Dar Bouazza", "Dcheira El Jihadia", "El Hajeb", "El Jadida", 
+  "El Kelaa des Sraghna", "Errachidia", "Essaouira", "Fès", "Fnideq", "Fquih Ben Salah", 
+  "Guelmim", "Guercif", "Ifrane", "Inezgane", "Jerada", "Kénitra", "Khemisset", 
+  "Khenifra", "Khouribga", "Ksar El Kebir", "Laâyoune", "Lahraouyine", "Larache", 
+  "Lqliaa", "M'diq", "Marrakech", "Martil", "Meknès", "Midelt", "Mohammedia", 
+  "Nador", "Ouarzazate", "Ouazzane", "Oued Zem", "Oujda", "Oulad Teima", "Rabat", 
+  "Safi", "Salé", "Sefrou", "Settat", "Sidi Bennour", "Sidi Kacem", "Sidi Slimane", 
+  "Skhirat", "Smara", "Souk El Arbaa", "Tanger", "Tan-Tan", "Taounate", "Taourirt", 
+  "Tarfaya", "Taroudant", "Taza", "Témara", "Tétouan", "Tifelt", "Tiznit", "Youssoufia", 
+  "Zagora"
+  // Vous pouvez continuer d'ajouter d'autres communes rurales ici si nécessaire
+].sort(); // Le .sort() permet de garantir l'ordre alphabétique
 
 // Inside your ContractDashboard component:
 const [selectedCategory, setSelectedCategory] = useState("");
@@ -132,7 +264,8 @@ const [prestationForm, setPrestationForm] = useState({
   unit: '',
   refFonciereRef: '',
   refFonciereCommune: '',
-  refFonciereZone: ''
+  refFonciereZone: '',
+  params: {} // <--- Stores dynamic input pairs like { lineaire_voirie_km: "1.5" }
 });
 const [refFonciereList, setRefFonciereList] = useState([]);
 const [favoritePrestat] = useState([
@@ -155,30 +288,43 @@ const [favoritePrestat] = useState([
     ...prev,
     clients: prev.clients.filter((_, index) => index !== indexToRemove)
   }));
+
   };
-const fetchContracts = async () => {
-  try {
-    const token = localStorage.getItem("authToken");
-    const res = await fetch('http://localhost:5000/api/contracts', {
-      headers: {
-        'Authorization': `Bearer ${token}` // Send the token here
-      }
-    });
-    
-    if (!res.ok) throw new Error("Unauthorized");
-    
-    const data = await res.json();
-    setContracts(Array.isArray(data) ? data : [data]);
-  } catch (err) {
-    console.error("Auth error:", err);
-    // Redirect to login if token is expired/invalid
-    window.location.href = "/login";
-  }
+  const removePrestation = (indexToRemove) => {
+  setFormData(prev => ({
+    ...prev,
+    prestations: prev.prestations.filter((_, index) => index !== indexToRemove)
+  }));
 };
 
-  useEffect(() => {
-    fetchContracts();
-  }, []);
+
+useEffect(() => {
+  const fetchContracts = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/contracts', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
+      });
+      const data = await response.json();
+      
+      // Parse the 'data' column into an object for each contract
+      const processedContracts = data.map(contract => {
+        try {
+          return {
+            ...contract,
+            details: JSON.parse(contract.data) // Convert string to real object
+          };
+        } catch (e) {
+          return { ...contract, details: { clients: [], prestations: [] } };
+        }
+      });
+      
+      setContracts(processedContracts);
+    } catch (err) {
+      console.error("Error fetching contracts:", err);
+    }
+  };
+  fetchContracts();
+}, []);
 
   const handleNouveauContratClick = () => {
     setShowConfirmStep(true);
@@ -215,58 +361,70 @@ const fetchContracts = async () => {
       price: testPrices[Math.floor(Math.random() * testPrices.length)]
     };
   };
+  const handlePrestationChange = (chosenPrestation) => {
+  const fieldsConfig = PRESTATION_PARAMS_CONFIG[chosenPrestation] || [];
+  
+  // Prepare empty initial values for the specific parameters
+  const initialParams = {};
+  fieldsConfig.forEach(field => {
+    initialParams[field.key] = "";
+  });
 
-  const handleFormSubmit = async (e) => {
-    if (e && e.preventDefault) e.preventDefault();
+  setPrestationForm(prev => ({
+    ...prev,
+    prestation: chosenPrestation,
+    params: initialParams
+  }));
+};
 
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      window.location.href = "/login";
-      return;
-    }
+// In your ContractDashboard.jsx
 
-    // Validate required fields
-    if (!formData.titre_foncier || !formData.work_type || !formData.price) {
-      return;
-    }
+const handleFormSubmit = async () => {
+  const token = localStorage.getItem('authToken'); 
 
-    if (formData.clients.length === 0) {
-      return;
-    }
-
-    const payload = {
-      client_name: formData.clients[0].client_name,
-      titre_foncier: formData.titre_foncier,
-      work_type: formData.work_type,
-      price: parseFloat(formData.price),
-    };
-
-    try {
-      const response = await fetch('http://localhost:5000/api/contracts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        console.error("Failed to submit contract:", data);
-        return;
-      }
-
-      if (data.id) {
-        setFormData({ clients: [], titre_foncier: '', work_type: '', price: '' });
-        setTempClient({ client_name: '', cine: '', address: '', quality: '' });
-        setIsModalOpen(false);
-        fetchContracts();
-      }
-    } catch (err) {
-      console.error("Failed to submit contract:", err);
+  const payload = {
+    formData: { 
+      ...formData, 
+      references: refFonciereList 
     }
   };
+  
+  try {
+    const response = await fetch('http://localhost:5000/api/contracts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Erreur lors de la sauvegarde");
+    }
+
+    alert("Saved successfully!");
+
+    // ====== ADD THESE LINES HERE ======
+    // 1. Clear all the form data so it's empty next time
+    setFormData({ clients: [], prestations: [], references: [] });
+    
+    // 2. Clear the references list
+    setRefFonciereList([]);
+    
+    // 3. Close the modal window
+    setIsModalOpen(false);
+    
+    // Optional: Refresh the page so the new contract immediately appears on the dashboard
+    window.location.reload(); 
+    // ==================================
+
+  } catch (error) {
+    console.error("Erreur:", error);
+    alert("Échec de la sauvegarde: " + error.message);
+  }
+};
 
   const ActionButtons = ({ contractId, clientName }) => {
     const [qrSrc, setQrSrc] = useState('');
@@ -320,6 +478,7 @@ const fetchContracts = async () => {
           </a>
         )}
         <button 
+          type="button"
           onClick={handleDownloadTextFile}
           style={{ 
             flex: '1',
@@ -343,6 +502,7 @@ const fetchContracts = async () => {
     const isActive = currentView === viewId;
     return (
       <button
+        type="button"
         onClick={() => setCurrentView(viewId)}
         style={{
           display: "flex",
@@ -421,6 +581,7 @@ const fetchContracts = async () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.8rem' }}>
               <h1 style={{ fontSize: '1.85rem', fontWeight: '400', margin: 0, color: '#212529' }}>Mes contrats privés</h1>
               <button 
+                type="button"
                 onClick={handleNouveauContratClick}
                 style={{ backgroundColor: '#17a2b8', color: '#fff', border: 'none', padding: '9px 18px', borderRadius: '4px', fontWeight: '600', fontSize: '14px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
               >
@@ -428,58 +589,138 @@ const fetchContracts = async () => {
               </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(310px, 1fr))', gap: '20px' }}>
-              {contracts.length === 0 ? (
-                <div style={{ color: '#6c757d', fontSize: '15px', gridColumn: '1/-1', textAlign: 'center', padding: '50px', backgroundColor: '#fff', borderRadius: '4px', border: '1px solid #dee2e6' }}>
-                  Aucun contrat disponible. Cliquez sur "Nouveau contrat" pour commencer.
-                </div>
-              ) : (
-                contracts.map((item) => {
-                  const formattedDate = new Date(item.created_at || Date.now()).toISOString().split('T')[0];
-                  return (
-                    <div key={item.id} style={{ backgroundColor: '#fff', borderRadius: '4px', border: '1px solid #dee2e6', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                      <div style={{ backgroundColor: '#17a2b8', color: '#fff', padding: '14px 16px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14.5px', fontWeight: '700' }}>
-                          <span>⏳</span> 
-                          <span>N° : N°604/SO/ONIGT/CN-{(String(item.sequence).padStart(4, '0'))}/2026</span>
-                        </div>
-                        <div style={{ textAlign: 'right', fontSize: '12px', marginTop: '4px', opacity: '0.95', fontWeight: '600' }}>{formattedDate}</div>
-                      </div>
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(310px, 1fr))', gap: '20px' }}>
+  {contracts.length === 0 ? (
+    <div style={{ color: '#6c757d', fontSize: '15px', gridColumn: '1/-1', textAlign: 'center', padding: '50px', backgroundColor: '#fff', borderRadius: '4px', border: '1px solid #dee2e6' }}>
+      Aucun contrat disponible.
+    </div>
+  ) : (
+    contracts.map((item) => {
+      // Parse data safely from server payload
+      const d = item.details?.formData || item.details || {};
+      const refs = d.references || [];
+      const prestations = d.prestations || [];
 
-                      <div style={{ padding: '18px 20px', flexGrow: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontWeight: '700', color: '#343a40', fontSize: '15px' }}>
-                          <span style={{ width: '12px', height: '12px', borderRadius: '50%', border: '2.5px solid #17a2b8', display: 'inline-block', backgroundColor: '#fff' }}></span>
-                          <span>{item.client_name ? item.client_name.toUpperCase() : "CLIENT INCONNU"}</span>
-                        </div>
-                        <div style={{ borderTop: '1px solid #eaeaea' }} />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '14.5px' }}>
-                          <span style={{ fontWeight: '800', color: '#495057' }}>P1:</span>
-                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
-                            <span style={{ backgroundColor: '#f8f9fa', color: '#212529', padding: '4px 10px', borderRadius: '4px', fontSize: '12.5px', border: '1px solid #ced4da', fontWeight: '600' }}>
-                              T/Partie du {item.titre_foncier}
-                            </span>
-                            <span style={{ color: '#6c757d', fontSize: '13.5px', fontWeight: '600' }}>{item.work_type}</span>
-                          </div>
-                        </div>
-                        <div style={{ borderTop: '1px solid #eaeaea' }} />
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14.5px' }}>
-                          <div>
-                            <div style={{ color: '#6c757d', fontSize: '13px', fontWeight: '600' }}>Contrat</div>
-                            <div style={{ fontWeight: '800', color: '#212529', fontSize: '16px', marginTop: '2px' }}>{Number(item.price).toLocaleString()} MAD</div>
-                          </div>
-                          <div style={{ textAlign: 'right' }}>
-                            <div style={{ color: '#6c757d', fontSize: '13px', fontWeight: '600' }}>Ce trimestre</div>
-                            <div style={{ fontWeight: '800', color: '#212529', fontSize: '16px', marginTop: '2px' }}>{(item.price * 0.8).toLocaleString()} MAD</div>
-                          </div>
-                        </div>
-                        <div style={{ borderTop: '1px solid #eaeaea' }} />
-                        <ActionButtons contractId={item.id} clientName={item.client_name || "Client"} />
-                      </div>
+      // Format date to YYYY-MM-DD format as seen on the website
+      const dateObj = new Date(item.created_at || Date.now());
+      const formattedDate = item.created_at 
+        ? dateObj.toISOString().split('T')[0] 
+        : new Date().toISOString().split('T')[0];
+
+      // Format contract reference identically to the ONIGT official layout rules
+      const officialNumber = `N°604/SO/ONIGT/CN-${String(item.sequence || 0).padStart(4, '0')}/2026`;
+
+      return (
+        <div 
+          key={item.id} 
+          style={{ 
+            backgroundColor: '#fff', 
+            borderRadius: '4px', 
+            border: '1px solid #dee2e6', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            overflow: 'hidden',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+          }}
+        >
+          {/* Official Layout Header */}
+          <div style={{ backgroundColor: '#17a2b8', color: '#fff', padding: '12px 15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ fontSize: '13px', fontWeight: '700' }}>
+              <span style={{ marginRight: '5px' }}>⏳</span> N° : {officialNumber}
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: '600' }}>
+              {formattedDate}
+            </div>
+          </div>
+
+          {/* Compact Card Body */}
+          <div style={{ padding: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div>
+              {/* Client Name (Bold & Uppercase) */}
+              <div style={{ fontWeight: '700', fontSize: '15px', color: '#212529', marginBottom: '12px', textTransform: 'uppercase' }}>
+                {d.clients?.[0]?.client_name || "CLIENT INCONNU"}
+              </div>
+
+              {/* Combined Prestations & Land References Badges */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {prestations.map((presta, idx) => {
+                  // Link each prestation index to its matching land reference item
+                  const associatedRef = refs[idx] || refs[0]; 
+                  let refBadge = "";
+                  
+                  if (associatedRef) {
+                    const prefixMap = {
+                      "Titre foncier": "T/",
+                      "Réquisition": "R/",
+                      "Non immatriculé": "NI/",
+                      "Délimitation administrative": "DA/",
+                      "Non défini": "ND/"
+                    };
+                    const prefix = prefixMap[associatedRef.regime] || "";
+                    refBadge = `${prefix}${associatedRef.valeur || ""}`;
+                  }
+
+                  return (
+                    <div key={presta.id || idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', fontSize: '13px', color: '#495057' }}>
+                      <span style={{ fontWeight: '700', color: '#17a2b8' }}>P{idx + 1} :</span>
+                      {refBadge && (
+                        <span style={{ 
+                          border: '1px solid #ced4da', 
+                          padding: '2px 6px', 
+                          borderRadius: '4px', 
+                          backgroundColor: '#f8f9fa', 
+                          fontSize: '11px', 
+                          fontWeight: '600',
+                          color: '#333'
+                        }}>
+                          {refBadge}
+                        </span>
+                      )}
+                      <span style={{ fontWeight: '500' }}>{presta.prestation}</span>
                     </div>
                   );
-                })
-              )}
+                })}
+
+                {/* Fallback layout if land references exist without specified prestations */}
+                {prestations.length === 0 && refs.length > 0 && (
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <span style={{ fontSize: '13px', fontWeight: '700', color: '#17a2b8' }}>Ref:</span>
+                    {refs.map((ref, idx) => {
+                      const prefixMap = {
+                        "Titre foncier": "T/",
+                        "Réquisition": "R/",
+                        "Non immatriculé": "NI/",
+                        "Délimitation administrative": "DA/",
+                        "Non défini": "ND/"
+                      };
+                      const prefix = prefixMap[ref.regime] || "";
+                      return (
+                        <span key={idx} style={{ border: '1px solid #ced4da', padding: '2px 6px', borderRadius: '4px', backgroundColor: '#f8f9fa', fontSize: '11px', fontWeight: '600', color: '#333' }}>
+                          {prefix}{ref.valeur || "Sans valeur"}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {prestations.length === 0 && refs.length === 0 && (
+                  <div style={{ color: '#999', fontStyle: 'italic', fontSize: '13px' }}>
+                    Aucune prestation ni référence enregistrée.
+                  </div>
+                )}
+              </div>
             </div>
+
+            {/* Action Buttons Container */}
+            <div style={{ marginTop: '15px' }}>
+              <ActionButtons contractId={item.id} clientName={d.clients?.[0]?.client_name || "Client"} />
+            </div>
+          </div>
+        </div>
+      );
+    })
+  )}
+</div>
           </>
         ) : (
           <div style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '4px', border: '1px solid #dee2e6' }}>
@@ -502,8 +743,8 @@ const fetchContracts = async () => {
               Vous êtes sur le point de créer un contrat ?
             </p>
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
-              <button onClick={handleConfirmNextStep} style={{ backgroundColor: '#007bff', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '4px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', minWidth: '100px' }}>Continuer</button>
-              <button onClick={() => setShowConfirmStep(false)} style={{ backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '4px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', minWidth: '100px' }}>Non</button>
+              <button type="button" onClick={handleConfirmNextStep} style={{ backgroundColor: '#007bff', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '4px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', minWidth: '100px' }}>Continuer</button>
+              <button type="button" onClick={() => setShowConfirmStep(false)} style={{ backgroundColor: '#dc3545', color: '#fff', border: 'none', padding: '10px 24px', borderRadius: '4px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', minWidth: '100px' }}>Non</button>
             </div>
           </div>
         </div>
@@ -519,7 +760,7 @@ const fetchContracts = async () => {
           <span style={{ color: '#17a2b8' }}>⚡</span> ASSISTANT
         </h2>
         <span style={{ fontWeight: '700', fontSize: '16px' }}>PROJET DE CONTRAT</span>
-        <button onClick={() => setIsModalOpen(false)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '20px' }}>✕</button>
+        <button type="button" onClick={() => setIsModalOpen(false)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '20px' }}>✕</button>
       </div>
 
       <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
@@ -533,7 +774,7 @@ const fetchContracts = async () => {
 <div style={{ marginBottom: '20px', textAlign: 'left', fontSize: '14px' }}>
   <div style={{ fontWeight: '700', marginBottom: '10px' }}>Entre :</div>
   
-  <button onClick={() => setIsClientModalOpen(true)} style={{ border: 'none', background: 'none', color: '#17a2b8', cursor: 'pointer', fontWeight: '600', marginBottom: '10px' }}>
+  <button type="button" onClick={() => setIsClientModalOpen(true)} style={{ border: 'none', background: 'none', color: '#17a2b8', cursor: 'pointer', fontWeight: '600', marginBottom: '10px' }}>
     <AiFillPlusCircle /> Ajouter client
   </button>
 
@@ -546,6 +787,7 @@ const fetchContracts = async () => {
     </ul>
     {/* Delete Button */}
     <button 
+      type="button"
       onClick={() => removeClient(index)} 
       style={{ border: 'none', background: '#fff2f2', color: '#dc3545', cursor: 'pointer', padding: '5px 10px', borderRadius: '4px', fontSize: '12px' }}
     >
@@ -553,62 +795,77 @@ const fetchContracts = async () => {
     </button>
   </div>
 ))}
-  
+
 </div>
 
-{/* Section: Objet */}
-<div style={{ marginBottom: '20px', textAlign: 'left', fontSize: '14px' }}>
-  <div style={{ fontWeight: '700', marginBottom: '10px' }}>
-    Objet, désignation, honoraires, nature des prestations et prix unitaire :
-  </div>
-  <div style={{ fontSize: '14px', color: '#333', marginBottom: '18px' }}>
-    Le maître d'ouvrage s'engage avec l'I.G. T pour la réalisation de la mission détaillée dans le tableau suivant et portant sur la(les) propriété(es)
-  </div>
-  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
-    <div>
-      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '700' }}>Titre foncier</label>
-      <input
-        type="text"
-        value={formData.titre_foncier}
-        onChange={(e) => setFormData(prev => ({ ...prev, titre_foncier: e.target.value }))}
-        placeholder="Ex: 12345"
-        style={{ width: '100%', padding: '10px 12px', border: '1px solid #ced4da', borderRadius: '6px' }}
-      />
-    </div>
-    <div>
-      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '700' }}>Nature du travail</label>
-      <input
-        type="text"
-        value={formData.work_type}
-        onChange={(e) => setFormData(prev => ({ ...prev, work_type: e.target.value }))}
-        placeholder="Ex: Étude topographique"
-        style={{ width: '100%', padding: '10px 12px', border: '1px solid #ced4da', borderRadius: '6px' }}
-      />
-    </div>
-    <div>
-      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '700' }}>Prix</label>
-      <input
-        type="number"
-        min="0"
-        value={formData.price}
-        onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
-        placeholder="Ex: 10000"
-        style={{ width: '100%', padding: '10px 12px', border: '1px solid #ced4da', borderRadius: '6px' }}
-      />
-    </div>
-  </div>
-</div>
+
 
         {/* Placeholder for the Table from Capture2_4.PNG */}
 {/* Conditions Particulières Section */}
 {/* Section: Prestation */}
 <div style={{ marginTop: '20px', marginBottom: '20px', textAlign: 'left' }}>
 <button 
+  type="button"
   onClick={() => setIsPrestationModalOpen(true)}
   style={{ border: 'none', background: 'none', color: '#17a2b8', cursor: 'pointer', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}
 >
   <AiFillPlusCircle style={{ fontSize: '18px' }} /> Ajouter prestation
 </button>
+{/* ================= PRESTATIONS LIST DISPLAY ================= */}
+{/* ================= PRESTATIONS LIST DISPLAY ================= */}
+{formData.prestations.length > 0 && (
+  <div style={{ marginTop: '20px' }}>
+    <h6 style={{ fontWeight: '600', marginBottom: '10px', color: '#444' }}>Prestations sélectionnées :</h6>
+    {formData.prestations.map((presta, index) => (
+      <div 
+        key={index} 
+        style={{ 
+          border: '1px solid #dee2e6', 
+          borderRadius: '6px', 
+          padding: '12px', 
+          marginBottom: '10px',
+          backgroundColor: '#f9f9f9' 
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <strong style={{ fontSize: '14px' }}>{presta.prestation}</strong>
+            <div style={{ fontSize: '12px', color: '#666' }}>Catégorie: {presta.category}</div>
+          </div>
+          
+          {/* BUTTON ADDED HERE */}
+          <button 
+            type="button" 
+            onClick={() => removePrestation(index)}
+            style={{ 
+              backgroundColor: '#fff2f2', 
+              color: '#dc3545', 
+              border: 'none', 
+              padding: '5px 10px', 
+              borderRadius: '4px', 
+              fontSize: '12px', 
+              cursor: 'pointer' 
+            }}
+          >
+            Supprimer
+          </button>
+        </div>
+
+        {/* Dynamic Parameters Display */}
+        {presta.params && Object.keys(presta.params).length > 0 && (
+          <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px dashed #ccc', fontSize: '12px' }}>
+            <span style={{ fontWeight: '600', color: '#555' }}>Détails: </span>
+            {Object.entries(presta.params).map(([key, value], i) => (
+              <span key={i} style={{ marginRight: '10px' }}>
+                {key.replace(/_/g, ' ')}: <strong>{value}</strong>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+)}
 </div>
 
       </div>
@@ -616,7 +873,20 @@ const fetchContracts = async () => {
       {/* Fixed Footer */}
       <div style={{ padding: '15px 20px', borderTop: '1px solid #dee2e6', display: 'flex', justifyContent: 'space-between', backgroundColor: '#f8f9fa' }}>
         <button type="button" onClick={() => setIsModalOpen(false)} style={{ backgroundColor: '#28a745', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '4px', fontWeight: '600' }}>Fermer</button>
-        <button type="submit" style={{ backgroundColor: '#007bff', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '4px', fontWeight: '600' }}>📄 Générer le contrat</button>
+        <button 
+  type="button"
+  onClick={handleFormSubmit}
+  style={{
+    padding: '12px 24px',
+    backgroundColor: '#28a745',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer'
+  }}
+>
+  Générer le contrat
+</button>
       </div>
     </form>
     </div>
@@ -647,12 +917,12 @@ const fetchContracts = async () => {
         ))}
 
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-          <button onClick={() => {
+          <button type="button" onClick={() => {
             setTempClient({ client_name: '', cine: '', address: '', quality: '' });
             setIsClientModalOpen(false);
           }} style={{ padding: '8px 20px', cursor: 'pointer' }}>Fermer</button>
           
-          <button onClick={() => {
+          <button type="button" onClick={() => {
             setFormData(prev => ({ ...prev, clients: [...prev.clients, tempClient] }));
             setTempClient({ client_name: '', cine: '', address: '', quality: '' }); // Reset
             setIsClientModalOpen(false);
@@ -663,41 +933,52 @@ const fetchContracts = async () => {
   </div>
 )}
 {isPrestationModalOpen && (
-  <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 2000 }}>
-    <div style={{ backgroundColor: '#fff', width: '90%', maxWidth: '920px', borderRadius: '6px', boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
-      <div style={{ padding: '18px 24px', borderBottom: '1px solid #dee2e6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <h3 style={{ margin: 0, fontSize: '20px', color: '#1d4d73' }}>Nouvelle prestation</h3>
-        </div>
-        <button onClick={() => setIsPrestationModalOpen(false)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '24px', lineHeight: '1' }}>✕</button>
+  <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 2000 }}>
+    <div style={{ backgroundColor: '#fff', width: '90%', maxWidth: '920px', borderRadius: '6px', boxShadow: '0 10px 40px rgba(0,0,0,0.25)', display: 'flex', flexDirection: 'column' }}>
+      
+      {/* Modal Header */}
+      <div style={{ padding: '15px 24px', borderBottom: '1px solid #dee2e6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h3 style={{ margin: 0, fontSize: '18px', color: '#333', fontWeight: '500' }}>Nouvelle prestation</h3>
+        <button type="button" onClick={() => setIsPrestationModalOpen(false)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '22px', color: '#6c757d' }}>✕</button>
       </div>
 
-      <div style={{ padding: '22px', maxHeight: 'calc(100vh - 120px)', overflowY: 'auto' }}>
-        <div style={{ backgroundColor: '#eef6fb', padding: '16px 18px', border: '1px solid #d1e7f5', borderRadius: '6px', marginBottom: '22px', color: '#1f4b70' }}>
+      <div style={{ padding: '24px', maxHeight: 'calc(100vh - 160px)', overflowY: 'auto' }}>
+        
+        {/* Blue Info Callout Box */}
+        <div style={{ backgroundColor: '#f8f9fa', padding: '16px 20px', borderLeft: '4px solid #17a2b8', borderTop: '1px solid #dee2e6', borderRight: '1px solid #dee2e6', borderBottom: '1px solid #dee2e6', borderRadius: '4px', marginBottom: '24px', color: '#333', fontSize: '14.5px', lineHeight: '1.5' }}>
           Interface de préparation de la prestation. Décrivez les tâches à réaliser, le système calculera automatiquement la quantification, puis ajoutez les autres détails si nécessaire.
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', borderBottom: '1px solid #dee2e6', marginBottom: '20px', gap: '6px' }}>
-          {['Prestation', 'Référence foncière'].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                padding: '12px 18px',
-                border: 'none',
-                background: activeTab === tab ? '#fff' : 'transparent',
-                color: activeTab === tab ? '#0b5ed7' : '#6c757d',
-                borderBottom: activeTab === tab ? '3px solid #0b5ed7' : '3px solid transparent',
-                cursor: 'pointer',
-                fontWeight: activeTab === tab ? 700 : 500,
-                borderRadius: '4px 4px 0 0'
-              }}
-            >
-              {tab}
-            </button>
-          ))}
+        {/* Navigation Tabs - Styled to match Capture25.PNG exactly */}
+        <div style={{ display: 'flex', borderBottom: '1px solid #dee2e6', marginBottom: '20px', paddingLeft: '10px' }}>
+          {['Prestation', 'Référence foncière', 'Missions'].map((tab) => {
+            const isActive = activeTab === tab;
+            return (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  padding: '10px 20px',
+                  border: isActive ? '1px solid #dee2e6' : '1px solid transparent',
+                  borderBottom: isActive ? '1px solid #fff' : 'transparent',
+                  background: isActive ? '#fff' : 'transparent',
+                  color: isActive ? '#333' : '#007bff',
+                  cursor: 'pointer',
+                  fontWeight: isActive ? '500' : '400',
+                  fontSize: '14px',
+                  borderRadius: '4px 4px 0 0',
+                  marginBottom: '-1px',
+                  zIndex: isActive ? 2 : 1
+                }}
+              >
+                {tab}
+              </button>
+            );
+          })}
         </div>
 
+        {/* TAB CONTENT: PRESTATION */}
         {activeTab === 'Prestation' && (
           <div>
             <div style={{ marginBottom: '24px' }}>
@@ -725,7 +1006,7 @@ const fetchContracts = async () => {
                     style={{ width: '100%', padding: '10px 12px', border: '1px solid #ced4da', borderRadius: '6px' }}
                     value={prestationForm.prestation}
                     disabled={!selectedCategory}
-                    onChange={(e) => setPrestationForm(prev => ({ ...prev, prestation: e.target.value }))}
+                    onChange={(e) => handlePrestationChange(e.target.value)}                  
                   >
                     <option value="">{selectedCategory ? '⭐ Choisir parmi mes favoris' : 'Sélectionnez d\'abord une catégorie'}</option>
                     {selectedCategory && (
@@ -753,21 +1034,55 @@ const fetchContracts = async () => {
               </div>
             </div>
 
-            <div style={{ padding: '18px', backgroundColor: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: '8px', marginBottom: '22px' }}>
-              <div style={{ marginBottom: '16px' }}>
-                <h5 style={{ margin: 0, fontSize: '16px' }}>Paramètre de prestation</h5>
-              </div>
+{/* ================= SECTION : DYNAMIC PARAMÈTRE DE PRESTATION ================= */}
+<div style={{ marginTop: '24px' }}>
+  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #dee2e6', paddingBottom: '8px', marginBottom: '16px' }}>
+    <h5 style={{ margin: 0, fontSize: '16px', fontWeight: '600', color: '#333' }}>Paramètre de prestation</h5>
+    <div style={{ backgroundColor: '#fff', border: '1px solid #ced4da', color: '#495057', fontWeight: '700', padding: '6px 16px', borderRadius: '4px', fontSize: '14px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+      0.00 points.
+    </div>
+  </div>
 
-              <div style={{ padding: '18px', backgroundColor: '#fff', border: '1px solid #ced4da', borderRadius: '8px', color: '#495057' }}>
-                Merci de sélectionner une prestation pour charger les paramètres associés.
-              </div>
-            </div>
+  <div id="new_prestation_params_prestation" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+    {PRESTATION_PARAMS_CONFIG[prestationForm.prestation] && PRESTATION_PARAMS_CONFIG[prestationForm.prestation].length > 0 ? (
+      PRESTATION_PARAMS_CONFIG[prestationForm.prestation].map((param) => (
+        <div key={param.key} style={{ display: 'flex', borderRadius: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+          <span style={{ display: 'flex', alignItems: 'center', padding: '0 12px', backgroundColor: '#f8f9fa', color: '#6c757d', border: '1px solid #ced4da', borderRight: 'none', borderTopLeftRadius: '4px', borderBottomLeftRadius: '4px', fontSize: '14px', whiteSpace: 'nowrap' }}>
+            {param.label}
+          </span>
+          <input 
+            type={param.type || "text"} 
+            step="0.001" 
+            placeholder="0.00" 
+            value={prestationForm.params[param.key] || ''}
+            onChange={(e) => setPrestationForm(prev => ({
+              ...prev,
+              params: {
+                ...prev.params,
+                [param.key]: e.target.value
+              }
+            }))}
+            style={{ flex: 1, padding: '10px 12px', border: '1px solid #ced4da', fontSize: '14px', outline: 'none' }}
+          />
+          {param.unit && (
+            <span style={{ display: 'flex', alignItems: 'center', padding: '0 12px', backgroundColor: '#f8f9fa', color: '#6c757d', border: '1px solid #ced4da', borderLeft: 'none', borderTopRightRadius: '4px', borderBottomRightRadius: '4px', fontSize: '14px' }}>
+              {param.unit}
+            </span>
+          )}
+        </div>
+      ))
+    ) : (
+      <p style={{ margin: 0, color: '#6c757d', fontSize: '14px', fontStyle: 'italic' }}>
+        Aucun paramètre supplémentaire requis pour cette prestation.
+      </p>
+    )}
+  </div>
+</div>
 
             <div style={{ padding: '18px', backgroundColor: '#fff', border: '1px solid #dee2e6', borderRadius: '8px', marginBottom: '22px' }}>
               <div style={{ marginBottom: '16px' }}>
                 <h5 style={{ margin: 0, fontSize: '16px' }}>Données facturation</h5>
               </div>
-
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
                 <div>
                   <label style={{ display: 'block', marginBottom: '8px', fontWeight: 700 }}>Prix unitaire</label>
@@ -779,7 +1094,6 @@ const fetchContracts = async () => {
                     style={{ width: '100%', padding: '10px 12px', border: '1px solid #ced4da', borderRadius: '6px' }}
                   />
                 </div>
-
                 <div>
                   <label style={{ display: 'block', marginBottom: '8px', fontWeight: 700 }}>Quantité</label>
                   <input
@@ -790,7 +1104,6 @@ const fetchContracts = async () => {
                     style={{ width: '100%', padding: '10px 12px', border: '1px solid #ced4da', borderRadius: '6px' }}
                   />
                 </div>
-
                 <div>
                   <label style={{ display: 'block', marginBottom: '8px', fontWeight: 700 }}>Unité</label>
                   <input
@@ -806,92 +1119,308 @@ const fetchContracts = async () => {
           </div>
         )}
 
+        {/* TAB CONTENT: RÉFÉRENCE FONCIÈRE[cite: 9] */}
         {activeTab === 'Référence foncière' && (
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-              <h5 style={{ margin: 0, fontSize: '16px' }}>Référence foncière</h5>
+            {/* Top Teal Action Button Right-Aligned[cite: 9] */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
               <button
                 type="button"
-                onClick={() => {
-                  const { refFonciereRef, refFonciereCommune, refFonciereZone } = prestationForm;
-                  if (!refFonciereRef) return;
-                  setRefFonciereList(prev => ([...prev, { id: Date.now(), ref: refFonciereRef, commune: refFonciereCommune, zone: refFonciereZone }]));
-                  setPrestationForm(prev => ({ ...prev, refFonciereRef: '', refFonciereCommune: '', refFonciereZone: '' }));
-                }}
-                style={{ padding: '10px 16px', backgroundColor: '#0d6efd', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}
+                onClick={() => setIsRefFonciereModalOpen(true)}
+                style={{ padding: '8px 16px', backgroundColor: '#17a2b8', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '500' }}
               >
-                <AiFillPlusCircle /> Référence foncière
+                <span style={{ border: '1px solid #fff', borderRadius: '50%', width: '14px', height: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 'bold' }}>+</span> 
+                Référence foncière
               </button>
             </div>
 
-            <div style={{ overflowX: 'auto', backgroundColor: '#fff', border: '1px solid #dee2e6', borderRadius: '6px' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            {/* Structured Table[cite: 9] */}
+            <div style={{ overflowX: 'auto', backgroundColor: '#fff', border: '1px solid #ccc' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
                 <thead>
-                  <tr style={{ backgroundColor: '#f1f3f5' }}>
-                    <th style={{ padding: '12px', borderBottom: '1px solid #dee2e6', textAlign: 'left' }}>Référence foncière</th>
-                    <th style={{ padding: '12px', borderBottom: '1px solid #dee2e6', textAlign: 'left' }}>Commune</th>
-                    <th style={{ padding: '12px', borderBottom: '1px solid #dee2e6', textAlign: 'left' }}>Zone</th>
-                    <th style={{ padding: '12px', borderBottom: '1px solid #dee2e6', textAlign: 'left' }}>Action</th>
+                  <tr style={{ backgroundColor: '#dbdbdb', color: '#212529' }}>
+                    <th style={{ padding: '10px', border: '1px solid #ccc', textAlign: 'left', fontWeight: '600', width: '40%' }}>Référence foncière</th>
+                    <th style={{ padding: '10px', border: '1px solid #ccc', textAlign: 'left', fontWeight: '600', width: '25%' }}>Commune</th>
+                    <th style={{ padding: '10px', border: '1px solid #ccc', textAlign: 'left', fontWeight: '600', width: '20%' }}>Zone</th>
+                    <th style={{ padding: '10px', border: '1px solid #ccc', textAlign: 'center', fontWeight: '600', width: '15%' }}>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {refFonciereList.length === 0 ? (
                     <tr>
-                      <td colSpan="4" style={{ padding: '16px', color: '#6c757d', textAlign: 'center' }}>Aucune référence foncière ajoutée.</td>
-                    </tr>
-                  ) : refFonciereList.map(item => (
-                    <tr key={item.id}>
-                      <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>{item.ref}</td>
-                      <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>{item.commune}</td>
-                      <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>{item.zone}</td>
-                      <td style={{ padding: '12px', borderBottom: '1px solid #dee2e6' }}>
-                        <button
-                          type="button"
-                          onClick={() => setRefFonciereList(prev => prev.filter(row => row.id !== item.id))}
-                          style={{ border: 'none', background: '#f8d7da', color: '#842029', padding: '8px 12px', borderRadius: '6px', cursor: 'pointer' }}
-                        >Supprimer</button>
+                      {/* Placeholder row matching empty style state */}
+                      <td style={{ padding: '12px', border: '1px solid #ccc' }}>T/</td>
+                      <td style={{ padding: '12px', border: '1px solid #ccc' }}>Agadir</td>
+                      <td style={{ padding: '12px', border: '1px solid #ccc' }}>Zone 1</td>
+                      <td style={{ padding: '12px', border: '1px solid #ccc', textAlign: 'center' }}>
+                        <span style={{ color: '#e0a800', marginRight: '15px', cursor: 'pointer' }}>📝</span>
+                        <span style={{ color: '#dc3545', cursor: 'pointer' }}>🗑️</span>
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    refFonciereList.map(item => {
+                      // Smart Prefix extraction matching Moroccan Land Regimes
+                      const prefixMap = {
+                        "Titre foncier": "T/",
+                        "Réquisition": "R/",
+                        "Non immatriculé": "NI/",
+                        "Délimitation administrative": "DA/",
+                        "Non défini": "ND/"
+                      };
+                      const prefix = prefixMap[item.regime] || "";
+
+                      return (
+                        <tr key={item.id}>
+                          <td style={{ padding: '10px', border: '1px solid #ccc', color: '#333' }}>
+                            {prefix}{item.valeur}
+                          </td>
+                          <td style={{ padding: '10px', border: '1px solid #ccc', color: '#333' }}>{item.commune}</td>
+                          <td style={{ padding: '10px', border: '1px solid #ccc', color: '#333' }}>{item.zone}</td>
+                          <td style={{ padding: '10px', border: '1px solid #ccc', textAlign: 'center' }}>
+                            {/* Action Tools matching styling icons[cite: 9] */}
+                            <button 
+                              type="button"
+                              onClick={() => {
+                                setRefFonciereForm({
+                                  commune: item.commune,
+                                  regimeFoncier: item.regime,
+                                  valeur: item.valeur,
+                                  zone: item.zone,
+                                  x: item.x || '',
+                                  y: item.y || ''
+                                });
+                                setRefFonciereList(prev => prev.filter(row => row.id !== item.id));
+                                setIsRefFonciereModalOpen(true);
+                              }}
+                              style={{ border: '1px solid #ffc107', background: 'none', borderRadius: '3px', padding: '2px 6px', color: '#e0a800', cursor: 'pointer', marginRight: '8px' }}
+                            >
+                              ✏️
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setRefFonciereList(prev => prev.filter(row => row.id !== item.id))}
+                              style={{ border: '1px solid #dc3545', background: 'none', borderRadius: '3px', padding: '2px 6px', color: '#dc3545', cursor: 'pointer' }}
+                            >
+                              🗑️
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px', marginTop: '18px' }}>
-              <input
-                type="text"
-                placeholder="Référence foncière"
-                value={prestationForm.refFonciereRef}
-                onChange={(e) => setPrestationForm(prev => ({ ...prev, refFonciereRef: e.target.value }))}
-                style={{ padding: '12px', border: '1px solid #ced4da', borderRadius: '6px' }}
-              />
-              <input
-                type="text"
-                placeholder="Commune"
-                value={prestationForm.refFonciereCommune}
-                onChange={(e) => setPrestationForm(prev => ({ ...prev, refFonciereCommune: e.target.value }))}
-                style={{ padding: '12px', border: '1px solid #ced4da', borderRadius: '6px' }}
-              />
-              <input
-                type="text"
-                placeholder="Zone"
-                value={prestationForm.refFonciereZone}
-                onChange={(e) => setPrestationForm(prev => ({ ...prev, refFonciereZone: e.target.value }))}
-                style={{ padding: '12px', border: '1px solid #ced4da', borderRadius: '6px' }}
-              />
             </div>
           </div>
         )}
 
+        {/* TAB CONTENT: MISSIONS[cite: 9] */}
+        {activeTab === 'Missions' && (
+          <div style={{ padding: '10px', color: '#6c757d' }}>
+            Interface de configuration des missions et étapes de validation.
+          </div>
+        )}
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginTop: '30px' }}>
-          <button onClick={() => setIsPrestationModalOpen(false)} style={{ padding: '10px 24px', cursor: 'pointer', borderRadius: '6px', border: '1px solid #ced4da', backgroundColor: '#fff', color: '#333' }}>Fermer</button>
-          <button style={{ padding: '10px 24px', backgroundColor: '#198754', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Enregistrer</button>
+        {/* Modal Action Controls Footer Container[cite: 9] */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '30px' }}>
+          <button 
+            type="button"
+            onClick={() => setIsPrestationModalOpen(false)} 
+            style={{ padding: '8px 20px', cursor: 'pointer', borderRadius: '4px', border: '1px solid #ced4da', backgroundColor: '#fff', color: '#333', fontSize: '14px' }}
+          >
+            Fermer
+          </button>
+          <button 
+  type="button"
+  onClick={() => {
+    // 1. Basic Validation
+    if (!prestationForm.prestation) {
+      alert("Veuillez sélectionner une prestation.");
+      return;
+    }
+
+    // 2. Append to formData.prestations (The "Envoyer" pattern)
+    setFormData(prev => ({
+      ...prev,
+      prestations: [
+        ...prev.prestations, 
+        { 
+          ...prestationForm, 
+          id: Date.now() // Unique ID to keep list items distinct
+        }
+      ]
+    }));
+
+    // 3. Reset the form state to clear inputs
+    setPrestationForm({
+      category: '',
+      prestation: '',
+      price: '0',
+      quantity: '1',
+      unit: '',
+      refFonciereRef: '',
+      refFonciereCommune: '',
+      refFonciereZone: '',
+      params: {}
+    });
+
+    // 4. Close the Modal
+    setIsPrestationModalOpen(false);
+  }}
+  style={{ 
+    padding: '10px 24px', 
+    backgroundColor: '#007bff', // Match your "Envoyer" color
+    color: '#fff', 
+    border: 'none', 
+    borderRadius: '6px', 
+    cursor: 'pointer',
+    fontWeight: '600'
+  }}
+>
+  Enregistrer
+</button>
         </div>
+
       </div>
     </div>
   </div>
 )}
+
+{/* NOUVELLE MODALE : RÉFÉRENCE FONCIÈRE */}
+{isRefFonciereModalOpen && (
+  <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.4)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 3000 }}>
+    <div style={{ backgroundColor: '#fff', width: '550px', borderRadius: '6px', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}>
+      
+      {/* En-tête */}
+      <div style={{ padding: '15px 20px', borderBottom: '1px solid #dee2e6', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h3 style={{ margin: 0, fontSize: '18px', color: '#333', fontWeight: '400' }}>Nouvelle Référence foncière</h3>
+        <button  type="button" onClick={() => setIsRefFonciereModalOpen(false)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '20px', color: '#6c757d' }}>✕</button>
+      </div>
+
+      <div style={{ padding: '20px' }}>
+        {/* Commune */}
+        <div style={{ display: 'flex', marginBottom: '15px' }}>
+          <div style={{ width: '130px', padding: '10px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRight: 'none', fontSize: '14px', color: '#495057' }}>
+            Commune
+          </div>
+          <select 
+            value={refFonciereForm.commune} 
+            onChange={(e) => setRefFonciereForm({...refFonciereForm, commune: e.target.value})} 
+            style={{ flex: 1, padding: '10px', border: '1px solid #ced4da', color: '#495057', fontSize: '14px' }}
+          >
+            {/* Boucle sur la constante pour générer toutes les communes */}
+            {COMMUNES_MAROC.map((commune) => (
+              <option key={commune} value={commune}>{commune}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Régime foncier & Valeur */}
+        <div style={{ display: 'flex', marginBottom: '15px' }}>
+          <div style={{ width: '130px', padding: '10px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRight: 'none', fontSize: '14px', color: '#495057' }}>
+            Régime foncier
+          </div>
+          <select 
+            value={refFonciereForm.regimeFoncier} 
+            onChange={(e) => setRefFonciereForm({...refFonciereForm, regimeFoncier: e.target.value})} 
+            style={{ width: '200px', padding: '10px', border: '1px solid #ced4da', borderRight: 'none', color: '#0056b3', fontSize: '14px' }}
+          >
+            <option value="Titre foncier">Titre foncier</option>
+            <option value="Réquisition">Réquisition</option>
+            <option value="Non immatriculé">Non immatriculé</option>
+            <option value="Délimitation administrative">Délimitation administrative</option>
+            <option value="Non défini">Non défini</option>
+          </select>
+          <input 
+            type="text" 
+            placeholder="Saisissez une valeur" 
+            value={refFonciereForm.valeur} 
+            onChange={(e) => setRefFonciereForm({...refFonciereForm, valeur: e.target.value})} 
+            style={{ flex: 1, padding: '10px', border: '1px solid #ced4da', fontSize: '14px' }} 
+          />
+        </div>
+
+        {/* Zone */}
+        <div style={{ display: 'flex', marginBottom: '15px' }}>
+          <div style={{ width: '130px', padding: '10px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRight: 'none', fontSize: '14px', color: '#495057' }}>
+            Zone
+          </div>
+          <select 
+            value={refFonciereForm.zone} 
+            onChange={(e) => setRefFonciereForm({...refFonciereForm, zone: e.target.value})} 
+            style={{ width: '150px', padding: '10px', border: '1px solid #ced4da', color: '#495057', fontSize: '14px' }}
+          >
+            {/* Ajout des 4 zones ici */}
+            <option value="Zone 1">Zone 1</option>
+            <option value="Zone 2">Zone 2</option>
+            <option value="Zone 3">Zone 3</option>
+            <option value="Zone 4">Zone 4</option>
+          </select>
+        </div>
+
+        {/* X & Y */}
+        <div style={{ display: 'flex', marginBottom: '15px' }}>
+          <div style={{ width: '130px', padding: '10px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRight: 'none', fontSize: '14px', color: '#495057', textAlign: 'center' }}>
+            X
+          </div>
+          <input 
+            type="text" 
+            placeholder="X" 
+            value={refFonciereForm.x} 
+            onChange={(e) => setRefFonciereForm({...refFonciereForm, x: e.target.value})} 
+            style={{ flex: 1, padding: '10px', border: '1px solid #ced4da', fontSize: '14px' }} 
+          />
+        </div>
+        <div style={{ display: 'flex', marginBottom: '20px' }}>
+          <div style={{ width: '130px', padding: '10px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRight: 'none', fontSize: '14px', color: '#495057', textAlign: 'center' }}>
+            Y
+          </div>
+          <input 
+            type="text" 
+            placeholder="Y" 
+            value={refFonciereForm.y} 
+            onChange={(e) => setRefFonciereForm({...refFonciereForm, y: e.target.value})} 
+            style={{ flex: 1, padding: '10px', border: '1px solid #ced4da', fontSize: '14px' }} 
+          />
+        </div>
+
+        {/* Boutons d'action */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
+          <button 
+            type="button"
+            onClick={() => setIsRefFonciereModalOpen(false)} 
+            style={{ padding: '8px 24px', cursor: 'pointer', border: '1px solid #ced4da', backgroundColor: '#f8f9fa', color: '#333', borderRadius: '4px' }}
+          >
+            Fermer
+          </button>
+          <button 
+            type="button"
+            onClick={() => {
+              setRefFonciereList(prev => [...prev, { 
+                id: Date.now(), 
+                regime: refFonciereForm.regimeFoncier, 
+                valeur: refFonciereForm.valeur, 
+                commune: refFonciereForm.commune, 
+                zone: refFonciereForm.zone, 
+                x: refFonciereForm.x, 
+                y: refFonciereForm.y 
+              }]);
+              setIsRefFonciereModalOpen(false);
+              setRefFonciereForm({ commune: 'Agadir', regimeFoncier: 'Délimitation administrative', valeur: '', zone: 'Zone 1', x: '', y: '' });
+            }} 
+            style={{ padding: '8px 24px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: '600' }}
+          >
+            Envoyer
+          </button>
+        </div>
+
+      </div>
+    </div>
+    
+  </div>
+  
+)}
+
     </div>
   );
 }

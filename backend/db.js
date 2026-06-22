@@ -5,15 +5,13 @@ const path = require('path');
 const dbPath = path.resolve(__dirname, 'contracts.db');
 const db = new sqlite3.Database(dbPath);
 
+// db.js
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS contracts (
       id TEXT PRIMARY KEY,
       sequence INTEGER NOT NULL,
-      client_name TEXT NOT NULL,
-      titre_foncier TEXT NOT NULL,
-      work_type TEXT NOT NULL,
-      price REAL NOT NULL,
+      data TEXT NOT NULL,  -- This will store your entire JSON formData object
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
