@@ -189,17 +189,77 @@ const fetchContracts = async () => {
     setIsModalOpen(true);
   };
 
+  const getRandomTestContractData = () => {
+    const testClients = [
+      "Jean Dupont",
+      "Habiba El Amrani",
+      "Othmane Chater",
+      "Rachid Benali"
+    ];
+    const testTitles = [
+      "TR-4520/2026",
+      "TF-9876/2026",
+      "TF-3012/2026"
+    ];
+    const testWorks = [
+      "Étude topographique complète",
+      "Bornage et immatriculation foncière",
+      "Cartographie et photogrammétrie"
+    ];
+    const testPrices = [12000, 9500, 18000, 25400];
+
+    return {
+      client_name: testClients[Math.floor(Math.random() * testClients.length)],
+      titre_foncier: testTitles[Math.floor(Math.random() * testTitles.length)],
+      work_type: testWorks[Math.floor(Math.random() * testWorks.length)],
+      price: testPrices[Math.floor(Math.random() * testPrices.length)]
+    };
+  };
+
   const handleFormSubmit = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
+
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
+
+    // Validate required fields
+    if (!formData.titre_foncier || !formData.work_type || !formData.price) {
+      return;
+    }
+
+    if (formData.clients.length === 0) {
+      return;
+    }
+
+    const payload = {
+      client_name: formData.clients[0].client_name,
+      titre_foncier: formData.titre_foncier,
+      work_type: formData.work_type,
+      price: parseFloat(formData.price),
+    };
+
     try {
       const response = await fetch('http://localhost:5000/api/contracts', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload),
       });
+
       const data = await response.json();
+      if (!response.ok) {
+        console.error("Failed to submit contract:", data);
+        return;
+      }
+
       if (data.id) {
-        setFormData({ client_name: '', titre_foncier: '', work_type: '', price: '' });
+        setFormData({ clients: [], titre_foncier: '', work_type: '', price: '' });
+        setTempClient({ client_name: '', cine: '', address: '', quality: '' });
         setIsModalOpen(false);
         fetchContracts();
       }
@@ -381,7 +441,7 @@ const fetchContracts = async () => {
                       <div style={{ backgroundColor: '#17a2b8', color: '#fff', padding: '14px 16px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14.5px', fontWeight: '700' }}>
                           <span>⏳</span> 
-                          <span>N° : N°604/SO/ONIGT/CN-{(String(item.id).padStart(4, '0'))}/2026</span>
+                          <span>N° : N°604/SO/ONIGT/CN-{(String(item.sequence).padStart(4, '0'))}/2026</span>
                         </div>
                         <div style={{ textAlign: 'right', fontSize: '12px', marginTop: '4px', opacity: '0.95', fontWeight: '600' }}>{formattedDate}</div>
                       </div>
@@ -462,8 +522,9 @@ const fetchContracts = async () => {
         <button onClick={() => setIsModalOpen(false)} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '20px' }}>✕</button>
       </div>
 
-      {/* Scrollable Content */}
-      <div style={{ padding: '20px', overflowY: 'auto' }}>
+      <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+        {/* Scrollable Content */}
+        <div style={{ padding: '20px', overflowY: 'auto' }}>
         <div style={{ backgroundColor: '#f8f9fa', padding: '15px', border: '1px solid #dee2e6', fontSize: '14px', color: '#333', marginBottom: '20px' }}>
           Cette interface vous permet de préparer et visualiser un contrat avant sa finalisation. Vous pouvez ajouter les clients concernés, définir les prestations associées, et compléter les informations nécessaires telles que les montants et les conditions. L'aperçu proposé reflète fidèlement le contrat final.
         </div>
@@ -500,8 +561,41 @@ const fetchContracts = async () => {
   <div style={{ fontWeight: '700', marginBottom: '10px' }}>
     Objet, désignation, honoraires, nature des prestations et prix unitaire :
   </div>
-  <div style={{ fontSize: '14px', color: '#333' }}>
+  <div style={{ fontSize: '14px', color: '#333', marginBottom: '18px' }}>
     Le maître d'ouvrage s'engage avec l'I.G. T pour la réalisation de la mission détaillée dans le tableau suivant et portant sur la(les) propriété(es)
+  </div>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+    <div>
+      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '700' }}>Titre foncier</label>
+      <input
+        type="text"
+        value={formData.titre_foncier}
+        onChange={(e) => setFormData(prev => ({ ...prev, titre_foncier: e.target.value }))}
+        placeholder="Ex: 12345"
+        style={{ width: '100%', padding: '10px 12px', border: '1px solid #ced4da', borderRadius: '6px' }}
+      />
+    </div>
+    <div>
+      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '700' }}>Nature du travail</label>
+      <input
+        type="text"
+        value={formData.work_type}
+        onChange={(e) => setFormData(prev => ({ ...prev, work_type: e.target.value }))}
+        placeholder="Ex: Étude topographique"
+        style={{ width: '100%', padding: '10px 12px', border: '1px solid #ced4da', borderRadius: '6px' }}
+      />
+    </div>
+    <div>
+      <label style={{ display: 'block', marginBottom: '8px', fontWeight: '700' }}>Prix</label>
+      <input
+        type="number"
+        min="0"
+        value={formData.price}
+        onChange={(e) => setFormData(prev => ({ ...prev, price: e.target.value }))}
+        placeholder="Ex: 10000"
+        style={{ width: '100%', padding: '10px 12px', border: '1px solid #ced4da', borderRadius: '6px' }}
+      />
+    </div>
   </div>
 </div>
 
@@ -521,9 +615,10 @@ const fetchContracts = async () => {
 
       {/* Fixed Footer */}
       <div style={{ padding: '15px 20px', borderTop: '1px solid #dee2e6', display: 'flex', justifyContent: 'space-between', backgroundColor: '#f8f9fa' }}>
-        <button onClick={() => setIsModalOpen(false)} style={{ backgroundColor: '#28a745', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '4px', fontWeight: '600' }}>Fermer</button>
-        <button style={{ backgroundColor: '#007bff', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '4px', fontWeight: '600' }}>📄 Générer le contrat</button>
+        <button type="button" onClick={() => setIsModalOpen(false)} style={{ backgroundColor: '#28a745', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '4px', fontWeight: '600' }}>Fermer</button>
+        <button type="submit" style={{ backgroundColor: '#007bff', color: '#fff', border: 'none', padding: '10px 20px', borderRadius: '4px', fontWeight: '600' }}>📄 Générer le contrat</button>
       </div>
+    </form>
     </div>
   </div>
   

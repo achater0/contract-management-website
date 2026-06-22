@@ -1,10 +1,11 @@
 // server.js
-const express = require('express');
-const cors = require('cors');
-const db = require('./db');
-const { authenticateToken, generateAccessToken } = require('./middleware');
-const { adminLogin, adminPassword, AccessTokenSecret, AccessTokenExpiry } = require('./env');
-const jwt = require('jsonwebtoken')
+import express from 'express';
+import cors from 'cors';
+import db from './db.js'; // Note: you must add the .js extension here
+import { authenticateToken } from './middleware.js'; // Ensure path is correct
+import { adminLogin, adminPassword, AccessTokenSecret, AccessTokenExpiry } from './env.js';
+import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
 
@@ -72,14 +73,19 @@ app.post('/api/contracts',
       return res.status(400).json({ error: "Missing required fields." });
     }
 
-    const query = `INSERT INTO contracts (client_name, titre_foncier, work_type, price) VALUES (?, ?, ?, ?)`;
+    const secureId = uuidv4();
 
-    db.run(query, [client_name, titre_foncier, work_type, parseFloat(price)], function(err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      // Return the unique auto-incremented ID back to React
-      res.json({ id: this.lastID });
+    // Get the next sequence number
+    db.get(`SELECT MAX(sequence) as maxSequence FROM contracts`, [], (err, row) => {
+      if (err) return res.status(500).json({ error: err.message });
+      const nextSequence = (row?.maxSequence || 0) + 1;
+
+      const query = `INSERT INTO contracts (id, sequence, client_name, titre_foncier, work_type, price) VALUES (?, ?, ?, ?, ?, ?)`;
+
+      db.run(query, [secureId, nextSequence, client_name, titre_foncier, work_type, parseFloat(price)], function(err) {
+          if (err) return res.status(500).json({ error: err.message });
+          res.json({ id: secureId, sequence: nextSequence });
+      });
     });
   });
 

@@ -8,7 +8,8 @@ const db = new sqlite3.Database(dbPath);
 db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS contracts (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id TEXT PRIMARY KEY,
+      sequence INTEGER NOT NULL,
       client_name TEXT NOT NULL,
       titre_foncier TEXT NOT NULL,
       work_type TEXT NOT NULL,
