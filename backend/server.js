@@ -82,7 +82,13 @@ app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Administrative Backend Server running on port ${PORT}`);
-});
+// Only run the traditional port listener when developing locally
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Administrative Backend Server running on port ${PORT}`);
+  });
+}
+
+// Export the application configuration for Vercel's engine
+export default app;
