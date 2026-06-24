@@ -301,7 +301,7 @@ const [favoritePrestat] = useState([
 useEffect(() => {
   const fetchContracts = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
       const response = await fetch(`${apiUrl}/api/contracts`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
       });
@@ -391,7 +391,7 @@ const handleFormSubmit = async () => {
   };
   
   try {
-    const apiUrl = import.meta.env.VITE_API_URL || '';
+    const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
     const response = await fetch(`${apiUrl}/api/contracts`, {
       method: 'POST',
       headers: {

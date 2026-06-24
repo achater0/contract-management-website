@@ -10,7 +10,7 @@ export default function ContractVerify() {
   useEffect(() => {
     const fetchContract = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || '';
+        const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
         const response = await fetch(`${apiUrl}/api/contracts/${id}`);
         
         if (!response.ok) {
