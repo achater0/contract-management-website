@@ -11,7 +11,7 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
       const response = await fetch(`${apiUrl}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
