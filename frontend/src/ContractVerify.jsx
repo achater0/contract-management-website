@@ -82,7 +82,6 @@ export default function ContractVerify() {
       width: '100%'
     }}>
       
-      {/* Main container utilizing 100% of the screen width with absolutely 0px left margin/padding */}
       <div style={{ 
         margin: '0px', 
         width: '100%', 
@@ -91,35 +90,44 @@ export default function ContractVerify() {
         boxSizing: 'border-box' 
       }}>
         
-        {/* LOGO - Flush against the extreme left border */}
-        <div style={{ margin: '0px', marginBottom: '25px', width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
+        {/* HEADER BLOCK: Places the logo and green status text side-by-side */}
+        <div style={{ 
+          margin: '0px', 
+          marginBottom: '25px', 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'row',
+          alignItems: 'center', 
+          justifyContent: 'flex-start',
+          gap: '30px',
+          flexWrap: 'wrap'
+        }}>
+          {/* Logo on the left */}
           <img 
             src={myHeaderImage} 
             alt="ONIGT Logo" 
             style={{ 
-              width: '41.66666667%', /* Maintains original template proportion */
+              width: '41.66666667%', 
               height: 'auto', 
               display: 'block',
               objectFit: 'cover',
               margin: '0px'
             }} 
           />
+          
+          {/* Green Status Title placed right next to the logo */}
+          <h2 style={{ 
+            color: onigtGreen, 
+            textAlign: 'left', 
+            fontSize: '24px', 
+            fontWeight: 'bold',
+            margin: '0px'
+          }}>
+            Contrat : Validé (En Exécution)
+          </h2>
         </div>
 
-        {/* STATUS TITLE - Extreme left */}
-        <h2 style={{ 
-          color: onigtGreen, 
-          textAlign: 'left', 
-          fontSize: '24px', 
-          fontWeight: 'bold',
-          marginBottom: '30px',
-          marginTop: '0px',
-          paddingLeft: '0px'
-        }}>
-          Contrat : Validé (En Exécution)
-        </h2>
-
-        {/* REFERENCE AND DATE - Extreme left */}
+        {/* REFERENCE AND DATE */}
         <div style={{ marginBottom: '30px', paddingLeft: '0px' }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', textAlign: 'left' }}>
             Contrat n°: {officialNumber}
@@ -129,38 +137,38 @@ export default function ContractVerify() {
           </div>
         </div>
 
-        {/* CLIENT SECTION - Extreme left */}
+        {/* CLIENT SECTION - Bullet point shifted to the right */}
         <div style={{ marginBottom: '20px', textAlign: 'left', paddingLeft: '0px' }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
             Le Maître d'ouvrage (Client):
           </div>
-          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '20px', textAlign: 'left' }}>
+          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '40px', textAlign: 'left' }}>
             <li style={{ fontWeight: 'bold' }}>
               {clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}
             </li>
-          </ol>
+          </ul>
           <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px', marginLeft: '0px' }} />
         </div>
 
-        {/* ENGINEER SECTION - Extreme left */}
+        {/* ENGINEER SECTION - Bullet point shifted to the right */}
         <div style={{ marginBottom: '25px', textAlign: 'left', paddingLeft: '0px' }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
             Le Maître d'œuvre (Ingénieur Géomètre Topographe):
           </div>
-          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '20px', textAlign: 'left' }}>
+          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '40px', textAlign: 'left' }}>
             <li style={{ fontWeight: 'bold' }}>
               CHATER Othmane 
             </li>
-          </ol>
+          </ul>
           <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px', marginLeft: '0px' }} />
         </div>
 
-        {/* INTRODUCTORY TEXT - Extreme left */}
+        {/* INTRODUCTORY TEXT */}
         <p style={{ marginBottom: '20px', color: 'black', textAlign: 'left', paddingLeft: '0px' }}>
           Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessous.
         </p>
 
-        {/* DATA TABLE - Covers full width layout */}
+        {/* DATA TABLE */}
         <div style={{ overflowX: 'auto', width: '100%', paddingLeft: '0px' }}>
           <table style={{ 
             width: '100%', 
