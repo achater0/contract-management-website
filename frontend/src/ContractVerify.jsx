@@ -10,6 +10,7 @@ export default function ContractVerify() {
   useEffect(() => {
     const fetchContract = async () => {
       try {
+        // Keeps your fallback handling for both local development and production
         const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
         const response = await fetch(`${apiUrl}/api/contracts/${id}`);
         
@@ -53,10 +54,8 @@ export default function ContractVerify() {
   const prestations = d.prestations || [];
   const refs = d.references || [];
 
-  // Exact dynamic formatting for the official contract sequence number
   const officialNumber = `N°604/SO/ONIGT/CN-${String(contract.sequence || 0).padStart(4, '0')}/2026`;
 
-  // Exact locale formatting for dates matching the original platform
   const dateObj = new Date(contract.created_at || Date.now());
   const dayName = dateObj.toLocaleDateString('fr-FR', { weekday: 'long' });
   const dayNum = dateObj.getDate();
@@ -65,10 +64,9 @@ export default function ContractVerify() {
   
   const formattedDateString = `Fait à Agadir, le ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${dayNum} ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}.`;
 
-  // --- EXACT STYLES AND DIMENSIONS EXTRACTED FROM THE HTML SOURCE ---
   const onigtBlue = "#0261A4"; 
   const onigtGreen = "#28a745";
-  const borderColor = "#7f7f7f"; // Original gray border color used in ONIGT tables
+  const borderColor = "#7f7f7f"; 
 
   return (
     <div style={{ 
@@ -82,20 +80,24 @@ export default function ContractVerify() {
       padding: '0px'
     }}>
       
-      {/* Main Container mirroring the original Bootstrap layout width */}
       <div style={{ padding: '8px', maxWidth: '800px', margin: '0 auto' }}>
         
-        {/* HEADER LOGO (Aligned exactly like col-md-5 using the original Base64 asset) */}
+        {/* HEADER LOGO - Points safely to your public folder asset */}
         <div style={{ margin: '0px', marginBottom: '20px', width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
           <img 
-            src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQIAdgB2AAD/4QBiRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAMAAAITAAMAAAABAAEAAAAAAAAAAAB2AAAAAQAAAHYAAAAB/9sAQwADAgICAgIDAgICAwMDAwQGBAQEBAQIBgYFBgkICgoJCAkJCgwPDAoLDgsJCQ0RDQ4PEBAREAoMEhMSEBMPEBAQ/9sAQwEDAwMEAwQIBAQIEAsJCxAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ/8AAEQgBQANRAwERAAIRAQMRAf/EAB0AAQABBQEBAQAAAAAAAAAAAAAIBAUGBwkDAgH/xABnEAABAwMCAwMEBhMMBggEBQUBAgMEAAUGBxEIEiETMUEJFCJRGDJhcZW0FRYjNjc4QlVXcnR1doGRsbPR0hcZJDM0UlZzk5Sy0zVDVGKSoSU5gqLBwsTURFNjtSZYg4WjJ2RlpMP/xAAcAQEAAgIDAQAAAAAAAAAAAAAABgcFBQECAwj/xABQEwAAAAAAAAAAAAAAAAAAAAAAAAB2AAAAAQAAAHYAAAAB/9sAQwADAgICAgIDAgICAwMDAwQGBAQEBAQIBgYFBgkICgoJCAkJCgwPDAoLDgsJCQ0RDQ4PEBAREAoMEhMSEBMPEBAQ/9sAQwEDAwMEAwQIBAQIEAsJCxAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ/8AAEQgBQANRAwERAAIRAQMRAf/EAB0AAQABBQEBAQAAAAAAAAAAAAAIBAUGBwkDAgH/xABnEAABAwMCAwMEBhMMBggEBQUBAgMEAAUGBxEIEiETMUEJFCJRGDJhcZW0FRYjNjc4QlVXcnR1doGRsbPR0hcZJDM0UlZzk5Sy0zVDVGKSoSU5gqLBwsTURFNjtSZYg4WjJ2RlpMP/xAAcAQEAAgIDAQAAAAAAAAAAAAAABgcFBQECAwj/xABQEwAAAAAAAAAAAAAAAAAAAAAAAAB2AAAAAQAAAHYAAAAB" 
+            src="/onigt-logo.jpeg" 
             alt="ONIGT Logo" 
             style={{ 
-              width: '41.66666667%', /* Matches col-md-5 strict percentage width */
+              width: '41.66666667%', 
               height: 'auto', 
               display: 'block',
               objectFit: 'cover'
             }} 
+            onError={(e) => {
+              // Graceful fallback display text if the image asset is ever missing
+              e.target.style.display = 'none';
+              console.error("Logo failed to load from public folder. Verify /public/onigt-logo.jpeg exists.");
+            }}
           />
         </div>
 
@@ -151,7 +153,7 @@ export default function ContractVerify() {
           Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessous.
         </p>
 
-        {/* DATA TABLE (Strict CSS metrics from the original portal) */}
+        {/* DATA TABLE */}
         <div style={{ overflowX: 'auto' }}>
           <table style={{ 
             width: '100%', 
@@ -163,7 +165,7 @@ export default function ContractVerify() {
               <tr>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '3px', /* Accurate cell padding from source styles */
+                  padding: '3px', 
                   backgroundColor: '#d3d3d3',
                   color: 'black', 
                   width: '40%',
