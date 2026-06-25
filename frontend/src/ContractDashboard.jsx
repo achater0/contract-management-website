@@ -4,6 +4,7 @@ import { MdInput } from 'react-icons/md';
 
 import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";
 import QRCode from "qrcode";
+import citiesData from "./cities.json";
 
 export default function ContractDashboard() {
   const [contracts, setContracts] = useState([]);
@@ -14,6 +15,7 @@ export default function ContractDashboard() {
  const [isPrestationModalOpen, setIsPrestationModalOpen] = useState(false);
   // AJOUTER CES DEUX LIGNES :
   const [isRefFonciereModalOpen, setIsRefFonciereModalOpen] = useState(false);
+  const [communeSearch, setCommuneSearch] = useState("");
   const [refFonciereForm, setRefFonciereForm] = useState({
     commune: 'Agadir',
     regimeFoncier: 'Délimitation administrative',
@@ -301,7 +303,7 @@ const [favoritePrestat] = useState([
 useEffect(() => {
   const fetchContracts = async () => {
     try {
-      const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+      const apiUrl = import.meta.env.VITE_API_URL || '';
       const response = await fetch(`${apiUrl}/api/contracts`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
       });
@@ -391,7 +393,7 @@ const handleFormSubmit = async () => {
   };
   
   try {
-    const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+    const apiUrl = import.meta.env.VITE_API_URL || '';
     const response = await fetch(`${apiUrl}/api/contracts`, {
       method: 'POST',
       headers: {
@@ -1300,21 +1302,32 @@ const handleFormSubmit = async () => {
       </div>
 
       <div style={{ padding: '20px' }}>
-        {/* Commune */}
-        <div style={{ display: 'flex', marginBottom: '15px' }}>
-          <div style={{ width: '130px', padding: '10px', backgroundColor: '#f8f9fa', border: '1px solid #ced4da', borderRight: 'none', fontSize: '14px', color: '#495057' }}>
-            Commune
-          </div>
-          <select 
-            value={refFonciereForm.commune} 
-            onChange={(e) => setRefFonciereForm({...refFonciereForm, commune: e.target.value})} 
-            style={{ flex: 1, padding: '10px', border: '1px solid #ced4da', color: '#495057', fontSize: '14px' }}
-          >
-            {/* Boucle sur la constante pour générer toutes les communes */}
-            {COMMUNES_MAROC.map((commune) => (
-              <option key={commune} value={commune}>{commune}</option>
-            ))}
-          </select>
+        {/* COMMUNE SEARCH & SELECT */}
+        <div style={{ marginBottom: '15px' }}>
+          <div style={{ marginBottom: '8px', fontSize: '14px', fontWeight: '600' }}>Commune</div>
+          <input 
+            type="text" 
+            placeholder="Rechercher une commune..."
+            value={communeSearch}
+            onChange={(e) => setCommuneSearch(e.target.value)}
+            style={{ width: '100%', padding: '10px', border: '1px solid #ced4da', marginBottom: '5px', borderRadius: '4px' }}
+          />
+<select 
+  value={refFonciereForm.commune} 
+  onChange={(e) => {
+    setRefFonciereForm({...refFonciereForm, commune: e.target.value});
+    setCommuneSearch(""); 
+  }} 
+  style={{ width: '100%', padding: '10px', border: '1px solid #ced4da', color: '#495057', fontSize: '14px' }}
+>
+  {citiesData
+    .filter(city => city.text.toLowerCase().includes(communeSearch.toLowerCase()))
+    .map((city, idx) => (
+      // CHANGE HERE: Use city.text for the value attribute
+      <option key={idx} value={city.text}>{city.text}</option>
+    ))
+  }
+</select>
         </div>
 
         {/* Régime foncier & Valeur */}
