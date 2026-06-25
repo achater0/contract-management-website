@@ -90,7 +90,7 @@ export default function ContractVerify() {
         boxSizing: 'border-box' 
       }}>
         
-        {/* HEADER BLOCK: Places the logo and green status text side-by-side */}
+        {/* HEADER BLOCK: Places logo and enlarged green text side-by-side */}
         <div style={{ 
           margin: '0px', 
           marginBottom: '25px', 
@@ -99,7 +99,7 @@ export default function ContractVerify() {
           flexDirection: 'row',
           alignItems: 'center', 
           justifyContent: 'flex-start',
-          gap: '30px',
+          gap: '40px',
           flexWrap: 'wrap'
         }}>
           {/* Logo on the left */}
@@ -115,11 +115,11 @@ export default function ContractVerify() {
             }} 
           />
           
-          {/* Green Status Title placed right next to the logo */}
+          {/* Enlarged Green Status Title matching Capture31_4.PNG */}
           <h2 style={{ 
             color: onigtGreen, 
             textAlign: 'left', 
-            fontSize: '24px', 
+            fontSize: '36px', /* Larger font size option */
             fontWeight: 'bold',
             margin: '0px'
           }}>
@@ -137,12 +137,12 @@ export default function ContractVerify() {
           </div>
         </div>
 
-        {/* CLIENT SECTION - Bullet point shifted to the right */}
+        {/* CLIENT SECTION - Discs/Dots shifted cleanly to the right */}
         <div style={{ marginBottom: '20px', textAlign: 'left', paddingLeft: '0px' }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
             Le Maître d'ouvrage (Client):
           </div>
-          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '40px', textAlign: 'left' }}>
+          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
             <li style={{ fontWeight: 'bold' }}>
               {clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}
             </li>
@@ -150,12 +150,12 @@ export default function ContractVerify() {
           <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px', marginLeft: '0px' }} />
         </div>
 
-        {/* ENGINEER SECTION - Bullet point shifted to the right */}
+        {/* ENGINEER SECTION - Discs/Dots shifted cleanly to the right */}
         <div style={{ marginBottom: '25px', textAlign: 'left', paddingLeft: '0px' }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
             Le Maître d'œuvre (Ingénieur Géomètre Topographe):
           </div>
-          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '40px', textAlign: 'left' }}>
+          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
             <li style={{ fontWeight: 'bold' }}>
               CHATER Othmane 
             </li>
