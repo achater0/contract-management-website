@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import myHeaderImage from "./image_3ec705.png"; 
 
 export default function ContractVerify() {
   const { id } = useParams();
@@ -10,12 +11,12 @@ export default function ContractVerify() {
   useEffect(() => {
     const fetchContract = async () => {
       try {
-        // Keeps your fallback handling for both local development and production
+        // Handles fallback for both local development and deployment environment
         const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
         const response = await fetch(`${apiUrl}/api/contracts/${id}`);
         
         if (!response.ok) {
-          throw new Error("Contract not found or invalid.");
+          throw new Error("Contrat introuvable ou invalide.");
         }
 
         const row = await response.json();
@@ -36,14 +37,14 @@ export default function ContractVerify() {
   }, [id]);
 
   if (loading) {
-    return <div style={{ padding: '50px', textAlign: 'center', fontFamily: 'Arial, sans-serif', fontSize: '16px' }}>Loading...</div>;
+    return <div style={{ padding: '50px', textAlign: 'center', fontFamily: 'Arial, sans-serif', fontSize: '16px' }}>Chargement...</div>;
   }
 
   if (error || !contract) {
     return (
       <div style={{ padding: '50px', textAlign: 'center', fontFamily: 'Arial, sans-serif', fontSize: '16px', color: '#dc3545' }}>
-        <h2>❌ Error</h2>
-        <p>{error || "This QR code does not match any valid contract."}</p>
+        <h2>❌ Erreur</h2>
+        <p>{error || "Ce code QR ne correspond à aucun contrat valide."}</p>
       </div>
     );
   }
@@ -80,12 +81,13 @@ export default function ContractVerify() {
       padding: '0px'
     }}>
       
-      <div style={{ padding: '8px', maxWidth: '800px', margin: '0 auto' }}>
+      {/* Container aligned to the left, matching your exact design structure */}
+      <div style={{ padding: '8px', margin: '0px' }}>
         
-        {/* HEADER LOGO - Points safely to your public folder asset */}
+        {/* HEADER LOGO - col-md-5 proportion from your template (5/12 = ~41.66%) */}
         <div style={{ margin: '0px', marginBottom: '20px', width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
           <img 
-            src="/onigt-logo.jpeg" 
+            src={myHeaderImage} 
             alt="ONIGT Logo" 
             style={{ 
               width: '41.66666667%', 
@@ -93,11 +95,6 @@ export default function ContractVerify() {
               display: 'block',
               objectFit: 'cover'
             }} 
-            onError={(e) => {
-              // Graceful fallback display text if the image asset is ever missing
-              e.target.style.display = 'none';
-              console.error("Logo failed to load from public folder. Verify /public/onigt-logo.jpeg exists.");
-            }}
           />
         </div>
 
@@ -127,8 +124,8 @@ export default function ContractVerify() {
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '0px' }}>
             Le Maître d'ouvrage (Client):
           </div>
-          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '0px', textAlign: 'justify' }}>
-            <li style={{ fontWeight: 'bold', listStylePosition: 'inside' }}>
+          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '20px', textAlign: 'justify' }}>
+            <li style={{ fontWeight: 'bold' }}>
               {clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}
             </li>
           </ol>
@@ -140,8 +137,8 @@ export default function ContractVerify() {
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '0px' }}>
             Le Maître d'œuvre (Ingénieur Géomètre Topographe):
           </div>
-          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '0px', textAlign: 'justify' }}>
-            <li style={{ fontWeight: 'bold', listStylePosition: 'inside' }}>
+          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '20px', textAlign: 'justify' }}>
+            <li style={{ fontWeight: 'bold' }}>
               CHATER Othmane 
             </li>
           </ol>
