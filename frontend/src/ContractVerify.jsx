@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import myHeaderImage from "./image_3ec705.png"; 
+import myHeaderImage from "./image_3ec705.png"; // Import de votre image d'en-tête
 
 export default function ContractVerify() {
   const { id } = useParams();
@@ -11,8 +11,7 @@ export default function ContractVerify() {
   useEffect(() => {
     const fetchContract = async () => {
       try {
-        // Handles fallback for both local development and deployment environment
-        const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+        const apiUrl = import.meta.env.VITE_API_URL || '';
         const response = await fetch(`${apiUrl}/api/contracts/${id}`);
         
         if (!response.ok) {
@@ -37,19 +36,19 @@ export default function ContractVerify() {
   }, [id]);
 
   if (loading) {
-    return <div style={{ padding: '50px', textAlign: 'center', fontFamily: 'Arial, sans-serif', fontSize: '16px' }}>Chargement...</div>;
+    return <div style={{ padding: '50px', textAlign: 'left', fontFamily: 'Arial, sans-serif', fontSize: '16px' }}>Chargement...</div>;
   }
 
   if (error || !contract) {
     return (
-      <div style={{ padding: '50px', textAlign: 'center', fontFamily: 'Arial, sans-serif', fontSize: '16px', color: '#dc3545' }}>
+      <div style={{ padding: '50px', textAlign: 'left', fontFamily: 'Arial, sans-serif', fontSize: '16px', color: '#dc3545' }}>
         <h2>❌ Erreur</h2>
         <p>{error || "Ce code QR ne correspond à aucun contrat valide."}</p>
       </div>
     );
   }
 
-  // --- DATA EXTRACTION & FORMATTING ---
+  // --- EXTRACTION ET FORMATAGE DES DONNÉES ---
   const d = contract.details || {};
   const clients = d.clients || [];
   const prestations = d.prestations || [];
@@ -78,14 +77,14 @@ export default function ContractVerify() {
       minHeight: '100vh', 
       color: 'black',
       margin: '0px',
-      padding: '0px'
+      padding: '24px 16px' /* Léger espacement par rapport aux bords de l'écran */
     }}>
       
-      {/* Container aligned to the left, matching your exact design structure */}
-      <div style={{ padding: '8px', margin: '0px' }}>
+      {/* Conteneur principal aligné à gauche */}
+      <div style={{ margin: '0px', maxWidth: '800px', textAlign: 'left' }}>
         
-        {/* HEADER LOGO - col-md-5 proportion from your template (5/12 = ~41.66%) */}
-        <div style={{ margin: '0px', marginBottom: '20px', width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
+        {/* LOGO - Aligné à gauche */}
+        <div style={{ margin: '0px', marginBottom: '25px', width: '100%', display: 'flex', justifyContent: 'flex-start' }}>
           <img 
             src={myHeaderImage} 
             alt="ONIGT Logo" 
@@ -98,33 +97,34 @@ export default function ContractVerify() {
           />
         </div>
 
-        {/* OFFICIAL STATUS TITLE */}
+        {/* TITRE DU STATUT - Aligné à gauche */}
         <h2 style={{ 
           color: onigtGreen, 
-          textAlign: 'center', 
+          textAlign: 'left', 
           fontSize: '24px', 
           fontWeight: 'bold',
-          marginBottom: '30px'
+          marginBottom: '30px',
+          marginTop: '0px'
         }}>
           Contrat : Validé (En Exécution)
         </h2>
 
-        {/* CONTRACT REFERENCE NUMBER AND DATE */}
+        {/* RÉFÉRENCE ET DATE - Alignées à gauche */}
         <div style={{ marginBottom: '30px' }}>
-          <div style={{ color: onigtBlue, fontWeight: 'bold' }}>
+          <div style={{ color: onigtBlue, fontWeight: 'bold', textAlign: 'left' }}>
             Contrat n°: {officialNumber}
           </div>
-          <div style={{ color: onigtBlue, fontWeight: 'bold' }}>
+          <div style={{ color: onigtBlue, fontWeight: 'bold', textAlign: 'left' }}>
             {formattedDateString}
           </div>
         </div>
 
-        {/* CLIENT SECTION */}
-        <div style={{ marginBottom: '20px' }}>
-          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '0px' }}>
+        {/* SECTION CLIENT - Alignée à gauche */}
+        <div style={{ marginBottom: '20px', textAlign: 'left' }}>
+          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
             Le Maître d'ouvrage (Client):
           </div>
-          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '20px', textAlign: 'justify' }}>
+          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '20px', textAlign: 'left' }}>
             <li style={{ fontWeight: 'bold' }}>
               {clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}
             </li>
@@ -132,12 +132,12 @@ export default function ContractVerify() {
           <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px' }} />
         </div>
 
-        {/* ENGINEER SECTION */}
-        <div style={{ marginBottom: '25px' }}>
-          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '0px' }}>
+        {/* SECTION INGÉNIEUR - Alignée à gauche */}
+        <div style={{ marginBottom: '25px', textAlign: 'left' }}>
+          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
             Le Maître d'œuvre (Ingénieur Géomètre Topographe):
           </div>
-          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '20px', textAlign: 'justify' }}>
+          <ol style={{ listStyleType: 'decimal', margin: '0px', paddingLeft: '20px', textAlign: 'left' }}>
             <li style={{ fontWeight: 'bold' }}>
               CHATER Othmane 
             </li>
@@ -145,13 +145,13 @@ export default function ContractVerify() {
           <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px' }} />
         </div>
 
-        {/* INTRODUCTORY DESCRIPTION */}
-        <p style={{ marginBottom: '20px', color: 'black', textAlign: 'justify' }}>
+        {/* TEXTE D'INTRODUCTION - Aligné à gauche */}
+        <p style={{ marginBottom: '20px', color: 'black', textAlign: 'left' }}>
           Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessous.
         </p>
 
-        {/* DATA TABLE */}
-        <div style={{ overflowX: 'auto' }}>
+        {/* TABLEAU DE DONNÉES - Alignements internes à gauche */}
+        <div style={{ overflowX: 'auto', width: '100%' }}>
           <table style={{ 
             width: '100%', 
             borderCollapse: 'collapse', 
@@ -162,21 +162,21 @@ export default function ContractVerify() {
               <tr>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '3px', 
+                  padding: '8px 10px', 
                   backgroundColor: '#d3d3d3',
                   color: 'black', 
                   width: '40%',
-                  textAlign: 'center',
+                  textAlign: 'left',
                   fontWeight: 'bold'
                 }}>
                   Réf. foncière
                 </th>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '3px', 
+                  padding: '8px 10px', 
                   backgroundColor: '#d3d3d3',
                   color: 'black',
-                  textAlign: 'center',
+                  textAlign: 'left',
                   fontWeight: 'bold'
                 }}>
                   Prestation
@@ -186,7 +186,7 @@ export default function ContractVerify() {
             <tbody>
               {prestations.length === 0 ? (
                 <tr>
-                  <td colSpan="2" style={{ padding: '3px', textAlign: 'center', border: `1px solid ${borderColor}` }}>Aucune prestation renseignée</td>
+                  <td colSpan="2" style={{ padding: '8px 10px', textAlign: 'left', border: `1px solid ${borderColor}` }}>Aucune prestation renseignée</td>
                 </tr>
               ) : (
                 prestations.map((presta, idx) => {
@@ -219,17 +219,17 @@ export default function ContractVerify() {
                     <tr key={idx}>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '3px',
+                        padding: '8px 10px',
                         verticalAlign: 'top',
-                        textAlign: 'justify'
+                        textAlign: 'left'
                       }}>
                         {associatedRef.regime ? refCellText : "-"}
                       </td>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '3px',
+                        padding: '8px 10px',
                         verticalAlign: 'top',
-                        textAlign: 'justify'
+                        textAlign: 'left'
                       }}>
                         {presta.prestation}{paramsText}
                       </td>
