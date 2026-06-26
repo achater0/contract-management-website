@@ -209,29 +209,32 @@ export default function ContractVerify() {
                 </tr>
               ) : (
                 prestations.map((presta, idx) => {
-                  const associatedRef = refs[idx] || refs[0] || {}; 
-                  const prefixMap = {
-                    "Titre foncier": "T",
-                    "Réquisition": "R",
-                    "Non immatriculé": "NI",
-                    "Délimitation administrative": "DA",
-                    "Non défini": "ND"
-                  };
-                  const prefix = prefixMap[associatedRef.regime] || "";
-                  const val = associatedRef.valeur || "";
-                  const commune = associatedRef.commune || "";
-                  const zone = associatedRef.zone || "";
-                  
-                  const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
+const associatedRef = refs[idx] || refs[0] || {}; 
+  const prefixMap = {
+    "Titre foncier": "T",
+    "Réquisition": "R",
+    "Non immatriculé": "NI",
+    "Délimitation administrative": "DA",
+    "Non défini": "ND"
+  };
+  const prefix = prefixMap[associatedRef.regime] || "";
+  const val = associatedRef.valeur || "";
+  const commune = associatedRef.commune || "";
+  const zone = associatedRef.zone || "";
+  
+  const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
 
-                  let paramsText = "";
-                  if (presta.params && Object.keys(presta.params).length > 0) {
-                    const paramStrings = Object.entries(presta.params)
-                      .filter(([_, v]) => v !== "")
-                      .map(([k, v]) => `${k.replace(/_/g, ' ')} = ${v}`);
-                    if (paramStrings.length > 0) {
-                      paramsText = ` (${paramStrings.join(', ')})`;
-                    }
+  let paramsText = "";
+  if (presta.params && Object.keys(presta.params).length > 0) {
+    // This part takes every key/value and formats it as (Key = Value)
+    // It does not touch or guess any units.
+    const paramStrings = Object.entries(presta.params)
+      .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
+      .map(([k, v]) => ` (${k.replace(/_/g, ' ')} = ${v})`);
+      
+    if (paramStrings.length > 0) {
+      paramsText = paramStrings.join('');
+    }
                   }
 
                   return (
