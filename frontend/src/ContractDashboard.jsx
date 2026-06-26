@@ -387,10 +387,33 @@ useEffect(() => {
 
 const handleFormSubmit = async () => {
   const token = localStorage.getItem('authToken'); 
+  const processedPrestations = formData.prestations.map((presta) => {
+    const config = PRESTATION_PARAMS_CONFIG[presta.prestation];
 
+    // If we have config for this prestation, we attach the units
+    if (config) {
+      const newParams = { ...presta.params };
+
+      Object.keys(newParams).forEach((key) => {
+        const paramDef = config.find((p) => p.key === key);
+        
+        // Append the unit if: 
+        // 1. We found the param definition
+        // 2. The unit exists
+        // 3. It's not already attached (safety check)
+        if (paramDef && paramDef.unit && !String(newParams[key]).includes(paramDef.unit)) {
+          newParams[key] = `${newParams[key]} ${paramDef.unit}`;
+        }
+      });
+
+      return { ...presta, params: newParams };
+    }
+    return presta;
+  })
   const payload = {
     formData: { 
       ...formData, 
+      prestations: processedPrestations,
       references: refFonciereList 
     }
   };
