@@ -84,177 +84,663 @@ const PRESTATION_OPTIONS = {
     "Profils en travers ou coupe"
   ]
 };
-const PRESTATION_PARAMS_CONFIG = {
-  // ==========================================
-  // 1. PRESTATIONS CADASTRALES
-  // ==========================================
-  "Bornage complémentaire d'immatriculation": [
-    { label: "Nombre de bornes", key: "nombre_bornes", unit: "Bornes", type: "number" }
-  ],
-  "DT de BC de distraction": [
-    { label: "Nombre de lots", key: "nombre_lots", unit: "Lots", type: "number" },
-    { label: "Superficie totale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "DT de levé régulier d'une Réquisition": [
-    { label: "Superficie totale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "DT de Lotissement": [
-    { label: "Nombre de lots", key: "nombre_lots", unit: "Lots", type: "number" },
-    { label: "Superficie totale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "DT de Mise à jour d'une unité industrielle": [
-    { label: "Superficie bâtie en m²", key: "superficie_batie", unit: "m²", type: "number" },
-    { label: "Nombre de niveaux", key: "nombre_niveaux", unit: "Niveaux", type: "number" }
-  ],
-  "Assistance, dépôt et suivi auprès de la conservation foncière": [
-    { label: "Nombre de dossiers", key: "nombre_dossiers", unit: "Dossiers", type: "number" }
-  ],
-  "Bornage d'immatriculation": [
-    { label: "Nombre de bornes", key: "nombre_bornes", unit: "Bornes", type: "number" }
-  ],
-  "Conseil et étude pour l'assainissement d'une assiette foncière": [
-    { label: "Superficie de l'assiette (Ha)", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "Consultation et fourniture des document cadastraux ou fonciers ou urbanistiques": [
-    { label: "Nombre de documents", key: "nombre_docs", unit: "Docs", type: "number" }
-  ],
-  "DT de copropriété": [
-    { label: "Nombre de lots de copropriété", key: "lots_copropriete", unit: "Lots", type: "number" },
-    { label: "Nombre de niveaux (Planchers)", key: "nombre_niveaux", unit: "Niveaux", type: "number" }
-  ],
-  "DT de Fusion totale": [
-    { label: "Nombre de parcelles à fusionner", key: "nombre_parcelles", unit: "Parcelles", type: "number" },
-    { label: "Superficie globale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "DT de Mise à jour d'un immeuble isolé": [
-    { label: "Superficie au sol (m²)", key: "superficie_sol", unit: "m²", type: "number" },
-    { label: "Nombre de niveaux", key: "nombre_niveaux", unit: "Niveaux", type: "number" }
-  ],
-  "DT de Mise à jour d'une villa": [
-    { label: "Superficie emprise au sol (m²)", key: "superficie_sol", unit: "m²", type: "number" }
-  ],
-  "DT de Mise à jour Rural": [
-    { label: "Superficie des bâtiments en m²", key: "superficie_bat_m2", unit: "m²", type: "number" },
-    { label: "Superficie du terrain en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "DT de Morcellement ou Morcellement-Fusion": [
-    { label: "Nombre de lots issus", key: "nombre_lots", unit: "Lots", type: "number" },
-    { label: "Superficie totale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "DT de récollement de Bornage d'une propriété foncière/ DT de délimitation administrative": [
-    { label: "Nombre de bornes contrôlées", key: "nombre_bornes", unit: "Bornes", type: "number" }
-  ],
-  "Immatriculation foncière d'ensemble": [
-    { label: "Nombre de parcelles (propriétés)", key: "nombre_parcelles", unit: "Propriétés", type: "number" },
-    { label: "Superficie globale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "Rétablissement des bornes": [
-    { label: "Nombre de bornes à rétablir", key: "nombre_bornes", unit: "Bornes", type: "number" }
-  ],
-
-  // ==========================================
-  // 2. PLANS ET LEVES TOPOGRAPHIQUES
-  // ==========================================
-  "Délimitations Administratives": [
-    { label: "Linéaire du périmètre en Km", key: "lineaire_km", unit: "Km", type: "number" }
-  ],
-  "Prestations pour carrière": [
-    { label: "Superficie de la carrière (Ha)", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "Profils en long": [
-    { label: "Linéaire de voirie en Km", key: "lineaire_voirie_km", unit: "Km", type: "number" }
-  ],
-  "Réalisation des états et plans parcellaires": [
-    { label: "Nombre de parcelles recensées", key: "nombre_parcelles", unit: "Parcelles", type: "number" },
-    { label: "Superficie globale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "Autorisation de Morcellement (dépôt et suivi)": [
-    { label: "Nombre de lots", key: "nombre_lots", unit: "Lots", type: "number" }
-  ],
-  "Calcul de Cubature": [
-    { label: "Volume estimé (m³)", key: "volume_m3", unit: "m³", type: "number" }
-  ],
-  "Etude topographique pour le calcul de la TNB": [
-    { label: "Superficie de la zone en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "Implantations Topographiques": [
-    { label: "Nombre de points d'axe/bornes", key: "nombre_points", unit: "Points", type: "number" }
-  ],
-  "Levé bathymétrique": [
-    { label: "Superficie du plan d'eau (Ha)", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "Levés de l'existant : Plan d'état des lieux d'un bien foncier": [
-    { label: "Superficie du terrain en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "Levés de l'existant : Plan de levé d'intérieur d'un bâtiment/ Coupe verticale": [
-    { label: "Superficie développée en m²", key: "superficie_m2", unit: "m²", type: "number" }
-  ],
-  "Levés de l'existant : Plan de levé des façades d'un bâtiment": [
-    { label: "Superficie de la façade en m²", key: "superficie_m2", unit: "m²", type: "number" }
-  ],
-  "Métré": [
-    { label: "Nombre d'éléments ou unités", key: "quantite_metre", unit: "Unités", type: "number" }
-  ],
-  "Plan après bornage de lotissement": [
-    { label: "Nombre de lots", key: "nombre_lots", unit: "Lots", type: "number" }
-  ],
-  "Plan coté": [
-    { label: "Superficie en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "Plan d'arrêté d'alignement": [
-    { label: "Linéaire concerné en Km", key: "lineaire_km", unit: "Km", type: "number" }
-  ],
-  "Plan de cession de voirie (Loi 25-90)": [
-    { label: "Linéaire de voirie en Km", key: "lineaire_km", unit: "Km", type: "number" }
-  ],
-  "Plan de cession de voirie (Lot individuel)": [
-    { label: "Superficie de l'emprise en m²", key: "superficie_m2", unit: "m²", type: "number" }
-  ],
-  "Plan de Délimitation": [
-    { label: "Superficie en Ha", key: "superficie_ha", unit: "m²", type: "number" }
-  ],
-  "Plan de Mitoyenneté des cours ou étude des cours": [
-    { label: "Nombre de cours", key: "nombre_cours", unit: "Cours", type: "number" }
-  ],
-  "Plan de Partage (provisoire spatial et à l'amiable)": [
-    { label: "Nombre des copartageants (Attributaires)", key: "nombre_parts", unit: "Parts", type: "number" },
-    { label: "Superficie globale en Ha", key: "superficie_ha", unit: "Ha", type: "number" }
-  ],
-  "Plan de projet de Morcellement": [
-    { label: "Nombre de parcelles projetées", key: "nombre_parcelles", unit: "Lots", type: "number" }
-  ],
-  "Plan de récement": [
-    { label: "Nombre de points", key: "nombre_points", unit: "Points", type: "number" }
-  ],
-  "Plan de situation d'une parcelle": [
-    { label: "Distance à l'axe principal le plus proche (m)", key: "distance_metres", unit: "m", type: "number" }
-  ],
-  "Plan de tracé d'accès à un projet": [
-    { label: "Longueur de l'accès en Km", key: "lineaire_km", unit: "Km", type: "number" }
-  ],
-  "Prestations pour Projet de Galerie": [
-    { label: "Longueur de la galerie en Km", key: "lineaire_km", unit: "Km", type: "number" }
-  ],
-  "Profils en travers ou coupe": [
-    { label: "Linéaire de voirie en Km", key: "lineaire_voirie_km", unit: "Km", type: "number" }
-  ]
-};
-const COMMUNES_MAROC = [
-  "Agadir", "Aïn Harrouda", "Aïn Taoujdate", "Aït Melloul", "Al Hoceïma", "Assilah", 
-  "Azemmour", "Azrou", "Ben Guerir", "Beni Ansar", "Beni Mellal", "Benslimane", 
-  "Berkane", "Berrechid", "Boujdour", "Bouskoura", "Casablanca", "Chefchaouen", 
-  "Chichaoua", "Dakhla", "Dar Bouazza", "Dcheira El Jihadia", "El Hajeb", "El Jadida", 
-  "El Kelaa des Sraghna", "Errachidia", "Essaouira", "Fès", "Fnideq", "Fquih Ben Salah", 
-  "Guelmim", "Guercif", "Ifrane", "Inezgane", "Jerada", "Kénitra", "Khemisset", 
-  "Khenifra", "Khouribga", "Ksar El Kebir", "Laâyoune", "Lahraouyine", "Larache", 
-  "Lqliaa", "M'diq", "Marrakech", "Martil", "Meknès", "Midelt", "Mohammedia", 
-  "Nador", "Ouarzazate", "Ouazzane", "Oued Zem", "Oujda", "Oulad Teima", "Rabat", 
-  "Safi", "Salé", "Sefrou", "Settat", "Sidi Bennour", "Sidi Kacem", "Sidi Slimane", 
-  "Skhirat", "Smara", "Souk El Arbaa", "Tanger", "Tan-Tan", "Taounate", "Taourirt", 
-  "Tarfaya", "Taroudant", "Taza", "Témara", "Tétouan", "Tifelt", "Tiznit", "Youssoufia", 
-  "Zagora"
-  // Vous pouvez continuer d'ajouter d'autres communes rurales ici si nécessaire
-].sort(); // Le .sort() permet de garantir l'ordre alphabétique
+const PRESTATION_PARAMS_CONFIG = 
+{
+  "PRESTATIONS CADASTRALES": {
+    "Bornage complémentaire d'immatriculation": [
+      {
+        "label": "Nombre de propriétés à borner",
+        "key": "nombre_de_proprietes_a_borner",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "DT de BC de distraction": [
+      {
+        "label": "Nombre des lots à distraire",
+        "key": "nombre_des_lots_a_distraire",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "DT de levé régulier d'une Réquisition": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "DT de Lotissement": [
+      {
+        "label": "Nombre des lots",
+        "key": "nombre_des_lots",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Superficie",
+        "key": "superficie",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "DT de Mise à jour d'une unité industrielle": [
+      {
+        "label": "nombre de niveau",
+        "key": "nombre_de_niveau",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Assistance, dépôt et suivi auprès de la conservation foncière": [
+      {
+        "label": "Nombre d'opérations à déposer",
+        "key": "nombre_doperations_a_deposer",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Bornage d'immatriculation": [
+      {
+        "label": "Nombre de propriétés à borner",
+        "key": "nombre_de_proprietes_a_borner",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Conseil et étude pour l'assainissement d'une assiette foncière": [
+      {
+        "label": "Nombre de propriétés foncières",
+        "key": "nombre_de_proprietes_foncieres",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Consultation et fourniture des document cadastraux ou fonciers ou urbanistiques": [
+      {
+        "label": "Nombre de propriétés foncières",
+        "key": "nombre_de_proprietes_foncieres",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "DT de copropriété": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "DT de Fusion totale": [
+      {
+        "label": "Nombre de propriétés à fusionner",
+        "key": "nombre_de_proprietes_a_fusionner",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "DT de Mise à jour d'un immeuble isolé": [
+      {
+        "label": "nombre de niveaux",
+        "key": "nombre_de_niveaux",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "DT de Mise à jour d'une villa": [
+      {
+        "label": "nombre de niveaux",
+        "key": "nombre_de_niveaux",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "DT de Mise à jour Rural": [
+      {
+        "label": "nombre de niveaux",
+        "key": "nombre_de_niveaux",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "DT de Morcellement ou Morcellement-Fusion": [
+      {
+        "label": "Nombre des lots à morceler",
+        "key": "nombre_des_lots_a_morceler",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "DT De récollement de Bornage d'une propriété foncière/ DT de délimitation administrative": [
+      {
+        "label": "Superficie",
+        "key": "superficie",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Immatriculation foncière d'ensemble": [
+      {
+        "label": "Durée en mois",
+        "key": "duree_en_mois",
+        "unit": "Mois",
+        "type": "number"
+      },
+      {
+        "label": "Nombre de moyens Humains demandés",
+        "key": "nombre_de_moyens_humains_demandes",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Rétablissement des bornes": [
+      {
+        "label": "Nombre de bornes à rétablir",
+        "key": "nombre_de_bornes_a_retablir",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ]
+  },
+  "DOSSIER TECHNIQUES TOPOGRAPHIQUES DE MESURAGE": {
+    "Dossier technique de création d'un local pour location de voitures": [
+      {
+        "label": "Superficie du local en m²",
+        "key": "superficie_du_local_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Dossier technique pour la création d'Elevage avicole": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Mesurage des distances pour la création d'établissement d’enseignement de la conduite": [
+      {
+        "label": "Nombre d'établissement d’enseignement de la conduite avoisinants",
+        "key": "nombre_detablissement_denseignement_de_la_conduite_avoisinants",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Mesurage des distances pour la création d'un local pour un bureau de change": [
+      {
+        "label": "Nombre des bureaux de change avoisinants",
+        "key": "nombre_des_bureaux_de_change_avoisinants",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Mesurage des distances pour la création des officines de pharmacie": [
+      {
+        "label": "Nombre des officines avoisinantes",
+        "key": "nombre_des_officines_avoisinantes",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Mesurage des distances pour l’obtention d’une autorisation d’exploitation d’un débit de tabac": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ]
+  },
+  "ETUDES TECHNIQUES TOPOGRAPHIQUES ET MISSION DIVERSES": {
+    "BIM/CIM": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Coordination de chantier (Lotissement ou complexe immobilier)": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Etude de ligne aérienne électrique": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Etude de voirie (pistes rurales, communales, giratoires …) / Etude d'accès": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Etudes Voirie assainissement et réseaux divers (Lotissement ou complexe immobilier)": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Redistribution urbaine": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Remembrement Rural": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Systèmes d'informations géographiques": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Télédétection et traitement d'images thématique": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ]
+  },
+  "EXPERTISE FONCIÈRE ET IMMOBILIERE": {
+    "Arbitrage": [
+      {
+        "label": "Nombre de parties demandant l'arbitrage",
+        "key": "nombre_de_parties_demandant_larbitrage",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Les constats": [
+      {
+        "label": "Nombre de biens à expertiser",
+        "key": "nombre_de_biens_a_expertiser",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Les estimations et évaluations immobilières": [
+      {
+        "label": "Nombre de biens à évaluer",
+        "key": "nombre_de_biens_a_evaluer",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ]
+  },
+  "LA GEODESIE": {
+    "Auscultation (barrage)": [
+      {
+        "label": "Nombre de compagnies d'observations",
+        "key": "nombre_de_compagnies_dobservations",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Auscultation (ouvrage d’art)": [
+      {
+        "label": "Nombre de cibles à ausculter",
+        "key": "nombre_de_cibles_a_ausculter",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Nivellement de précision rattaché NGM": [
+      {
+        "label": "Longueur du cheminement",
+        "key": "longueur_du_cheminement",
+        "unit": "Km",
+        "type": "number"
+      }
+    ],
+    "Polygonation (rattaché au système Lambert)": [
+      {
+        "label": "Nombre de nouveaux points à créer",
+        "key": "nombre_de_nouveaux_points_a_creer",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Triangulation et trilatération (par tout procédé)": [
+      {
+        "label": "Nombre de nouveau point à créer",
+        "key": "nombre_de_nouveau_point_a_creer",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ]
+  },
+  "PLANS ET LEVÉS TOPOGRAPHIQUES": {
+    "Délimitations Administratives": [
+      {
+        "label": "Linéaire en Km",
+        "key": "lineaire_en_km",
+        "unit": "Km",
+        "type": "number"
+      },
+      {
+        "label": "Superficie en Ha",
+        "key": "superficie_en_ha",
+        "unit": "Ha",
+        "type": "number"
+      }
+    ],
+    "Prestations pour carrière": [
+      {
+        "label": "Surface",
+        "key": "surface",
+        "unit": "m²",
+        "type": "number"
+      },
+      {
+        "label": "Nombre de périodes",
+        "key": "nombre_de_periodes",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Profils en long": [
+      {
+        "label": "Longueur du profil en km",
+        "key": "longueur_du_profil_en_km",
+        "unit": "Km",
+        "type": "number"
+      }
+    ],
+    "Réalisation des états et plans parcellaires": [
+      {
+        "label": "Superficie",
+        "key": "superficie",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Autorisation de Morcellement (dépôt et suivi)": [
+      {
+        "label": "Nombre des lots à morceler",
+        "key": "nombre_des_lots_a_morceler",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Calcul de Cubature": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Etude topographique pour le calcul de la TNB": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Implantations Topographiques": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Levé bathymétrique": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Levés de l'existant : Plan d'état des lieux d'un bien foncier": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Levés de l'existant : Plan de levé d'intérieur d'un bâtiment/ Coupe verticale": [
+      {
+        "label": "Superficie du bâtiment au sol en m²",
+        "key": "superficie_du_batiment_au_sol_en_m",
+        "unit": "m²",
+        "type": "number"
+      },
+      {
+        "label": "Nombre des niveaux",
+        "key": "nombre_des_niveaux",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Nombre des coupes",
+        "key": "nombre_des_coupes",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Levés de l'existant : Plan de levé des façades d'un bâtiment": [
+      {
+        "label": "Nombre des niveaux",
+        "key": "nombre_des_niveaux",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Nombre des façades",
+        "key": "nombre_des_facades",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Métré": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Plan après bornage de lotissement": [
+      {
+        "label": "Nombre de bornes",
+        "key": "nombre_de_bornes",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Plan coté": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Plan d'arrêté d'alignement": [
+      {
+        "label": "Linéaire de voirie en Km",
+        "key": "lineaire_de_voirie_en_km",
+        "unit": "Km",
+        "type": "number"
+      }
+    ],
+    "Plan de cession de voirie (Loi 25-90)": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Plan de cession de voirie (Lot individuel)": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Plan de Délimitation": [
+      {
+        "label": "Superficie",
+        "key": "superficie",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Plan de Mitoyenneté des cours ou étude des cours": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Plan de Partage (provisoire spatial et à l'amiable)": [
+      {
+        "label": "Nombre de lots",
+        "key": "nombre_de_lots",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Surface en m²",
+        "key": "surface_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Plan de projet de Morcellement": [
+      {
+        "label": "Nombre des lots à morceler",
+        "key": "nombre_des_lots_a_morceler",
+        "unit": "Unités",
+        "type": "number"
+      },
+      {
+        "label": "Superficie totale en m²",
+        "key": "superficie_totale_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Plan de récolement": [
+      {
+        "label": "Superficie en m²",
+        "key": "superficie_en_m",
+        "unit": "m²",
+        "type": "number"
+      }
+    ],
+    "Plan de situation d'une parcelle": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Plan de tracé d'accès à un projet": [
+      {
+        "label": "Longueur de l'accès en Km",
+        "key": "longueur_de_lacces_en_km",
+        "unit": "Km",
+        "type": "number"
+      }
+    ],
+    "Prestations pour Projet de Galerie": [
+      {
+        "label": "Longueur de la galerie en Km",
+        "key": "longueur_de_la_galerie_en_km",
+        "unit": "Km",
+        "type": "number"
+      }
+    ],
+    "Profils en travers ou coupe": [
+      {
+        "label": "Quantité",
+        "key": "quantite",
+        "unit": "Unités",
+        "type": "number"
+      }
+    ],
+    "Projet d'alignement": [
+      {
+        "label": "Longueur du Projet en km",
+        "key": "longueur_du_projet_en_km",
+        "unit": "Km",
+        "type": "number"
+      }
+    ]
+  }
+}
 
 // Inside your ContractDashboard component:
 const [selectedCategory, setSelectedCategory] = useState("");
