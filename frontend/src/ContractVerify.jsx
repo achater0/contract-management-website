@@ -268,7 +268,28 @@ if (presta.params && Object.keys(presta.params).length > 0) {
             </tbody>
           </table>
         </div>
-
+      <div style={{ marginTop: '40px', width: '100%' }}>
+          <button
+            type="button"
+            onClick={() => console.log("Reclamation feature not yet implemented")}
+            style={{
+              display: 'block',
+              width: '100%',
+              textAlign: 'center',
+              padding: '15px',
+              borderRadius: '5px',
+              backgroundColor: '#0261A4',
+              color: '#fff',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease-in-out',
+              fontSize: '16px',
+              fontWeight: 'bold'
+            }}
+          >
+            Soumettre une réclamation
+          </button>
+        </div>
       </div>
     </div>
   );

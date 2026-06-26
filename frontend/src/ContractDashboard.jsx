@@ -89,164 +89,162 @@ const PRESTATION_PARAMS_CONFIG = {
   // 1. PRESTATIONS CADASTRALES
   // ==========================================
   "Bornage complémentaire d'immatriculation": [
-    { label: "Nombre de propriétés à borner", key: "nombre_de_proprietes_a_borner", unit: "Propriétés", type: "number" }
+    { label: "Nombre de propriétés à borner", key: "Nombre de propriétés à borner", unit: "", type: "number" }
   ],
   "DT de BC de distraction": [
-    { label: "Nombre des lots à distraire", key: "nombre_des_lots_a_distraire", unit: "Lots", type: "number" },
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Nombre des lots à distraire", key: "Nombre des lots à distraire", unit: "", type: "number" },
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "DT de levé régulier d'une Réquisition": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "DT de Lotissement": [
-    { label: "Nombre des lots", key: "nombre_des_lots", unit: "Lots", type: "number" },
-    { label: "Superficie", key: "superficie", unit: "m²", type: "number" }
+    { label: "Nombre des lots", key: "Nombre des lots", unit: "", type: "number" },
+    { label: "Superficie", key: "superficie", unit: "Ha", type: "number" }
   ],
   "DT de Mise à jour d'une unité industrielle": [
-    { label: "nombre de niveau", key: "nombre_de_niveau", unit: "Niveaux", type: "number" },
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "nombre de niveau", key: "nombre de niveau", unit: "", type: "number" },
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "Assistance, dépôt et suivi auprès de la conservation foncière": [
-    { label: "Nombre d'opérations à déposer", key: "nombre_doperations_a_deposer", unit: "Opérations", type: "number" }
+    { label: "Nombre d'opérations à déposer", key: "Nombre d'opérations à déposer", unit: "", type: "number" }
   ],
   "Bornage d'immatriculation": [
-    { label: "Nombre de propriétés à borner", key: "nombre_de_proprietes_a_borner", unit: "Propriétés", type: "number" }
+    { label: "Nombre de propriétés à borner", key: "Nombre de propriétés à borner", unit: "", type: "number" }
   ],
   "Conseil et étude pour l'assainissement d'une assiette foncière": [
-    { label: "Nombre de propriétés foncières", key: "nombre_de_proprietes_foncieres", unit: "Propriétés", type: "number" }
+    { label: "Nombre de propriétés foncières", key: "Nombre de propriétés foncières", unit: "", type: "number" }
   ],
   "Consultation et fourniture des document cadastraux ou fonciers ou urbanistiques": [
-    { label: "Nombre de propriétés foncières", key: "nombre_de_proprietes_foncieres", unit: "Propriétés", type: "number" }
+    { label: "Nombre de propriétés foncières", key: "nombre_de_proprietes_foncieres", unit: "", type: "number" }
   ],
   "DT de copropriété": [
-    { label: "Quantité", key: "quantite", unit: "Lots", type: "number" }
+    { label: "Nombre de Parties Privatives", key: "Nombre de Parties Privatives", unit: "", type: "number" },
+    { label: "Superficie", key: "Superficie", unit: "M²", type: "number" }
   ],
   "DT de Fusion totale": [
-    { label: "Nombre de propriétés à fusionner", key: "nombre_de_proprietes_a_fusionner", unit: "Propriétés", type: "number" }
+    { label: "Nombre de propriétés à fusionner", key: "Nombre de propriétés à fusionner", unit: "", type: "number" }
   ],
   "DT de Mise à jour d'un immeuble isolé": [
-    { label: "nombre de niveaux", key: "nombre_de_niveaux", unit: "Niveaux", type: "number" },
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "nombre de niveaux", key: "nombre de niveaux", unit: "", type: "number" },
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "DT de Mise à jour d'une villa": [
-    { label: "nombre de niveaux", key: "nombre_de_niveaux", unit: "Niveaux", type: "number" },
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "nombre de niveaux", key: "nombre de niveaux", unit: "", type: "number" },
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "DT de Mise à jour Rural": [
-    { label: "nombre de niveaux", key: "nombre_de_niveaux", unit: "Niveaux", type: "number" },
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "nombre de niveaux", key: "nombre de niveaux", unit: "", type: "number" },
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "DT de Morcellement ou Morcellement-Fusion": [
-    { label: "Nombre des lots à morceler", key: "nombre_des_lots_a_morceler", unit: "Lots", type: "number" },
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Nombre des lots à morceler", key: "Nombre des lots à morceler", unit: "", type: "number" },
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "DT De récollement de Bornage d'une propriété foncière/ DT de délimitation administrative": [
-    { label: "Superficie", key: "superficie", unit: "m²", type: "number" }
-  ],
-  "DT de récollement de Bornage d'une propriété foncière/ DT de délimitation administrative": [ // Doublon de sécurité pour gérer la différence majuscule/minuscule
-    { label: "Superficie", key: "superficie", unit: "m²", type: "number" }
+    { label: "Superficie", key: "superficie", unit: "Ha", type: "number" }
   ],
   "Immatriculation foncière d'ensemble": [
-    { label: "Durée en mois", key: "duree_en_mois", unit: "Mois", type: "number" },
-    { label: "Nombre de moyens Humains demandés", key: "nombre_de_moyens_humains_demandes", unit: "Personnes", type: "number" }
+    { label: "Durée en mois", key: "Durée en mois", unit: "", type: "number" },
+    { label: "Nombre de moyens Humains demandés", key: "Nombre de moyens Humains demandés", unit: "", type: "number" }
   ],
   "Rétablissement des bornes": [
-    { label: "Nombre de bornes à rétablir", key: "nombre_de_bornes_a_retablir", unit: "Bornes", type: "number" }
+    { label: "Nombre de bornes à rétablir", key: "Nombre de bornes à rétablir", unit: "", type: "number" }
   ],
 
   // ==========================================
   // 2. PLANS ET LEVES TOPOGRAPHIQUES
   // ==========================================
   "Délimitations Administratives": [
-    { label: "Linéaire en Km", key: "lineaire_en_km", unit: "Km", type: "number" },
-    { label: "Superficie en Ha", key: "superficie_en_ha", unit: "Ha", type: "number" }
+    { label: "Linéaire en Km", key: "Linéaire en Km", unit: "Km", type: "number" },
+    { label: "Superficie en Ha", key: "Superficie en Ha", unit: "Ha", type: "number" }
   ],
   "Prestations pour carrière": [
     { label: "Surface", key: "surface", unit: "m²", type: "number" },
-    { label: "Nombre de périodes", key: "nombre_de_periodes", unit: "Périodes", type: "number" }
+    { label: "Nombre de périodes", key: "Nombre de périodes", unit: "Période", type: "number" }
   ],
   "Profils en long": [
-    { label: "Longueur du profil en km", key: "longueur_du_profil_en_km", unit: "Km", type: "number" }
+    { label: "Longueur du profil en km", key: "Longueur du profil en km", unit: "Km", type: "number" }
   ],
   "Réalisation des états et plans parcellaires": [
-    { label: "Superficie", key: "superficie", unit: "m²", type: "number" }
+    { label: "Superficie", key: "superficie", unit: "M2", type: "number" }
   ],
   "Autorisation de Morcellement (dépôt et suivi)": [
-    { label: "Nombre des lots à morceler", key: "nombre_des_lots_a_morceler", unit: "Lots", type: "number" }
+    { label: "Nombre des lots à morceler", key: "Nombre des lots à morceler", unit: "", type: "number" }
   ],
   "Calcul de Cubature": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "m²", type: "number" }
   ],
   "Etude topographique pour le calcul de la TNB": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "Implantations Topographiques": [
-    { label: "Quantité", key: "quantite", unit: "Points", type: "number" }
+    { label: "Nombre de bornes", key: "Nombre de bornes", unit: "Borne", type: "number" }
   ],
   "Levé bathymétrique": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "m²", type: "number" }
   ],
   "Levés de l'existant : Plan d'état des lieux d'un bien foncier": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "Levés de l'existant : Plan de levé d'intérieur d'un bâtiment/ Coupe verticale": [
-    { label: "Superficie du bâtiment au sol en m²", key: "superficie_du_batiment_au_sol_en_m", unit: "m²", type: "number" },
-    { label: "Nombre des niveaux", key: "nombre_des_niveaux", unit: "Niveaux", type: "number" },
-    { label: "Nombre des coupes", key: "nombre_des_coupes", unit: "Coupes", type: "number" }
+    { label: "Superficie du bâtiment au sol en m²", key: "Superficie du bâtiment au sol en m²", unit: "m²", type: "number" },
+    { label: "Nombre des niveaux", key: "Nombre des niveaux", unit: "", type: "number" },
+    { label: "Nombre des coupes", key: "Nombre des coupes", unit: "", type: "number" }
   ],
   "Levés de l'existant : Plan de levé des façades d'un bâtiment": [
-    { label: "Nombre des niveaux", key: "nombre_des_niveaux", unit: "Niveaux", type: "number" },
-    { label: "Nombre des façades", key: "nombre_des_facades", unit: "Façades", type: "number" }
+    { label: "Nombre des niveaux", key: "Nombre des niveaux", unit: "", type: "number" },
+    { label: "Nombre des façades", key: "Nombre des façades", unit: "", type: "number" }
   ],
   "Métré": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "Plan après bornage de lotissement": [
-    { label: "Nombre de bornes", key: "nombre_de_bornes", unit: "Bornes", type: "number" }
+    { label: "Nombre de bornes", key: "Nombre de bornes", unit: "", type: "number" }
   ],
   "Plan coté": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "m²", type: "number" }
   ],
   "Plan d'arrêté d'alignement": [
-    { label: "Linéaire de voirie en Km", key: "lineaire_de_voirie_en_km", unit: "Km", type: "number" }
+    { label: "Linéaire de voirie en Km", key: "Linéaire de voirie en Km", unit: "Km", type: "number" }
   ],
   "Plan de cession de voirie (Loi 25-90)": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "Plan de cession de voirie (Lot individuel)": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "Plan de Délimitation": [
-    { label: "Superficie", key: "superficie", unit: "m²", type: "number" }
+    { label: "Superficie", key: "superficie", unit: "M2", type: "number" }
   ],
   "Plan de Mitoyenneté des cours ou étude des cours": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "Plan de Partage (provisoire spatial et à l'amiable)": [
-    { label: "Nombre de lots", key: "nombre_de_lots", unit: "Lots", type: "number" },
-    { label: "Surface en m²", key: "surface_en_m", unit: "m²", type: "number" }
+    { label: "Nombre de lots", key: "Nombre de lots", unit: "Lot", type: "number" },
+    { label: "Surface en m²", key: "Surface en m²", unit: "m²", type: "number" }
   ],
   "Plan de projet de Morcellement": [
-    { label: "Nombre des lots à morceler", key: "nombre_des_lots_a_morceler", unit: "Lots", type: "number" },
-    { label: "Superficie totale en m²", key: "superficie_totale_en_m", unit: "m²", type: "number" }
+    { label: "Nombre des lots à morceler", key: "Nombre des lots à morceler", unit: "", type: "number" },
+    { label: "Superficie totale en m²", key: "Superficie totale en m²", unit: "M²", type: "number" }
   ],
   "Plan de récolement": [
-    { label: "Superficie en m²", key: "superficie_en_m", unit: "m²", type: "number" }
+    { label: "Superficie en m²", key: "Superficie en m²", unit: "M²", type: "number" }
   ],
   "Plan de situation d'une parcelle": [
-    { label: "Quantité", key: "quantite", unit: "Unités", type: "number" }
+    { label: "Superficie", key: "Superficie", unit: "M2", type: "number" }
   ],
   "Plan de tracé d'accès à un projet": [
-    { label: "Longueur de l'accès en Km", key: "longueur_de_lacces_en_km", unit: "Km", type: "number" }
+    { label: "Longueur de l'accès en Km", key: "Longueur de l'accès en Km", unit: "Km", type: "number" }
   ],
   "Prestations pour Projet de Galerie": [
-    { label: "Longueur de la galerie en Km", key: "longueur_de_la_galerie_en_km", unit: "Km", type: "number" }
+    { label: "Longueur de la galerie en Km", key: "Longueur de la galerie en Km", unit: "Km", type: "number" }
   ],
   "Profils en travers ou coupe": [
-    { label: "Quantité", key: "quantite", unit: "Unités", type: "number" }
+    { label: "Longueur du Projet en km", key: "Longueur du Projet en km", unit: "Km", type: "number" }
   ],
   "Projet d'alignement": [
-    { label: "Longueur du Projet en km", key: "longueur_du_projet_en_km", unit: "Km", type: "number" }
+    { label: "Superficie en m²", key: "superficie_en_m2", unit: "M²", type: "number" }
   ]
 };
 
@@ -341,32 +339,6 @@ useEffect(() => {
     setIsModalOpen(true);
   };
 
-  const getRandomTestContractData = () => {
-    const testClients = [
-      "Jean Dupont",
-      "Habiba El Amrani",
-      "Othmane Chater",
-      "Rachid Benali"
-    ];
-    const testTitles = [
-      "TR-4520/2026",
-      "TF-9876/2026",
-      "TF-3012/2026"
-    ];
-    const testWorks = [
-      "Étude topographique complète",
-      "Bornage et immatriculation foncière",
-      "Cartographie et photogrammétrie"
-    ];
-    const testPrices = [12000, 9500, 18000, 25400];
-
-    return {
-      client_name: testClients[Math.floor(Math.random() * testClients.length)],
-      titre_foncier: testTitles[Math.floor(Math.random() * testTitles.length)],
-      work_type: testWorks[Math.floor(Math.random() * testWorks.length)],
-      price: testPrices[Math.floor(Math.random() * testPrices.length)]
-    };
-  };
   const handlePrestationChange = (chosenPrestation) => {
   const fieldsConfig = PRESTATION_PARAMS_CONFIG[chosenPrestation] || [];
   
@@ -1176,19 +1148,7 @@ const handleFormSubmit = async () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {refFonciereList.length === 0 ? (
-                    <tr>
-                      {/* Placeholder row matching empty style state */}
-                      <td style={{ padding: '12px', border: '1px solid #ccc' }}>T/</td>
-                      <td style={{ padding: '12px', border: '1px solid #ccc' }}>Agadir</td>
-                      <td style={{ padding: '12px', border: '1px solid #ccc' }}>Zone 1</td>
-                      <td style={{ padding: '12px', border: '1px solid #ccc', textAlign: 'center' }}>
-                        <span style={{ color: '#e0a800', marginRight: '15px', cursor: 'pointer' }}>📝</span>
-                        <span style={{ color: '#dc3545', cursor: 'pointer' }}>🗑️</span>
-                      </td>
-                    </tr>
-                  ) : (
-                    refFonciereList.map(item => {
+                    {refFonciereList.map(item => {
                       // Smart Prefix extraction matching Moroccan Land Regimes
                       const prefixMap = {
                         "Titre foncier": "T/",
@@ -1235,9 +1195,9 @@ const handleFormSubmit = async () => {
                             </button>
                           </td>
                         </tr>
-                      );
-                    })
-                  )}
+                     );
+                  })}
+                    
                 </tbody>
               </table>
             </div>
