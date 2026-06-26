@@ -268,30 +268,42 @@ if (presta.params && Object.keys(presta.params).length > 0) {
             </tbody>
           </table>
         </div>
-      <div style={{ 
+      {/* --- RECLAMATION SECTION --- */}
+        <div style={{ 
           marginTop: '40px', 
-          textAlign: 'center', 
-          width: '100%', 
-          padding: '20px',
-          borderTop: '1px solid #eee' 
+          padding: '20px', 
+          border: '1px solid #dc3545', 
+          borderRadius: '5px',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '20px'
         }}>
-          <p style={{ fontSize: '16px', marginBottom: '15px', color: '#333' }}>
+          <span style={{ 
+            fontSize: '16px', 
+            color: '#dc3545', 
+            fontWeight: 'bold',
+            flex: '1',
+            minWidth: '250px'
+          }}>
             Vous avez une question ou une réclamation concernant ce contrat ?
-          </p>
+          </span>
+          
           <button
             type="button"
-            onClick={() => alert("Fonctionnalité de réclamation à configurer")}
+            onClick={() => alert("Formulaire de réclamation à ouvrir")}
             style={{
-              display: 'inline-block',
-              padding: '12px 30px',
-              backgroundColor: onigtBlue,
+              padding: '12px 25px',
+              backgroundColor: '#dc3545', // Standard Red
               color: '#fff',
               border: 'none',
               borderRadius: '5px',
               cursor: 'pointer',
               fontSize: '16px',
               fontWeight: 'bold',
-              transition: 'background-color 0.3s ease'
+              whiteSpace: 'nowrap'
             }}
           >
             Soumettre une réclamation
