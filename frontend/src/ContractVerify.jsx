@@ -231,10 +231,11 @@ if (presta.params && Object.keys(presta.params).length > 0) {
   const paramStrings = Object.entries(presta.params)
     .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
     .map(([k, v]) => {
-      const cleanKey = k.replace(/_/g, ' ');
+      const cleanKey = k.replace(/_/g, ' ');ss
       const rawValue = String(v); // Force to string: prevents rounding and value changes
       return `(${cleanKey} = ${rawValue})`;
     });
+    
 
   if (paramStrings.length > 0) {
     paramsText = " " + paramStrings.join(' ');
