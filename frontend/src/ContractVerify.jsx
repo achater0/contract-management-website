@@ -224,17 +224,37 @@ const associatedRef = refs[idx] || refs[0] || {};
   
   const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
 
-  let paramsText = "";
-  if (presta.params && Object.keys(presta.params).length > 0) {
-    // This part takes every key/value and formats it as (Key = Value)
-    // It does not touch or guess any units.
-    const paramStrings = Object.entries(presta.params)
-      .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
-      .map(([k, v]) => ` (${k.replace(/_/g, ' ')} = ${v})`);
+ let paramsText = "";
+if (presta.params && Object.keys(presta.params).length > 0) {
+  // 1. Define your units here. 
+  // If you don't define a key here, it will display only the value.
+  const UNIT_CONFIG = {
+    "superficie": "m²",
+    "superficie_totale": "m²",
+    "nombre_de_niveaux": "",
+    "quantite": "unités",
+    "longueur": "km"
+  };
+
+  const paramStrings = Object.entries(presta.params)
+    .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
+    .map(([k, v]) => {
+      // 2. FIX: Check if v is an object or a raw value
+      // This solves the "[object Object]" error (the "value change" issue)
+      const val = (v && typeof v === 'object') ? (v.value || "") : v;
       
-    if (paramStrings.length > 0) {
-      paramsText = paramStrings.join('');
-    }
+      // 3. Get the unit for this key
+      const unit = UNIT_CONFIG[k] || ""; 
+      
+      // 4. Return formatted string: (Key = Value Unit)
+      // Trim extra spaces if unit is empty
+      return `(${k.replace(/_/g, ' ')} = ${val}${unit ? ' ' + unit : ''})`;
+    });
+
+  if (paramStrings.length > 0) {
+    paramsText = " " + paramStrings.join(' ');
+  }
+
                   }
 
                   return (
