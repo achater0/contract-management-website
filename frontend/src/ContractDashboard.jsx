@@ -311,7 +311,7 @@ useEffect(() => {
       if (response.status === 401) {
         // AUTOMATIC CLEANUP: If unauthorized, clear the bad token and boot them out
         localStorage.removeItem('authToken');
-        window.location.href = '/login'; 
+        window.location.href = '/'; 
         throw new Error("Session expirée. Veuillez vous reconnecter.");
       }
       throw new Error(`Erreur serveur: ${response.status}`);
