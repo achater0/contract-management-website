@@ -270,23 +270,18 @@ if (presta.params && Object.keys(presta.params).length > 0) {
         </div>
       {/* --- RECLAMATION SECTION --- */}
         <div style={{ 
-          marginTop: '40px', 
-          padding: '20px', 
-          border: '1px solid #dc3545', 
-          borderRadius: '5px',
+          marginTop: '30px', 
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '20px'
+          justifyContent: 'center', // Centers everything in the middle
+          gap: '2px',              // Very close proximity
+          flexWrap: 'wrap'
         }}>
           <span style={{ 
             fontSize: '16px', 
             color: '#dc3545', 
-            fontWeight: 'bold',
-            flex: '1',
-            minWidth: '250px'
+            fontWeight: 'bold'
           }}>
             Vous avez une question ou une réclamation concernant ce contrat ?
           </span>
@@ -295,13 +290,13 @@ if (presta.params && Object.keys(presta.params).length > 0) {
             type="button"
             onClick={() => alert("Formulaire de réclamation à ouvrir")}
             style={{
-              padding: '12px 25px',
-              backgroundColor: '#dc3545', // Standard Red
+              padding: '8px 20px',
+              backgroundColor: '#dc3545',
               color: '#fff',
               border: 'none',
-              borderRadius: '5px',
+              borderRadius: '25px', // Pill-shaped rounding
               cursor: 'pointer',
-              fontSize: '16px',
+              fontSize: '14px',
               fontWeight: 'bold',
               whiteSpace: 'nowrap'
             }}
