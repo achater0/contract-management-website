@@ -268,23 +268,30 @@ if (presta.params && Object.keys(presta.params).length > 0) {
             </tbody>
           </table>
         </div>
-      <div style={{ marginTop: '40px', width: '100%' }}>
+      <div style={{ 
+          marginTop: '40px', 
+          textAlign: 'center', 
+          width: '100%', 
+          padding: '20px',
+          borderTop: '1px solid #eee' 
+        }}>
+          <p style={{ fontSize: '16px', marginBottom: '15px', color: '#333' }}>
+            Vous avez une question ou une réclamation concernant ce contrat ?
+          </p>
           <button
             type="button"
-            onClick={() => console.log("Reclamation feature not yet implemented")}
+            onClick={() => alert("Fonctionnalité de réclamation à configurer")}
             style={{
-              display: 'block',
-              width: '100%',
-              textAlign: 'center',
-              padding: '15px',
-              borderRadius: '5px',
-              backgroundColor: '#0261A4',
+              display: 'inline-block',
+              padding: '12px 30px',
+              backgroundColor: onigtBlue,
               color: '#fff',
               border: 'none',
+              borderRadius: '5px',
               cursor: 'pointer',
-              transition: 'all 0.3s ease-in-out',
               fontSize: '16px',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              transition: 'background-color 0.3s ease'
             }}
           >
             Soumettre une réclamation
