@@ -387,10 +387,33 @@ useEffect(() => {
 
 const handleFormSubmit = async () => {
   const token = localStorage.getItem('authToken'); 
+  const processedPrestations = formData.prestations.map((presta) => {
+    const config = PRESTATION_PARAMS_CONFIG[presta.prestation];
 
+    // If we have config for this prestation, we attach the units
+    if (config) {
+      const newParams = { ...presta.params };
+
+      Object.keys(newParams).forEach((key) => {
+        const paramDef = config.find((p) => p.key === key);
+        
+        // Append the unit if: 
+        // 1. We found the param definition
+        // 2. The unit exists
+        // 3. It's not already attached (safety check)
+        if (paramDef && paramDef.unit && !String(newParams[key]).includes(paramDef.unit)) {
+          newParams[key] = `${newParams[key]} ${paramDef.unit}`;
+        }
+      });
+
+      return { ...presta, params: newParams };
+    }
+    return presta;
+  });
   const payload = {
     formData: { 
       ...formData, 
+      prestations: processedPrestations,
       references: refFonciereList 
     }
   };
@@ -1057,26 +1080,20 @@ const handleFormSubmit = async () => {
           <span style={{ display: 'flex', alignItems: 'center', padding: '0 12px', backgroundColor: '#f8f9fa', color: '#6c757d', border: '1px solid #ced4da', borderRight: 'none', borderTopLeftRadius: '4px', borderBottomLeftRadius: '4px', fontSize: '14px', whiteSpace: 'nowrap' }}>
             {param.label}
           </span>
-<input 
-  type="text" // 1. MUST change from "number" to "text"
-  step="0.001" 
-  placeholder="0.00" 
-  value={prestationForm.params[param.key] || ''}
-  onChange={(e) => {
-    const rawValue = e.target.value;
-    // 2. Concatenate the value with the unit
-    const formattedValue = rawValue ? `${rawValue}${param.unit ? ' ' + param.unit : ''}` : "";
-    
-    setPrestationForm(prev => ({
-      ...prev,
-      params: {
-        ...prev.params,
-        [param.key]: formattedValue
-      }
-    }));
-  }}
-  style={{ flex: 1, padding: '10px 12px', border: '1px solid #ced4da', fontSize: '14px', outline: 'none' }}
-/>
+          <input 
+            type={param.type || "text"} 
+            step="0.001" 
+            placeholder="0.00" 
+            value={prestationForm.params[param.key] || ''}
+            onChange={(e) => setPrestationForm(prev => ({
+              ...prev,
+              params: {
+                ...prev.params,
+                [param.key]: e.target.value
+              }
+            }))}
+            style={{ flex: 1, padding: '10px 12px', border: '1px solid #ced4da', fontSize: '14px', outline: 'none' }}
+          />
           {param.unit && (
             <span style={{ display: 'flex', alignItems: 'center', padding: '0 12px', backgroundColor: '#f8f9fa', color: '#6c757d', border: '1px solid #ced4da', borderLeft: 'none', borderTopRightRadius: '4px', borderBottomRightRadius: '4px', fontSize: '14px' }}>
               {param.unit}
