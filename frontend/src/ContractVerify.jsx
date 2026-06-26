@@ -288,7 +288,6 @@ if (presta.params && Object.keys(presta.params).length > 0) {
           
           <button
             type="button"
-            onClick={() => alert("Formulaire de réclamation à ouvrir")}
             style={{
               padding: '8px 20px',
               backgroundColor: '#dc3545',
