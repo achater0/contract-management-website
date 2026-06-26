@@ -307,6 +307,15 @@ useEffect(() => {
       const response = await fetch(`${apiUrl}/api/contracts`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
       });
+      if (!response.ok) {
+      if (response.status === 401) {
+        // AUTOMATIC CLEANUP: If unauthorized, clear the bad token and boot them out
+        localStorage.removeItem('token');
+        window.location.href = '/login'; 
+        throw new Error("Session expirée. Veuillez vous reconnecter.");
+      }
+      throw new Error(`Erreur serveur: ${response.status}`);
+    }
       const data = await response.json();
       
       // Parse the 'data' column into an object for each contract
