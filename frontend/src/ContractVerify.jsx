@@ -224,32 +224,14 @@ export default function ContractVerify() {
                   
                   const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
 
-let paramsText = "";
-if (presta.params && Object.keys(presta.params).length > 0) {
-  const paramStrings = Object.entries(presta.params)
-    .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
-    .map(([k, v]) => {
-      // 1. UNIT LOOKUP:
-      // You need to access your config data here.
-      // Assuming you have your PRESTATION_PARAMS_CONFIG imported or available.
-      const configList = PRESTATION_PARAMS_CONFIG[presta.prestation] || [];
-      const configItem = configList.find(item => item.key === k);
-      const unit = configItem ? configItem.unit : "";
-
-      // 2. PRESERVE VALUE:
-      // Using v directly ensures the value displayed matches exactly what is in the database,
-      // preventing floating point issues (e.g., 60 becoming 59.9).
-      const displayValue = v;
-
-      // 3. FORMATTING:
-      // This creates the "(Key: Value Unit)" format
-      return `(${k.replace(/_/g, ' ')}: ${displayValue}${unit ? ' ' + unit : ''})`;
-    });
-
-  if (paramStrings.length > 0) {
-    // Join with a space instead of a comma to keep them separated
-    paramsText = " " + paramStrings.join(' ');
-  }
+                  let paramsText = "";
+                  if (presta.params && Object.keys(presta.params).length > 0) {
+                    const paramStrings = Object.entries(presta.params)
+                      .filter(([_, v]) => v !== "")
+                      .map(([k, v]) => `${k.replace(/_/g, ' ')} = ${v}`);
+                    if (paramStrings.length > 0) {
+                      paramsText = ` (${paramStrings.join(', ')})`;
+                    }
                   }
 
                   return (
