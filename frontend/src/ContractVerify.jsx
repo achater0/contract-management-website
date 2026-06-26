@@ -226,29 +226,14 @@ const associatedRef = refs[idx] || refs[0] || {};
 
  let paramsText = "";
 if (presta.params && Object.keys(presta.params).length > 0) {
-  // 1. Define your units here. 
-  // If you don't define a key here, it will display only the value.
-  const UNIT_CONFIG = {
-    "superficie": "m²",
-    "superficie_totale": "m²",
-    "nombre_de_niveaux": "",
-    "quantite": "unités",
-    "longueur": "km"
-  };
-
+  // We use String(v) to force JavaScript to treat it as a text string 
+  // so it doesn't try to perform any math, rounding, or formatting.
   const paramStrings = Object.entries(presta.params)
     .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
     .map(([k, v]) => {
-      // 2. FIX: Check if v is an object or a raw value
-      // This solves the "[object Object]" error (the "value change" issue)
-      const val = (v && typeof v === 'object') ? (v.value || "") : v;
-      
-      // 3. Get the unit for this key
-      const unit = UNIT_CONFIG[k] || ""; 
-      
-      // 4. Return formatted string: (Key = Value Unit)
-      // Trim extra spaces if unit is empty
-      return `(${k.replace(/_/g, ' ')} = ${val}${unit ? ' ' + unit : ''})`;
+      const cleanKey = k.replace(/_/g, ' ');
+      const rawValue = String(v); // Force to string: prevents rounding and value changes
+      return `(${cleanKey} = ${rawValue})`;
     });
 
   if (paramStrings.length > 0) {
