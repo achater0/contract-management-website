@@ -4,7 +4,7 @@ import { MdInput } from 'react-icons/md';
 
 import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 import QRCode from "qrcode";
 import citiesData from "./cities.json";
 
@@ -531,15 +531,13 @@ const handleFormSubmit = async () => {
     tableBody.push([{ content: 'TVA (20%)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, tva.toFixed(2)]);
     tableBody.push([{ content: 'Prix total TTC (DHS)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, totalTTC.toFixed(2)]);
 
-    doc.autoTable({
-      startY: 137,
-      head: [['N° Ordre', 'Prestation', 'U', 'Q', 'P.U HT', 'P.T HT']],
-      body: tableBody,
-      theme: 'grid',
-      headStyles: { fillColor: [219, 219, 219], textColor: [0, 0, 0], fontStyle: 'bold' },
-      styles: { fontSize: 9, cellPadding: 3 },
-      columnStyles: { 0: { cellWidth: 20, halign: 'center' }, 2: { cellWidth: 15, halign: 'center' }, 3: { cellWidth: 15, halign: 'center' }, 4: { cellWidth: 20, halign: 'right' }, 5: { cellWidth: 25, halign: 'right' } }
-    });
+    autoTable(doc, {
+  startY: 130, 
+  head: [['N°', 'Prestation', 'U', 'Q', 'P.U HT', 'P.T HT']],
+  body: tableData,
+  theme: 'grid',
+  margin: { left: 15, right: 15 }
+});
 
     const finalY = doc.lastAutoTable.finalY || 150;
     doc.setFont(undefined, 'normal');
