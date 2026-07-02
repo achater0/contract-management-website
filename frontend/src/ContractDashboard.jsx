@@ -7,6 +7,8 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable"; // Use this exact import
 import QRCode from "qrcode";
 import citiesData from "./cities.json";
+import onigtHeader from "./image_3ec705.png";
+
 
 export default function ContractDashboard() {
   const [contracts, setContracts] = useState([]);
@@ -431,259 +433,212 @@ const handleFormSubmit = async () => {
 };
 
 const ActionButtons = ({ contractId, details, officialNumber, formattedDate }) => {
-  const [qrSrc, setQrSrc] = useState('');
+    const [qrSrc, setQrSrc] = useState('');
+    
+    useEffect(() => {
+      let isMounted = true;
+      const url = `${window.location.origin}/verify/${contractId}`;
+      QRCode.toDataURL(url, { width: 250, margin: 0 })
+        .then(src => { if (isMounted) setQrSrc(src); })
+        .catch(err => console.error(err));
+      return () => { isMounted = false; };
+    }, [contractId]);
   
-  useEffect(() => {
-    let isMounted = true;
-    const url = `${window.location.origin}/verify/${contractId}`;
-    QRCode.toDataURL(url, { width: 250, margin: 1 })
-      .then(src => {
-        if (isMounted) setQrSrc(src);
-      })
-      .catch(err => console.error(err));
-
-    return () => { isMounted = false; };
-  }, [contractId]);
-
-  const handleDownloadPDF = () => {
-    const doc = new jsPDF('p', 'mm', 'a4');
-    const client = details?.clients?.[0] || {};
-    const prestations = details?.prestations || [];
-    const references = details?.references || [];
-
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const pageWidth = doc.internal.pageSize.getWidth();
-
-    // Helper function for footers
-    const addFooter = (pageNum) => {
+    const handleDownloadPDF = () => {
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const client = details?.clients?.[0] || {};
+      const prestations = details?.prestations || [];
+      const references = details?.references || [];
+      const pageHeight = doc.internal.pageSize.getHeight();
+  
+      // --- HELPER: EXACT ONIGT 3-COLUMN HEADER ---
+    const drawHeader = () => {
+      if (headerImageUrl) {
+        // Fits the image to the exact dimensions of the official header
+        doc.addImage(headerImageUrl, 'PNG', 15, 10, 180, 35);
+      }
+      // Draw a thin border around the header area to match the official design
+      doc.rect(15, 10, 180, 35);
+    };
+  
+      const addFooter = (pageNum) => {
+        doc.setFontSize(8);
+        doc.setFont(undefined, 'normal');
+        doc.text(`Page ${pageNum} sur 3.`, 15, pageHeight - 15);
+        doc.text(`Date d'impression: ${formattedDate}`, 15, pageHeight - 10);
+      };
+  
+      // ==========================================
+      // PAGE 1
+      // ==========================================
+      drawHeader();
+  
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'bold');
+      doc.text("Entre:", 15, 55);
+      
+      doc.setFont(undefined, 'normal');
+      doc.text(`• ${client.client_name?.toUpperCase() || 'CLIENT'}, Titulaire de la C.I.N.E: ${client.cine || 'N/A'}, En qualité de: ${client.quality || 'DEMANDEUR'}.`, 20, 62);
+      doc.text("Ci-après désigné par l'expression: Le Maître d'ouvrage", 20, 67);
+      doc.setFont(undefined, 'bold');
+      doc.text("De première part.", 20, 72);
+  
+      doc.setFont(undefined, 'normal');
+      const igtText = `• CHATER Othmane Ingénieur Géomètre Topographe Inscrit à l'Ordre National des Ingénieurs Géomètres Topographes sous n° N°604/SO/ONIGT/CN Agissant en qualité l'IGT gerant de la société TOPGIS Exerçant à l'adresse: APPT NR 3 2EME ETAGE IMM 4 AV KHALID IBN EL OUALID HAY DAKHLA AGADIR sous Patente n°: 48109619, TVA n°: 53720194, CNSS: n°4528998 et police d'assurance RCP n°: 18/195719.`;
+      doc.text(doc.splitTextToSize(igtText, 170), 20, 80);
+      
+      doc.text("Maître d'œuvre désigné ci-après par l'expression Ingénieur Géomètre Topographe (I.G.T)", 20, 100);
+      doc.setFont(undefined, 'bold');
+      doc.text("De seconde part.", 20, 105);
+  
+      doc.text("Objet, désignation, honoraires, nature des prestations et prix unitaire :", 15, 115);
+      doc.setFont(undefined, 'normal');
+      doc.text("Le maître d'ouvrage s'engage avec l'I.G.T pour la réalisation de la mission détaillée dans le tableau suivant:", 15, 122);
+  
+      // Table Data
+      let totalHTSum = 0;
+      const tableData = prestations.map((p, index) => {
+        const ref = references[index] || references[0];
+        const refString = ref ? `(Réf. foncière: ${ref.regime === 'Titre foncier' ? 'T/' : ''}${ref.valeur})` : '';
+        const qty = parseFloat(p.quantity || 1);
+        const price = parseFloat(p.price || 0);
+        const rowTotal = qty * price;
+        totalHTSum += rowTotal;
+        return [
+          index + 1,
+          `${p.prestation}\n${refString}`,
+          p.unit || 'F',
+          qty.toFixed(2),
+          price.toFixed(2),
+          rowTotal.toFixed(2)
+        ];
+      });
+  
+      const tva = totalHTSum * 0.20;
+      const totalTTC = totalHTSum + tva;
+  
+      tableData.push([{ content: 'Prix total HT (DHS)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, totalHTSum.toFixed(2)]);
+      tableData.push([{ content: 'TVA (20%)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, tva.toFixed(2)]);
+      tableData.push([{ content: 'Prix total TTC (DHS)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, totalTTC.toFixed(2)]);
+  
+      autoTable(doc, {
+        startY: 125,
+        head: [['N° Ordre', 'Prestation', 'U', 'Q', 'P.U HT', 'P.T HT']],
+        body: tableData,
+        theme: 'grid',
+        headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold', lineWidth: 0.1, lineColor: [150, 150, 150] },
+        styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.1, lineColor: [150, 150, 150] },
+        columnStyles: { 0: { cellWidth: 15, halign: 'center' }, 2: { cellWidth: 10, halign: 'center' }, 3: { cellWidth: 15, halign: 'center' }, 4: { cellWidth: 20, halign: 'right' }, 5: { cellWidth: 25, halign: 'right' } }
+      });
+  
+      const finalY = doc.lastAutoTable.finalY || 140;
+      doc.setFontSize(9);
+      doc.text(`Arrêter le présent contrat à la somme de ${totalTTC.toFixed(2)} dirhams toutes taxes comprises (TTC).`, 15, finalY + 10);
+      addFooter(1);
+  
+      // ==========================================
+      // PAGE 2 (Articles Table Layout)
+      // ==========================================
+      doc.addPage();
+      drawHeader();
+      
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'bold');
+      doc.text("CONDITIONS GENERALES :", 15, 55);
+      
       doc.setFontSize(8);
       doc.setFont(undefined, 'normal');
-      doc.text(`Page ${pageNum} sur 3.`, 15, pageHeight - 15);
-      doc.text(`Date d'impression: ${formattedDate}`, 15, pageHeight - 10);
-    };
-
-    // ==========================================
-    // PAGE 1: HEADER, PARTIES, AND PRICING TABLE
-    // ==========================================
-    doc.setFontSize(14);
-    doc.setFont(undefined, 'bold');
-    doc.text("ONIGT", 105, 15, { align: "center" });
-    
-    doc.setFontSize(10);
-    doc.text("ORDRE NATIONAL DES INGENIEURS GEOMETRES TOPOGRAPHES", 105, 22, { align: "center" });
-    
-    doc.setFontSize(12);
-    doc.text("CONTRAT DE L'INGENIEUR GEOMETRE TOPOGRAPHE", 105, 32, { align: "center" });
-    doc.setFontSize(9);
-    doc.setFont(undefined, 'normal');
-    doc.text("(Décision du conseil national n°378/98 en date du 16/12/1998)", 105, 37, { align: "center" });
-
-    doc.setFontSize(9);
-    doc.text(`Contrat n°: ${officialNumber}`, 15, 45);
-
-    // Parties Section
-    doc.setFontSize(11);
-    doc.setFont(undefined, 'bold');
-    doc.text("Entre:", 15, 60);
-    
-    doc.setFontSize(10);
-    doc.setFont(undefined, 'normal');
-    const clientText = `• ${client.client_name?.toUpperCase() || 'CLIENT INCONNU'}, Titulaire de la C.I.N.E: ${client.cine || 'N/A'}, En qualité de: ${client.quality || 'DEMANDEUR'}.`;
-    doc.text(doc.splitTextToSize(clientText, 180), 20, 67);
-    doc.text("Ci-après désigné par l'expression: Le Maître d'ouvrage", 20, 75);
-    doc.setFont(undefined, 'bold');
-    doc.text("De première part.", 20, 82);
-
-    doc.setFont(undefined, 'normal');
-    const igtText = `• CHATER Othmane Ingénieur Géomètre Topographe Inscrit à l'Ordre National des Ingénieurs Géomètres Topographes sous n° N°604/SO/ONIGT/CN Agissant en qualité l'IGT gerant de la société TOPGIS Exerçant à l'adresse: APPT NR 3 2EME ETAGE IMM 4 AV KHALID IBN EL OUALID HAY DAKHLA AGADIR sous Patente n°: 48109619, TVA n°: 53720194, CNSS: n°4528998 et police d'assurance RCP n°: 18/195719.`;
-    doc.text(doc.splitTextToSize(igtText, 170), 20, 90);
-    
-    doc.text("Maître d'œuvre désigné ci-après par l'expression Ingénieur Géomètre Topographe (I.G.T)", 20, 110);
-    doc.setFont(undefined, 'bold');
-    doc.text("De seconde part.", 20, 115);
-
-    doc.setFont(undefined, 'bold');
-    doc.text("Objet, désignation, honoraires, nature des prestations et prix unitaire :", 15, 125);
-    doc.setFont(undefined, 'normal');
-    doc.text("Le maître d'ouvrage s'engage avec l'I.G.T pour la réalisation de la mission détaillée dans le tableau suivant :", 15, 132);
-
-    // Dynamic Table
-    const tableBody = prestations.map((p, index) => {
-      const ref = references[index] || references[0];
-      const refString = ref ? `(Réf. foncière: ${ref.regime === 'Titre foncier' ? 'T/' : ''}${ref.valeur})` : '';
-      const qty = parseFloat(p.quantity || 1);
-      const price = parseFloat(p.price || 0);
-      return [
-        index + 1,
-        `${p.prestation}\n${refString}`,
-        p.unit || 'F',
-        qty.toFixed(2),
-        price.toFixed(2),
-        (qty * price).toFixed(2)
+      const conditionsIntro = "Le présent contrat fait référence au Dahir n°1-94-126 du 14 ramadan 1414 (25 février 1994) portant promulgation de la loi n°30-93 relative à l'exercice de la profession d'ingénieur géomètre topographe et instituant l'Ordre National des Ingénieurs Géomètres Topographes.";
+      doc.text(doc.splitTextToSize(conditionsIntro, 180), 15, 60);
+  
+      const articlesData = [
+        ["Article :1\nHonoraires", "1. Les honoraires sont calculés de manière juste et mesurée sur la base du guide des honoraires établi par l'ONIGT.\n2. Le tableau figurant aux articles 2 et 3 ci-dessus doivent être renseignés obligatoirement et dans leur intégralité par les soins de l'I.G.T.\n3. Les modalités de paiement sont fixées d'un commun accord entre les deux parties contractantes et en fonction de chaque mission.\n4. Toute modification importante demandée par l'administration ou le maître d'ouvrage fera l'objet, le cas échéant, d'un avenant au présent contrat."],
+        ["Article :2\nDélai d'exécution", "1. Les délais sont fixés d'un commun accord entre les parties contractantes.\n2. Les délais cessent de courir dès le dépôt des travaux auprès des instances administratives concernées.\n3. Les notes d'honoraires présentées par l'IGT doivent être réglées par le maître d'ouvrage dans les délais fixés par la réglementation en vigueur."],
+        ["Article :3\nDispositions diverses", "1. La prestation objet du présent contrat est couverte par une assurance responsabilité civile professionnelle de l'IGT mentionnée à l'article 1 ci-dessus.\n2. Le maître d'ouvrage mandate l'IGT à le représenter au sein de l'administration concernée.\n3. Le maître d'ouvrage est tenu de respecter son engagement avec l'IGT sans recourir au service d'un autre IGT pour la même prestation sauf désistement du maître d'œuvre."],
+        ["Article :4\nRésiliation", "1. Lorsque le maître d'ouvrage ou ses ayants droit, ou ses ayants cause, décident de résilier d'une manière unilatérale, le présent contrat, il doit acquitter à l'IGT la valeur des prestations réellement exécutées, plus 25% du montant du solde des honoraires des prestations restantes. En contrepartie, il reçoit de l'IGT un désistement en bonne et due forme.\n2. La clause résolutoire est de droit, en faveur du maître d'ouvrage, après sommation faite à l'IGT, lorsque celui-ci:\n- Diffère, plus que de raison et sans motif valable, à entamer l'exécution des prestations commandées\n- Est en demeure de livrer lesdites prestations; le tout s'il n'y a pas faute imputable au maître d'ouvrage. Dans ce cas, l'IGT est tenu de restituer les avances reçues."],
+        ["Article :5\nLitiges", "1. Tous les litiges auxquels le présent contrat pourra donner lieu, tant pour sa validité que pour son interprétation, son exécution ou sa résiliation, seront résolus par voie d'arbitrage, selon les articles 306 et suivants du dahir formant code de procédure civile, par l'Ordre National des Ingénieurs Géomètres-Topographes, représenté en premier ressort par le Conseil Régional duquel relève le siège social du maître d'œuvre et, en appel, par le Conseil National.\n2. A défaut d'un règlement par la voie précitée, le litige opposant les parties sera du ressort de la seule compétence du tribunal du lieu d'installation de l'Ingénieur Géomètre-Topographe."],
+        ["Article :6\nPouvoirs", "1. Tous les pouvoirs sont donnés à l'ingénieur géomètre topographe contractant en vue d'accomplir toutes les formalités administratives découlant du présent contrat."]
       ];
-    });
-
-    const totalHTSum = prestations.reduce((sum, p) => sum + (parseFloat(p.quantity || 1) * parseFloat(p.price || 0)), 0);
-    const tva = totalHTSum * 0.20;
-    const totalTTC = totalHTSum + tva;
-
-    tableBody.push([{ content: 'Prix total HT (DHS)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, totalHTSum.toFixed(2)]);
-    tableBody.push([{ content: 'TVA (20%)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, tva.toFixed(2)]);
-    tableBody.push([{ content: 'Prix total TTC (DHS)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, totalTTC.toFixed(2)]);
-
-    // FIX 1: Changed body from 'tableData' to 'tableBody'
-    autoTable(doc, {
-      startY: 130, 
-      head: [['N°', 'Prestation', 'U', 'Q', 'P.U HT', 'P.T HT']],
-      body: tableBody, 
-      theme: 'grid',
-      margin: { left: 15, right: 15 }
-    });
-
-    const finalY = doc.lastAutoTable.finalY || 150;
-    doc.setFont(undefined, 'normal');
-    doc.text(`Arrêter le présent contrat à la somme de ${totalTTC.toFixed(2)} dirhams toutes taxes comprises (TTC).`, 15, finalY + 10);
-    addFooter(1);
-
-    // ==========================================
-    // PAGE 2: CONDITIONS GENERALES
-    // ==========================================
-    doc.addPage();
-    
-    // Page 2 Header
-    doc.setFontSize(12);
-    doc.setFont(undefined, 'bold');
-    doc.text("ONIGT", 105, 15, { align: "center" });
-    doc.text("CONTRAT DE L'INGENIEUR GEOMETRE TOPOGRAPHE", 105, 25, { align: "center" });
-    doc.setFontSize(9);
-    doc.setFont(undefined, 'normal');
-    doc.text(`Contrat n°: ${officialNumber}`, 15, 35);
-    
-    doc.setFontSize(11);
-    doc.setFont(undefined, 'bold');
-    doc.text("CONDITIONS GENERALES :", 15, 50);
-    
-    doc.setFontSize(9);
-    doc.setFont(undefined, 'normal');
-    const conditionsIntro = "Le présent contrat fait référence au Dahir n°1-94-126 du 14 ramadan 1414 (25 février 1994) portant promulgation de la loi n°30-93 relative à l'exercice de la profession d'ingénieur géomètre topographe et instituant l'Ordre National des Ingénieurs Géomètres Topographes.";
-    doc.text(doc.splitTextToSize(conditionsIntro, 180), 15, 57);
-
-    // Legal Articles Data
-    const articles = [
-      { title: "Article :1 Honoraires", body: "1. Les honoraires sont calculés de manière juste et mesurée sur la base du guide des honoraires établi par l'ONIGT.\n2. Le tableau figurant aux articles 2 et 3 ci-dessus doivent être renseignés obligatoirement et dans leur intégralité par les soins de l'I.G.T.\n3. Les modalités de paiement sont fixées d'un commun accord entre les deux parties contractantes et en fonction de chaque mission.\n4. Toute modification importante demandée par l'administration ou le maître d'ouvrage fera l'objet, le cas échéant, d'un avenant au présent contrat." },
-      { title: "Article :2 Délai d'exécution", body: "1. Les délais sont fixés d'un commun accord entre les parties contractantes.\n2. Les délais cessent de courir dès le dépôt des travaux auprès des instances administratives concernées.\n3. Les notes d'honoraires présentées par l'IGT doivent être réglées par le maître d'ouvrage dans les délais fixés par la réglementation en vigueur." },
-      { title: "Article :3 Dispositions diverses", body: "1. La prestation objet du présent contrat est couverte par une assurance responsabilité civile professionnelle de l'IGT mentionnée à l'article 1 ci-dessus.\n2. Le maître d'ouvrage mandate l'IGT à le représenter au sein de l'administration concernée.\n3. Le maître d'ouvrage est tenu de respecter son engagement avec l'IGT sans recourir au service d'un autre IGT pour la même prestation sauf désistement du maître d'œuvre." },
-      { title: "Article :4 Résiliation", body: "1. Lorsque le maître d'ouvrage ou ses ayants droit, ou ses ayants cause, décident de résilier d'une manière unilatérale, le présent contrat, il doit acquitter à l'IGT la valeur des prestations réellement exécutées, plus 25% du montant du solde des honoraires des prestations restantes. En contrepartie, il reçoit de l'IGT un désistement en bonne et due forme.\n2. La clause résolutoire est de droit, en faveur du maître d'ouvrage, après sommation faite à l'IGT, lorsque celui-ci: Diffère, plus que de raison et sans motif valable, à entamer l'exécution des prestations commandées ou Est en demeure de livrer lesdites prestations; le tout s'il n'y a pas faute imputable au maître d'ouvrage. Dans ce cas, l'IGT est tenu de restituer les avances reçues." },
-      { title: "Article :5 Litiges", body: "1. Tous les litiges auxquels le présent contrat pourra donner lieu, tant pour sa validité que pour son interprétation, son exécution ou sa résiliation, seront résolus par voie d'arbitrage, selon les articles 306 et suivants du dahir formant code de procédure civile, par l'Ordre National des Ingénieurs Géomètres-Topographes, représenté en premier ressort par le Conseil Régional duquel relève le siège social du maître d'œuvre et, en appel, par le Conseil National.\n2. A défaut d'un règlement par la voie précitée, le litige opposant les parties sera du ressort de la seule compétence du tribunal du lieu d'installation de l'Ingénieur Géomètre-Topographe." },
-      { title: "Article :6 Pouvoirs", body: "1. Tous les pouvoirs sont donnés à l'ingénieur géomètre topographe contractant en vue d'accomplir toutes les formalités administratives découlant du présent contrat." }
-    ];
-
-    let currentY = 70;
-    articles.forEach(art => {
+  
+      autoTable(doc, {
+        startY: 70,
+        body: articlesData,
+        theme: 'grid',
+        styles: { fontSize: 8, cellPadding: 3, lineWidth: 0.1, lineColor: [150, 150, 150] },
+        columnStyles: { 0: { cellWidth: 40, fontStyle: 'bold' }, 1: { cellWidth: 'auto' } }
+      });
+  
+      addFooter(2);
+  
+      // ==========================================
+      // PAGE 3
+      // ==========================================
+      doc.addPage();
+      drawHeader();
+  
+      doc.setFontSize(8);
+      let y3 = 55;
+      const pdp1 = "Par le biais de ce formulaire, l'ONIGT collecte vos données personnelles en vue de gérer les contrats des prestations topographiques.";
+      const pdp2 = "Ce traitement a fait l'objet d'une demande d'autorisation préalable auprès de la CNDP en date du 08 Mai 2018. Les données personnelles collectées peuvent être transmises à l'ONIGT conformément à la demande de transfert déposée auprès de la CNDP.";
+      const pdp3 = "Vous pouvez vous adresser à onigt.contrat.pdp@gmail.com pour exercer vos droits d'accès, de rectification et d'opposition conformément aux dispositions de la loi 09-08.";
+      const engagementText = `Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessus avec un montant de ${totalTTC.toFixed(2)} TTC.`;
+      
+      doc.text(doc.splitTextToSize(pdp1, 180), 15, y3); y3 += 8;
+      doc.text(doc.splitTextToSize(pdp2, 180), 15, y3); y3 += 12;
+      doc.text(doc.splitTextToSize(pdp3, 180), 15, y3); y3 += 10;
+      doc.text(doc.splitTextToSize(engagementText, 180), 15, y3); y3 += 10;
+  
+      const miniTableBody = prestations.map((p, index) => {
+        const ref = references[index] || references[0];
+        const refString = ref ? `(Réf. foncière: ${ref.regime === 'Titre foncier' ? 'T/' : ''}${ref.valeur})` : '';
+        return [index + 1, `${p.prestation} ${refString}`];
+      });
+  
+      autoTable(doc, {
+        startY: y3,
+        head: [['N° Ordre', 'Prestation']],
+        body: miniTableBody,
+        theme: 'grid',
+        headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold', lineWidth: 0.1, lineColor: [150, 150, 150] },
+        styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.1, lineColor: [150, 150, 150] },
+        columnStyles: { 0: { cellWidth: 25, halign: 'center' }, 1: { cellWidth: 'auto' } }
+      });
+  
+      const finalY3 = doc.lastAutoTable.finalY || y3 + 20;
+  
+      doc.setFontSize(9);
       doc.setFont(undefined, 'bold');
-      doc.text(art.title, 15, currentY);
-      currentY += 6;
+      doc.text(`Fait à Agadir, le ${formattedDate}, en deux exemplaires.`, 15, finalY3 + 15);
       doc.setFont(undefined, 'normal');
-      const textLines = doc.splitTextToSize(art.body, 180);
-      doc.text(textLines, 15, currentY);
-      currentY += (textLines.length * 5) + 6;
-    });
-
-    addFooter(2);
-
-    // ==========================================
-    // PAGE 3: DATA PRIVACY & SIGNATURES
-    // ==========================================
-    doc.addPage();
-    
-    // Page 3 Header
-    doc.setFontSize(12);
-    doc.setFont(undefined, 'bold');
-    doc.text("ONIGT", 105, 15, { align: "center" });
-    doc.text("CONTRAT DE L'INGENIEUR GEOMETRE TOPOGRAPHE", 105, 25, { align: "center" });
-    doc.setFontSize(9);
-    doc.setFont(undefined, 'normal');
-    doc.text(`Contrat n°: ${officialNumber}`, 15, 35);
-
-    // CNDP Text
-    doc.setFontSize(10);
-    const pdp1 = "Par le biais de ce formulaire, l'ONIGT collecte vos données personnelles en vue de gérer les contrats des prestations topographiques.";
-    const pdp2 = "Ce traitement a fait l'objet d'une demande d'autorisation préalable auprès de la CNDP en date du 08 Mai 2018. Les données personnelles collectées peuvent être transmises à l'ONIGT conformément à la demande de transfert déposée auprès de la CNDP.";
-    const pdp3 = "Vous pouvez vous adresser à onigt.contrat.pdp@gmail.com pour exercer vos droits d'accès, de rectification et d'opposition conformément aux dispositions de la loi 09-08.";
-    
-    let y3 = 50;
-    doc.text(doc.splitTextToSize(pdp1, 180), 15, y3); y3 += 10;
-    doc.text(doc.splitTextToSize(pdp2, 180), 15, y3); y3 += 15;
-    doc.text(doc.splitTextToSize(pdp3, 180), 15, y3); y3 += 15;
-
-    const engagementText = `Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessus avec un montant de ${totalTTC.toFixed(2)} TTC.`;
-    doc.text(doc.splitTextToSize(engagementText, 180), 15, y3); y3 += 15;
-
-    // Mini Table for Page 3
-    const miniTableBody = prestations.map((p, index) => {
-      const ref = references[index] || references[0];
-      const refString = ref ? `(Réf. foncière: ${ref.regime === 'Titre foncier' ? 'T/' : ''}${ref.valeur})` : '';
-      return [index + 1, `${p.prestation}\n${refString}`];
-    });
-
-    // FIX 2: Changed from doc.autoTable({...}) to autoTable(doc, {...})
-    autoTable(doc, {
-      startY: y3,
-      head: [['N° Ordre', 'Prestation']],
-      body: miniTableBody,
-      theme: 'grid',
-      headStyles: { fillColor: [219, 219, 219], textColor: [0, 0, 0], fontStyle: 'bold' },
-      styles: { fontSize: 9, cellPadding: 3 },
-      columnStyles: { 0: { cellWidth: 20, halign: 'center' }, 1: { cellWidth: 'auto' } }
-    });
-
-    const finalY3 = doc.lastAutoTable.finalY || y3 + 20;
-
-    // Date & Signatures
-    doc.setFont(undefined, 'bold');
-    doc.text(`Fait à Agadir, le ${formattedDate}, en deux exemplaires.`, 15, finalY3 + 15);
-    doc.setFont(undefined, 'normal');
-    doc.text("Le client déclare avoir pris connaissance et accepté sans réserve les clauses du présent contrat.", 15, finalY3 + 22);
-
-    doc.setFont(undefined, 'bold');
-    doc.text("Signé: l'Ingénieur Géomètre Topographe", 30, finalY3 + 40);
-    doc.text("Signé: Le Maître d'Ouvrage", 130, finalY3 + 40);
-    
-    doc.setFont(undefined, 'normal');
-    doc.text("CHATER Othmane", 30, finalY3 + 50);
-    doc.text(client.client_name?.toUpperCase() || "CLIENT", 130, finalY3 + 50);
-
-    if (qrSrc) {
-      doc.addImage(qrSrc, 'PNG', 165, 240, 30, 30);
-    }
-
-    addFooter(3);
-
-    // Save PDF
-    doc.save(`Contrat_CN_${contractId}.pdf`);
+      doc.text("Le client déclare avoir pris connaissance et accepté sans réserve les clauses du présent contrat.", 15, finalY3 + 22);
+  
+      // Signature Table Block
+      autoTable(doc, {
+        startY: finalY3 + 30,
+        head: [["Signé: l'Ingénieur Géomètre Topographe", "Signé: Le Maître d'Ouvrage"]],
+        body: [["\n\nCHATER Othmane\n\n", `\n\n${client.client_name?.toUpperCase() || "CLIENT"}\n\n`]],
+        theme: 'grid',
+        headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'left', lineWidth: 0.1, lineColor: [150, 150, 150] },
+        styles: { fontSize: 9, halign: 'left', lineWidth: 0.1, lineColor: [150, 150, 150] }
+      });
+  
+      addFooter(3);
+      doc.save(`Contrat_CN_${contractId}.pdf`);
+    };
+  
+    return (
+      <div style={{ display: 'flex', gap: '10px', width: '100%', paddingTop: '6px' }}>
+        {qrSrc && (
+          <a href={qrSrc} download={`QR_REF_${contractId}.png`} style={{ flex: '1', textAlign: 'center', backgroundColor: '#17a2b8', color: '#fff', textDecoration: 'none', padding: '10px 6px', borderRadius: '4px', fontSize: '12px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            Télécharger le QR
+          </a>
+        )}
+        <button type="button" onClick={handleDownloadPDF} style={{ flex: '1', backgroundColor: '#fff', color: '#495057', border: '1px solid #ced4da', padding: '10px 6px', borderRadius: '4px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }}>
+          Télécharger le contrat
+        </button>
+      </div>
+    );
   };
-
-  return (
-    <div style={{ display: 'flex', gap: '10px', width: '100%', paddingTop: '6px' }}>
-      {qrSrc && (
-        <a 
-          href={qrSrc} 
-          download={`QR_REF_${contractId}.png`} 
-          style={{ flex: '1', textAlign: 'center', backgroundColor: '#17a2b8', color: '#fff', textDecoration: 'none', padding: '10px 6px', borderRadius: '4px', fontSize: '12px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          Télécharger le QR
-        </a>
-      )}
-      <button 
-        type="button"
-        onClick={handleDownloadPDF}
-        style={{ flex: '1', backgroundColor: '#fff', color: '#495057', border: '1px solid #ced4da', padding: '10px 6px', borderRadius: '4px', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }}
-      >
-        Télécharger le contrat
-      </button>
-    </div>
-  );
-};
 
   const SidebarLink = ({ viewId, icon: Icon, label }) => {
     const isActive = currentView === viewId;
@@ -904,7 +859,8 @@ const ActionButtons = ({ contractId, details, officialNumber, formattedDate }) =
                   contractId={item.id} 
                   details={d} 
                   officialNumber={officialNumber}
-                   formattedDate={formattedDate}
+                  formattedDate={formattedDate}
+                  headerImageUrl={onigtHeader}
                 />
             </div>
           </div>
