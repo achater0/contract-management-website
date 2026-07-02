@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { MdInput } from 'react-icons/md';
 
-import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";
+import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";z
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import autoTable from "jspdf-autotable"; // Use this exact import
 import QRCode from "qrcode";
 import citiesData from "./cities.json";
 
@@ -430,7 +430,7 @@ const handleFormSubmit = async () => {
   }
 };
 
-  const ActionButtons = ({ contractId, details, officialNumber, formattedDate }) => {
+const ActionButtons = ({ contractId, details, officialNumber, formattedDate }) => {
   const [qrSrc, setQrSrc] = useState('');
   
   useEffect(() => {
@@ -531,19 +531,19 @@ const handleFormSubmit = async () => {
     tableBody.push([{ content: 'TVA (20%)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, tva.toFixed(2)]);
     tableBody.push([{ content: 'Prix total TTC (DHS)', colSpan: 5, styles: { halign: 'right', fontStyle: 'bold' } }, totalTTC.toFixed(2)]);
 
+    // FIX 1: Changed body from 'tableData' to 'tableBody'
     autoTable(doc, {
-  startY: 130, 
-  head: [['N°', 'Prestation', 'U', 'Q', 'P.U HT', 'P.T HT']],
-  body: tableData,
-  theme: 'grid',
-  margin: { left: 15, right: 15 }
-});
+      startY: 130, 
+      head: [['N°', 'Prestation', 'U', 'Q', 'P.U HT', 'P.T HT']],
+      body: tableBody, 
+      theme: 'grid',
+      margin: { left: 15, right: 15 }
+    });
 
     const finalY = doc.lastAutoTable.finalY || 150;
     doc.setFont(undefined, 'normal');
     doc.text(`Arrêter le présent contrat à la somme de ${totalTTC.toFixed(2)} dirhams toutes taxes comprises (TTC).`, 15, finalY + 10);
     addFooter(1);
-
 
     // ==========================================
     // PAGE 2: CONDITIONS GENERALES
@@ -591,7 +591,6 @@ const handleFormSubmit = async () => {
 
     addFooter(2);
 
-
     // ==========================================
     // PAGE 3: DATA PRIVACY & SIGNATURES
     // ==========================================
@@ -620,14 +619,15 @@ const handleFormSubmit = async () => {
     const engagementText = `Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessus avec un montant de ${totalTTC.toFixed(2)} TTC.`;
     doc.text(doc.splitTextToSize(engagementText, 180), 15, y3); y3 += 15;
 
-    // Mini Table for Page 3 (Just N° Ordre & Prestation)
+    // Mini Table for Page 3
     const miniTableBody = prestations.map((p, index) => {
       const ref = references[index] || references[0];
       const refString = ref ? `(Réf. foncière: ${ref.regime === 'Titre foncier' ? 'T/' : ''}${ref.valeur})` : '';
       return [index + 1, `${p.prestation}\n${refString}`];
     });
 
-    doc.autoTable({
+    // FIX 2: Changed from doc.autoTable({...}) to autoTable(doc, {...})
+    autoTable(doc, {
       startY: y3,
       head: [['N° Ordre', 'Prestation']],
       body: miniTableBody,
@@ -663,7 +663,7 @@ const handleFormSubmit = async () => {
     doc.save(`Contrat_CN_${contractId}.pdf`);
   };
 
-    return (
+  return (
     <div style={{ display: 'flex', gap: '10px', width: '100%', paddingTop: '6px' }}>
       {qrSrc && (
         <a 
@@ -682,8 +682,8 @@ const handleFormSubmit = async () => {
         Télécharger le contrat
       </button>
     </div>
-    );
-  };
+  );
+};
 
   const SidebarLink = ({ viewId, icon: Icon, label }) => {
     const isActive = currentView === viewId;
@@ -899,14 +899,14 @@ const handleFormSubmit = async () => {
             </div>
 
             {/* Action Buttons Container */}
-<div style={{ marginTop: '15px' }}>
-  <ActionButtons 
-    contractId={item.id} 
-    details={d} 
-    officialNumber={officialNumber}
-    formattedDate={formattedDate}
-  />
-</div>
+            <div style={{ marginTop: '15px' }}>
+                <ActionButtons 
+                  contractId={item.id} 
+                  details={d} 
+                  officialNumber={officialNumber}
+                   formattedDate={formattedDate}
+                />
+            </div>
           </div>
         </div>
       );
