@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { MdInput } from 'react-icons/md';
 
-import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";z
+import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable"; // Use this exact import
 import QRCode from "qrcode";
