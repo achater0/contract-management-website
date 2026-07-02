@@ -432,7 +432,7 @@ const handleFormSubmit = async () => {
   }
 };
 
-const ActionButtons = ({ contractId, details, officialNumber, formattedDate }) => {
+const ActionButtons = ({ contractId, details, officialNumber, formattedDate ,headerImageUrl}) => {
     const [qrSrc, setQrSrc] = useState('');
     
     useEffect(() => {
