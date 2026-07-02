@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { MdInput } from 'react-icons/md';
 
-import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";z
+import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";
 import QRCode from "qrcode";
 import citiesData from "./cities.json";
 
