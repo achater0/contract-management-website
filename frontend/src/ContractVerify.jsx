@@ -11,7 +11,6 @@ export default function ContractVerify() {
   useEffect(() => {
     const fetchContract = async () => {
       try {
-        // Left exactly as it was
         const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
         const response = await fetch(`${apiUrl}/api/contracts/${id}`);
         
@@ -82,18 +81,18 @@ export default function ContractVerify() {
       width: '100%'
     }}>
       
+      {/* MAIN CONTAINER: Centered with padding and max-width */}
       <div style={{ 
-        margin: '0px', 
-        width: '100%', 
-        padding: '0px', 
+        maxWidth: '1200px', 
+        margin: '0 auto', 
+        padding: '20px 40px', 
         textAlign: 'left',
         boxSizing: 'border-box' 
       }}>
         
         {/* HEADER BLOCK: Places logo and enlarged green text side-by-side */}
         <div style={{ 
-          margin: '0px', 
-          marginBottom: '25px', 
+          marginBottom: '35px', 
           width: '100%', 
           display: 'flex', 
           flexDirection: 'row',
@@ -102,12 +101,13 @@ export default function ContractVerify() {
           gap: '40px',
           flexWrap: 'wrap'
         }}>
-          {/* Logo on the left */}
+          {/* Logo restricted by max-width */}
           <img 
             src={myHeaderImage} 
             alt="ONIGT Logo" 
             style={{ 
-              width: '41.66666667%', 
+              maxWidth: '450px',
+              width: '100%', 
               height: 'auto', 
               display: 'block',
               objectFit: 'cover',
@@ -115,11 +115,10 @@ export default function ContractVerify() {
             }} 
           />
           
-          {/* Enlarged Green Status Title matching Capture31_4.PNG */}
           <h2 style={{ 
             color: onigtGreen, 
             textAlign: 'left', 
-            fontSize: '36px', /* Larger font size option */
+            fontSize: '32px',
             fontWeight: 'bold',
             margin: '0px'
           }}>
@@ -137,7 +136,7 @@ export default function ContractVerify() {
           </div>
         </div>
 
-        {/* CLIENT SECTION - Discs/Dots shifted cleanly to the right */}
+        {/* CLIENT SECTION */}
         <div style={{ marginBottom: '20px', textAlign: 'left', paddingLeft: '0px' }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
             Le Maître d'ouvrage (Client):
@@ -150,7 +149,7 @@ export default function ContractVerify() {
           <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px', marginLeft: '0px' }} />
         </div>
 
-        {/* ENGINEER SECTION - Discs/Dots shifted cleanly to the right */}
+        {/* ENGINEER SECTION */}
         <div style={{ marginBottom: '25px', textAlign: 'left', paddingLeft: '0px' }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
             Le Maître d'œuvre (Ingénieur Géomètre Topographe):
@@ -181,21 +180,21 @@ export default function ContractVerify() {
               <tr>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '8px 10px', 
-                  backgroundColor: '#d3d3d3',
-                  color: 'black', 
+                  padding: '10px 10px', 
+                  backgroundColor: '#e9ecef', // Light gray background
+                  color: onigtBlue,           // Blue text matching 1.PNG
                   width: '40%',
-                  textAlign: 'left',
+                  textAlign: 'center',        // Centered text
                   fontWeight: 'bold'
                 }}>
                   Réf. foncière
                 </th>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '8px 10px', 
-                  backgroundColor: '#d3d3d3',
-                  color: 'black',
-                  textAlign: 'left',
+                  padding: '10px 10px', 
+                  backgroundColor: '#e9ecef', 
+                  color: onigtBlue,
+                  textAlign: 'center',        // Centered text
                   fontWeight: 'bold'
                 }}>
                   Prestation
@@ -209,38 +208,34 @@ export default function ContractVerify() {
                 </tr>
               ) : (
                 prestations.map((presta, idx) => {
-const associatedRef = refs[idx] || refs[0] || {}; 
-  const prefixMap = {
-    "Titre foncier": "T",
-    "Réquisition": "R",
-    "Non immatriculé": "NI",
-    "Délimitation administrative": "DA",
-    "Non défini": "ND"
-  };
-  const prefix = prefixMap[associatedRef.regime] || "";
-  const val = associatedRef.valeur || "";
-  const commune = associatedRef.commune || "";
-  const zone = associatedRef.zone || "";
-  
-  const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
+                  const associatedRef = refs[idx] || refs[0] || {}; 
+                  const prefixMap = {
+                    "Titre foncier": "T",
+                    "Réquisition": "R",
+                    "Non immatriculé": "NI",
+                    "Délimitation administrative": "DA",
+                    "Non défini": "ND"
+                  };
+                  const prefix = prefixMap[associatedRef.regime] || "";
+                  const val = associatedRef.valeur || "";
+                  const commune = associatedRef.commune || "";
+                  const zone = associatedRef.zone || "";
+                  
+                  const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
 
- let paramsText = "";
-if (presta.params && Object.keys(presta.params).length > 0) {
-  // We use String(v) to force JavaScript to treat it as a text string 
-  // so it doesn't try to perform any math, rounding, or formatting.
-  const paramStrings = Object.entries(presta.params)
-    .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
-    .map(([k, v]) => {
-      const cleanKey = k.replace(/_/g, ' ');
-      const rawValue = String(v); // Force to string: prevents rounding and value changes
-      return `(${cleanKey} = ${rawValue})`;
-    });
+                  let paramsText = "";
+                  if (presta.params && Object.keys(presta.params).length > 0) {
+                    const paramStrings = Object.entries(presta.params)
+                      .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
+                      .map(([k, v]) => {
+                        const cleanKey = k.replace(/_/g, ' ');
+                        const rawValue = String(v); 
+                        return `(${cleanKey} = ${rawValue})`;
+                      });
 
-
-  if (paramStrings.length > 0) {
-    paramsText = " " + paramStrings.join(' ');
-  }
-
+                    if (paramStrings.length > 0) {
+                      paramsText = " " + paramStrings.join(' ');
+                    }
                   }
 
                   return (
@@ -268,20 +263,22 @@ if (presta.params && Object.keys(presta.params).length > 0) {
             </tbody>
           </table>
         </div>
-      {/* --- RECLAMATION SECTION --- */}
+
+        {/* --- RECLAMATION SECTION --- */}
         <div style={{ 
-          marginTop: '30px', 
+          marginTop: '40px', 
+          marginBottom: '20px',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'center', // Centers everything in the middle
-          gap: '2px',              // Very close proximity
+          justifyContent: 'center', 
+          gap: '15px',              
           flexWrap: 'wrap'
         }}>
           <span style={{ 
             fontSize: '16px', 
             color: '#dc3545', 
-            fontWeight: 'bold'
+            fontWeight: 'normal' // Changed to normal weight to match 1.PNG
           }}>
             Vous avez une question ou une réclamation concernant ce contrat ?
           </span>
@@ -293,10 +290,10 @@ if (presta.params && Object.keys(presta.params).length > 0) {
               backgroundColor: '#dc3545',
               color: '#fff',
               border: 'none',
-              borderRadius: '25px', // Pill-shaped rounding
+              borderRadius: '25px',
               cursor: 'pointer',
               fontSize: '14px',
-              fontWeight: 'bold',
+              fontWeight: 'normal',
               whiteSpace: 'nowrap'
             }}
           >
