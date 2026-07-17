@@ -158,13 +158,13 @@ export default function ContractVerify() {
     marginTop: '1rem',
     marginBottom: '0.5rem',
     lineHeight: '1.2',
-    fontSize: '2.5rem',
+    fontSize: '40px',
     textAlign: 'center',
     color: '#28a745',
   }}>
     <b style={{ 
       fontFamily: "'Arial', sans-serif",
-      fontSize: '2.5rem',
+      fontSize: '40px',
       color: '#28a745',
       fontWeight: 'bolder'
     }}>
@@ -206,7 +206,7 @@ export default function ContractVerify() {
 {/* ======================================================== */}
 <div style={{ 
   width: '100%',
-  padding: '0.5rem',         // Matches .5rem!important in your source
+  padding: '8px',         // Matches .5rem!important in your source
   marginBottom: '0',         // Matches margin-bottom: 0!important
   boxSizing: 'border-box',
   color: '#0261A4',          // The specific blue from your CSS dump
