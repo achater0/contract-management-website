@@ -8,6 +8,17 @@ export default function ContractVerify() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Define your exact breakpoints based on Bootstrap's grid
+  const isMobile = windowWidth <= 767;
+  const isDesktop = windowWidth >= 992;
   useEffect(() => {
     const fetchContract = async () => {
       try {
@@ -89,7 +100,7 @@ export default function ContractVerify() {
         boxSizing: 'border-box' 
       }}>
         
-        {/* ======================================================== */}
+       {/* ======================================================== */}
         {/* PART 1: LOGO & GREEN TEXT                                */}
         {/* ======================================================== */}
         <div style={{ 
@@ -101,19 +112,20 @@ export default function ContractVerify() {
           flex: '0 0 100%',
           maxWidth: '100%',
           margin: '0',
-          padding: '0.5rem' /* Equivalent to p-2 */
+          padding: '0.5rem'
         }}>
           
-          {/* Logo Container (Equivalent to col-5) */}
+          {/* Logo Container */}
           <div style={{ 
             boxSizing: 'border-box',
             position: 'relative',
             width: '100%',
             paddingRight: '15px',
             paddingLeft: '15px',
-            flex: '0 0 41.666667%', 
-            maxWidth: '41.666667%',
-            margin: '0'
+            margin: '0',
+            // If mobile (<= 767), take 100% width. Otherwise, take 41.6%
+            flex: isMobile ? '0 0 100%' : '0 0 41.666667%', 
+            maxWidth: isMobile ? '100%' : '41.666667%',
           }}>
             <img 
               src={myHeaderImage} 
@@ -127,16 +139,19 @@ export default function ContractVerify() {
             />
           </div>
           
-          {/* Title Container (Equivalent to col-6 mt-2) */}
+          {/* Title Container */}
           <div style={{ 
             boxSizing: 'border-box',
             position: 'relative',
             width: '100%',
             paddingRight: '15px',
             paddingLeft: '15px',
-            flex: '0 0 50%',
-            maxWidth: '50%',
-            marginTop: '0.5rem' /* Equivalent to mt-2 */
+            marginTop: '0.5rem',
+            // If mobile (<= 767), drop below the image at 100% width. Otherwise, stay side-by-side at 50%
+            flex: isMobile ? '0 0 100%' : '0 0 50%',
+            maxWidth: isMobile ? '100%' : '50%',
+            // Optional: center the text when it drops down on mobile
+            textAlign: isMobile ? 'center' : 'left' 
           }}>
             <h4 style={{ 
               boxSizing: 'border-box',
@@ -144,10 +159,10 @@ export default function ContractVerify() {
               marginBottom: '0.5rem',
               fontWeight: '500',
               lineHeight: '1.2',
-              fontSize: '1.5rem',
               color: '#28a745',
-              textAlign: 'left', /* Switched to left per your CSS */
-              fontFamily: "'Arial', sans-serif"
+              fontFamily: "'Arial', sans-serif",
+              // If desktop (>= 992), use 40px. Otherwise use 1.5rem (24px)
+              fontSize: isDesktop ? '40px' : '1.5rem',
             }}>
               <b style={{ 
                 boxSizing: 'border-box',
