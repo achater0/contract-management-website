@@ -106,15 +106,20 @@ export default function ContractVerify() {
         
         {/* Text Container (Takes remaining space) */}
         <div style={{ flex: 1 }}>
-          <h1 style={{ 
-            color: '#28a745', 
-            textAlign: 'left',
-            font: 'bold clamp(24px, 4vw, 40px) Arial, sans-serif',
+          <div style={{
             margin: '8px 0px 0px',// Adjusted margin for better spacing to the right of the logo and a little space above and below
             padding: '0px 15px'
           }}>
+           <h1 style={{ 
+              textAlign: 'left',
+              color: '#28a745', 
+              margin: '16px 0px 8px',
+              font: 'bold clamp(24px, 4vw, 40px) Arial, sans-serif',
+              
+              }}>
             Contrat : Validé (En Exécution)
-          </h1>
+            </h1>
+          </div>
         </div>
       </div>
 
