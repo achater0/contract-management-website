@@ -82,58 +82,70 @@ export default function ContractVerify() {
       width: '100%'
     }}>
       
-      {/* MAIN CONTAINER: Removed maxWidth to use all the page */}
+      {/* MAIN CONTAINER */}
       <div style={{ 
         width: '100%',
         margin: '0', 
-        padding: '0px 8px', // Added horizontal padding so it doesn't touch the absolute edge of the screen in the left
-        textAlign: 'left',
         boxSizing: 'border-box' 
       }}>
         
-      {/* FIXED HEADER BLOCK */}
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'flex-start', 
-        padding: '8px', 
-        gap: '20px',
-        width: '100%' 
-      }}>
-        {/* Logo Container (Takes 40% width) */}
-        <div style={{ flex: '0 0 40%' }}>
-          <img src={myHeaderImage} alt="ONIGT Logo" style={{ width: '100%' }} />
+        {/* ======================================================== */}
+        {/* PART 1: LOGO & GREEN TEXT (Equivalent to Bootstrap Row)  */}
+        {/* ======================================================== */}
+        <div style={{ 
+          display: 'flex', 
+          flexWrap: 'wrap', 
+          alignItems: 'center', 
+          width: '100%',
+          paddingTop: '15px'
+        }}>
+          {/* Logo Container (Takes 50% width) */}
+          <div style={{ 
+            flex: '0 0 50%', 
+            maxWidth: '50%',
+            paddingRight: '15px',
+            paddingLeft: '15px',
+            boxSizing: 'border-box'
+          }}>
+            <img src={myHeaderImage} alt="ONIGT Logo" style={{ width: '100%' }} />
+          </div>
+          
+          {/* Title Container (Takes 50% width) */}
+          <div style={{ 
+            position: 'relative',
+            width: '100%',
+            paddingRight: '15px',
+            paddingLeft: '15px',
+            flex: '0 0 50%',
+            maxWidth: '50%',
+            marginTop: '0.5rem',
+            boxSizing: 'border-box'
+          }}>
+            <h1 style={{ 
+              textAlign: 'center',
+              color: onigtGreen,
+              marginTop: '1rem',
+              marginBottom: '0', 
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+              lineHeight: '1.2'
+            }}>
+              <b>Contrat : Validé (En Exécution)</b>
+            </h1>
+          </div>
         </div>
-        
-        {/* Text Container (Takes remaining space) */}
-      
-<div style={{ 
-  position: 'relative',
-  width: '100%',
-  paddingRight: '15px',
-  paddingLeft: '15px',
-  flex: '0 0 50%',
-  maxWidth: '50%',
-  marginTop: '0.5rem', /* Equivalent to mt-2 */
-  boxSizing: 'border-box'
-}}>
-  <h1 style={{ 
-    textAlign: 'center', /* text-center */
-    color: '#28a745',    /* text-success */
-    marginTop: '1rem',   /* mt-3 */
-    marginBottom: '0', 
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', /* matching their var(--font-family-sans-serif) */
-    fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', /* Scales between an h4 size and h1 size */
-    lineHeight: '1.2'
-  }}>
-    {/* They use a <b> tag inside the heading for fw-bold */}
-    <b>Contrat : Validé (En Exécution)</b>
-  </h1>
-  
-</div>
-      </div>
 
-        {/* REFERENCE AND DATE */}
-        <div style={{ marginBottom: '20px', paddingLeft: '0px' }}>
+        {/* ======================================================== */}
+        {/* PART 2: REFERENCE AND DATE                               */}
+        {/* ======================================================== */}
+        <div style={{ 
+          width: '100%',
+          paddingRight: '15px',
+          paddingLeft: '15px',
+          marginTop: '20px',
+          marginBottom: '10px',
+          boxSizing: 'border-box'
+        }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', textAlign: 'left' }}>
             Contrat n°: {officialNumber}
           </div>
@@ -142,173 +154,184 @@ export default function ContractVerify() {
           </div>
         </div>
 
-        {/* CLIENT SECTION */}
-        <div style={{ marginBottom: '16px', textAlign: 'left', paddingLeft: '0px' }}>
-          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '4px', textAlign: 'left' }}>
-            Le Maître d'ouvrage (Client):
-          </div>
-          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
-            <li style={{ fontWeight: 'bold' }}>
-              {clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}
-            </li>
-          </ul>
-        </div>
-        
-        <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
-
-        {/* ENGINEER SECTION */}
-        <div style={{ marginBottom: '16px', textAlign: 'left', paddingLeft: '0px' }}>
-          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '4px', textAlign: 'left' }}>
-            Le Maître d'œuvre (Ingénieur Géomètre Topographe):
-          </div>
-          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
-            <li style={{ fontWeight: 'bold' }}>
-              CHATER Othmane 
-            </li>
-          </ul>
-        </div>
-
-        <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
-
-        {/* INTRODUCTORY TEXT */}
-        <p style={{ marginBottom: '16px', color: 'black', textAlign: 'left', paddingLeft: '0px' }}>
-          Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessous.
-        </p>
-
-        {/* DATA TABLE */}
-        <div style={{ overflowX: 'auto', width: '100%', paddingLeft: '0px' }}>
-          <table style={{ 
-            width: '100%', 
-            borderCollapse: 'collapse', 
-            border: `1px solid ${borderColor}`,
-            color: 'black',
-            marginLeft: '0px'
-          }}>
-            <thead>
-              <tr>
-                <th style={{ 
-                  border: `1px solid ${borderColor}`, 
-                  padding: '0px 12px', /* Balanced padding */
-                  backgroundColor: animaHeaderBg, 
-                  color: onigtBlue,
-                  width: '40%',
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  fontSize: '15px' /* Slightly smaller text for headers */
-                }}>
-                  Réf. foncière
-                </th>
-                <th style={{ 
-                  border: `1px solid ${borderColor}`, 
-                  padding: '8px 12px', /* Balanced padding */
-                  backgroundColor: animaHeaderBg, 
-                  color: onigtBlue,
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  fontSize: '15px' /* Slightly smaller text for headers */
-                }}>
-                  Prestation
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {prestations.length === 0 ? (
-                <tr>
-                  <td colSpan="2" style={{ padding: '8px 12px', textAlign: 'left', border: `1px solid ${borderColor}` }}>Aucune prestation renseignée</td>
-                </tr>
-              ) : (
-                prestations.map((presta, idx) => {
-                  const associatedRef = refs[idx] || refs[0] || {}; 
-                  const prefixMap = {
-                    "Titre foncier": "T",
-                    "Réquisition": "R",
-                    "Non immatriculé": "NI",
-                    "Délimitation administrative": "DA",
-                    "Non défini": "ND"
-                  };
-                  const prefix = prefixMap[associatedRef.regime] || "";
-                  const val = associatedRef.valeur || "";
-                  const commune = associatedRef.commune || "";
-                  const zone = associatedRef.zone || "";
-                  
-                  const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
-
-                  let paramsText = "";
-                  if (presta.params && Object.keys(presta.params).length > 0) {
-                    const paramStrings = Object.entries(presta.params)
-                      .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
-                      .map(([k, v]) => {
-                        const cleanKey = k.replace(/_/g, ' ');
-                        const rawValue = String(v); 
-                        return `(${cleanKey} = ${rawValue})`;
-                      });
-
-                    if (paramStrings.length > 0) {
-                      paramsText = " " + paramStrings.join(' ');
-                    }
-                  }
-
-                  return (
-                    <tr key={idx}>
-                      <td style={{ 
-                        border: `1px solid ${borderColor}`, 
-                        padding: '8px 12px', /* Balanced padding */
-                        verticalAlign: 'top',
-                        textAlign: 'left'
-                      }}>
-                        {associatedRef.regime ? refCellText : "-"}
-                      </td>
-                      <td style={{ 
-                        border: `1px solid ${borderColor}`, 
-                        padding: '8px 12px', /* Balanced padding */
-                        verticalAlign: 'top',
-                        textAlign: 'left'
-                      }}>
-                        {presta.prestation}{paramsText}
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* --- RECLAMATION SECTION --- */}
+        {/* ======================================================== */}
+        {/* PART 3: THE REST (CLIENT, ENGINEER, TABLE, RECLAMATION)  */}
+        {/* ======================================================== */}
         <div style={{ 
-          marginTop: '30px', 
-          marginBottom: '20px',
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center', 
-          gap: '15px',              
-          flexWrap: 'wrap'
+          width: '100%',
+          padding: '15px', /* Equivalent to Bootstrap's p-3 wrapper */
+          boxSizing: 'border-box'
         }}>
-          <span style={{ 
-            fontSize: '16px', 
-            color: '#dc3545', 
-            fontWeight: 'normal'
-          }}>
-            Vous avez une question ou une réclamation concernant ce contrat ?
-          </span>
           
-          <button
-            type="button"
-            style={{
-              padding: '12px 24px', 
-              backgroundColor: '#dc3545',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '9999px', 
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: 'normal',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            Soumettre une réclamation
-          </button>
+          {/* CLIENT SECTION */}
+          <div style={{ marginBottom: '16px', textAlign: 'left' }}>
+            <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '4px', textAlign: 'left' }}>
+              Le Maître d'ouvrage (Client):
+            </div>
+            <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
+              <li style={{ fontWeight: 'bold' }}>
+                {clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}
+              </li>
+            </ul>
+          </div>
+          
+          <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
+
+          {/* ENGINEER SECTION */}
+          <div style={{ marginBottom: '16px', textAlign: 'left' }}>
+            <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '4px', textAlign: 'left' }}>
+              Le Maître d'œuvre (Ingénieur Géomètre Topographe):
+            </div>
+            <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
+              <li style={{ fontWeight: 'bold' }}>
+                CHATER Othmane 
+              </li>
+            </ul>
+          </div>
+
+          <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
+
+          {/* INTRODUCTORY TEXT */}
+          <p style={{ marginBottom: '16px', color: 'black', textAlign: 'left' }}>
+            Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessous.
+          </p>
+
+          {/* DATA TABLE */}
+          <div style={{ overflowX: 'auto', width: '100%' }}>
+            <table style={{ 
+              width: '100%', 
+              borderCollapse: 'collapse', 
+              border: `1px solid ${borderColor}`,
+              color: 'black'
+            }}>
+              <thead>
+                <tr>
+                  <th style={{ 
+                    border: `1px solid ${borderColor}`, 
+                    padding: '8px 12px',
+                    backgroundColor: animaHeaderBg, 
+                    color: onigtBlue,
+                    width: '40%',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: '15px' 
+                  }}>
+                    Réf. foncière
+                  </th>
+                  <th style={{ 
+                    border: `1px solid ${borderColor}`, 
+                    padding: '8px 12px',
+                    backgroundColor: animaHeaderBg, 
+                    color: onigtBlue,
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: '15px' 
+                  }}>
+                    Prestation
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {prestations.length === 0 ? (
+                  <tr>
+                    <td colSpan="2" style={{ padding: '8px 12px', textAlign: 'left', border: `1px solid ${borderColor}` }}>
+                      Aucune prestation renseignée
+                    </td>
+                  </tr>
+                ) : (
+                  prestations.map((presta, idx) => {
+                    const associatedRef = refs[idx] || refs[0] || {}; 
+                    const prefixMap = {
+                      "Titre foncier": "T",
+                      "Réquisition": "R",
+                      "Non immatriculé": "NI",
+                      "Délimitation administrative": "DA",
+                      "Non défini": "ND"
+                    };
+                    const prefix = prefixMap[associatedRef.regime] || "";
+                    const val = associatedRef.valeur || "";
+                    const commune = associatedRef.commune || "";
+                    const zone = associatedRef.zone || "";
+                    
+                    const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
+
+                    let paramsText = "";
+                    if (presta.params && Object.keys(presta.params).length > 0) {
+                      const paramStrings = Object.entries(presta.params)
+                        .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
+                        .map(([k, v]) => {
+                          const cleanKey = k.replace(/_/g, ' ');
+                          const rawValue = String(v); 
+                          return `(${cleanKey} = ${rawValue})`;
+                        });
+
+                      if (paramStrings.length > 0) {
+                        paramsText = " " + paramStrings.join(' ');
+                      }
+                    }
+
+                    return (
+                      <tr key={idx}>
+                        <td style={{ 
+                          border: `1px solid ${borderColor}`, 
+                          padding: '8px 12px', 
+                          verticalAlign: 'top',
+                          textAlign: 'left'
+                        }}>
+                          {associatedRef.regime ? refCellText : "-"}
+                        </td>
+                        <td style={{ 
+                          border: `1px solid ${borderColor}`, 
+                          padding: '8px 12px',
+                          verticalAlign: 'top',
+                          textAlign: 'left'
+                        }}>
+                          {presta.prestation}{paramsText}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* --- RECLAMATION SECTION --- */}
+          <div style={{ 
+            marginTop: '30px', 
+            marginBottom: '20px',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center', 
+            gap: '15px',              
+            flexWrap: 'wrap'
+          }}>
+            <span style={{ 
+              fontSize: '16px', 
+              color: '#dc3545', 
+              fontWeight: 'normal'
+            }}>
+              Vous avez une question ou une réclamation concernant ce contrat ?
+            </span>
+            
+            <button
+              type="button"
+              style={{
+                padding: '12px 24px', 
+                backgroundColor: '#dc3545',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '9999px', 
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: 'normal',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Soumettre une réclamation
+            </button>
+          </div>
         </div>
       </div>
     </div>
