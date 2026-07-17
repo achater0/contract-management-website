@@ -169,7 +169,7 @@ export default function ContractVerify() {
       fontWeight: 'bolder',
       lineHeight: '1.1',
       display: 'inline-block',
-      letterSpacing: '1px'
+      letterSpacing: '0.7px'
     }}>
       Contrat : Validé (En Exécution)
     </b>
