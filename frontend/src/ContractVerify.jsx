@@ -82,7 +82,7 @@ export default function ContractVerify() {
       width: '100%'
     }}>
       
-      {/* MAIN CONTAINER: Padding set to 5px */}
+      {/* MAIN CONTAINER */}
       <div style={{ 
         width: '100%',
         maxWidth: '1200px', 
@@ -94,16 +94,16 @@ export default function ContractVerify() {
         
         {/* HEADER BLOCK */}
         <div style={{ 
-          marginBottom: '30px', 
+          marginBottom: '24px', 
           width: '100%', 
           display: 'flex', 
           flexDirection: 'row',
           alignItems: 'center', 
-          justifyContent: 'flex-start',
+          justifyContent: 'space-between', /* Pushes logo left and text right */
           gap: '20px',
           flexWrap: 'wrap'
         }}>
-          {/* LOGO: Increased maxWidth to 550px to restore size */}
+          {/* LOGO */}
           <img 
             src={myHeaderImage} 
             alt="ONIGT Logo" 
@@ -121,7 +121,7 @@ export default function ContractVerify() {
             color: onigtGreen, 
             textAlign: 'left', 
             fontSize: '28px',
-            fontWeight: '600',
+            fontWeight: 'bold', /* Bolder text to match image 5 */
             margin: '0px'
           }}>
             Contrat : Validé (En Exécution)
@@ -139,8 +139,9 @@ export default function ContractVerify() {
         </div>
 
         {/* CLIENT SECTION */}
-        <div style={{ marginBottom: '20px', textAlign: 'left', paddingLeft: '0px' }}>
-          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
+        <div style={{ marginBottom: '16px', textAlign: 'left', paddingLeft: '0px' }}>
+          {/* Tighter margin on the title */}
+          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '4px', textAlign: 'left' }}>
             Le Maître d'ouvrage (Client):
           </div>
           <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
@@ -148,12 +149,14 @@ export default function ContractVerify() {
               {clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}
             </li>
           </ul>
-          <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px', marginLeft: '0px' }} />
         </div>
+        
+        {/* Custom faint divider with balanced spacing */}
+        <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
 
         {/* ENGINEER SECTION */}
-        <div style={{ marginBottom: '20px', textAlign: 'left', paddingLeft: '0px' }}>
-          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
+        <div style={{ marginBottom: '16px', textAlign: 'left', paddingLeft: '0px' }}>
+          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '4px', textAlign: 'left' }}>
             Le Maître d'œuvre (Ingénieur Géomètre Topographe):
           </div>
           <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
@@ -161,11 +164,12 @@ export default function ContractVerify() {
               CHATER Othmane 
             </li>
           </ul>
-          <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px', marginLeft: '0px' }} />
         </div>
 
+        <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
+
         {/* INTRODUCTORY TEXT */}
-        <p style={{ marginBottom: '20px', color: 'black', textAlign: 'left', paddingLeft: '0px' }}>
+        <p style={{ marginBottom: '16px', color: 'black', textAlign: 'left', paddingLeft: '0px' }}>
           Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessous.
         </p>
 
@@ -182,7 +186,7 @@ export default function ContractVerify() {
               <tr>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '10px 10px', 
+                  padding: '5px 8px', /* Tighter padding for a smaller table */
                   backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   width: '40%',
@@ -193,7 +197,7 @@ export default function ContractVerify() {
                 </th>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '10px 10px', 
+                  padding: '5px 8px', /* Tighter padding */
                   backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   textAlign: 'center',
@@ -206,7 +210,7 @@ export default function ContractVerify() {
             <tbody>
               {prestations.length === 0 ? (
                 <tr>
-                  <td colSpan="2" style={{ padding: '8px 10px', textAlign: 'left', border: `1px solid ${borderColor}` }}>Aucune prestation renseignée</td>
+                  <td colSpan="2" style={{ padding: '5px 8px', textAlign: 'left', border: `1px solid ${borderColor}` }}>Aucune prestation renseignée</td>
                 </tr>
               ) : (
                 prestations.map((presta, idx) => {
@@ -244,7 +248,7 @@ export default function ContractVerify() {
                     <tr key={idx}>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '8px 10px',
+                        padding: '5px 8px', /* Tighter padding */
                         verticalAlign: 'top',
                         textAlign: 'left'
                       }}>
@@ -252,7 +256,7 @@ export default function ContractVerify() {
                       </td>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '8px 10px',
+                        padding: '5px 8px', /* Tighter padding */
                         verticalAlign: 'top',
                         textAlign: 'left'
                       }}>
