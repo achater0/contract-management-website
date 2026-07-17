@@ -201,24 +201,31 @@ export default function ContractVerify() {
           </div>
         </div>
 
-        {/* ======================================================== */}
-        {/* PART 2: REFERENCE AND DATE                               */}
-        {/* ======================================================== */}
-        <div style={{ 
-          width: '100%',
-          paddingRight: '15px',
-          paddingLeft: '15px',
-          marginTop: '20px',
-          marginBottom: '10px',
-          boxSizing: 'border-box'
-        }}>
-          <div style={{ color: onigtBlue, fontWeight: 'bold', textAlign: 'left' }}>
-            Contrat n°: {officialNumber}
-          </div>
-          <div style={{ color: onigtBlue, fontWeight: 'bold', textAlign: 'left' }}>
-            {formattedDateString}
-          </div>
-        </div>
+{/* ======================================================== */}
+{/* PART 2: REFERENCE AND DATE                               */}
+{/* ======================================================== */}
+<div style={{ 
+  width: '100%',
+  padding: '0.5rem',         // Matches .5rem!important in your source
+  marginBottom: '0',         // Matches margin-bottom: 0!important
+  boxSizing: 'border-box',
+  color: '#0261A4',          // The specific blue from your CSS dump
+  fontFamily: "'Arial', sans-serif",
+  fontSize: '16px',
+  lineHeight: '1.6',
+  textAlign: 'left'
+}}>
+  {/* The first bold line */}
+  <b style={{ fontWeight: 'bolder' }}>
+    Contrat n°: {officialNumber}
+  </b>
+  
+  <br />
+  
+  {/* The second line with specific bold parts */}
+  Fait à <b style={{ fontWeight: 'bolder' }}>Agadir</b>, le{' '} 
+  <b style={{ fontWeight: 'bolder' }}>{formattedDateString}</b>.
+</div>
 
         {/* ======================================================== */}
         {/* PART 3: THE REST (CLIENT, ENGINEER, TABLE, RECLAMATION)  */}
