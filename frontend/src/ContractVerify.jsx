@@ -94,7 +94,7 @@ export default function ContractVerify() {
       {/* FIXED HEADER BLOCK */}
       <div style={{ 
         display: 'flex', 
-        alignItems: 'center', 
+        alignItems: 'flex-start', 
         padding: '10px', 
         gap: '20px',
         width: '100%' 
@@ -108,9 +108,9 @@ export default function ContractVerify() {
         <div style={{ flex: 1 }}>
           <h1 style={{ 
             color: '#28a745', 
-            fontWeight: 'bold', 
-            textAlign: 'center', 
-            fontSize: 'clamp(1rem, 2.5vw, 2rem)', // Responsive font size
+            fontWeight: 'normal',
+            textAlign: 'left',
+            fontSize: 'clamp(2rem, 2.5vw, 2.5rem)', // Responsive font size
             margin: 0
           }}>
             Contrat : Validé (En Exécution)
