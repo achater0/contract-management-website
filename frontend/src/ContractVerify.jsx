@@ -110,7 +110,8 @@ export default function ContractVerify() {
             color: '#28a745', 
             textAlign: 'left',
             font: 'bold clamp(24px, 4vw, 40px) Arial, sans-serif',
-            margin: '10px 0' 
+            margin: '8px 0px 0px',// Adjusted margin for better spacing to the right of the logo and a little space above and below
+            padding: '0px 15px'
           }}>
             Contrat : Validé (En Exécution)
           </h1>
