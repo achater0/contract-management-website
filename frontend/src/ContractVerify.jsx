@@ -84,8 +84,9 @@ export default function ContractVerify() {
       
       {/* MAIN CONTAINER: Padding set to 5px */}
       <div style={{ 
+        width: '100%',
         maxWidth: '1200px', 
-        margin: '0 auto', 
+        margin: '0', 
         padding: '5px', 
         textAlign: 'left',
         boxSizing: 'border-box' 
@@ -102,15 +103,16 @@ export default function ContractVerify() {
           gap: '20px',
           flexWrap: 'wrap'
         }}>
+          {/* LOGO: Increased maxWidth to 550px to restore size */}
           <img 
             src={myHeaderImage} 
             alt="ONIGT Logo" 
             style={{ 
-              maxWidth: '350px',
+              maxWidth: '550px',
               width: '100%', 
               height: 'auto', 
               display: 'block',
-              objectFit: 'cover',
+              objectFit: 'contain',
               margin: '0px'
             }} 
           />
