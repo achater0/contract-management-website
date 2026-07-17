@@ -151,41 +151,33 @@ export default function ContractVerify() {
           }}>
             
             {/* Semantic wrapper changing based on screen width */}
-{isDesktop ? (
+            {isDesktop ? (
               /* --- EXACT H1 DUMP TRANSLATION --- */
-              <h1 style={{ 
-                fontFamily: "'Arial', sans-serif",
-                boxSizing: 'border-box',
-                marginBottom: '0.5rem',
-                fontWeight: '500',
-                lineHeight: '1.2',
-                fontSize: '2.5rem',
-                display: 'block',
-                marginTop: '1rem',
-                textAlign: 'center',
-                color: '#28a745',
-                // Explicit resets to kill global interference
-                letterSpacing: 'normal',
-                WebkitTextSizeAdjust: '100%',
-                WebkitTapHighlightColor: 'transparent'
-              }}>
-                {/* --- EXACT B DUMP TRANSLATION --- */}
-                <b style={{ 
-                  WebkitTextSizeAdjust: '100%',
-                  WebkitTapHighlightColor: 'transparent',
-                  fontFamily: "'Arial', sans-serif",
-                  lineHeight: '1.2',
-                  fontSize: '2.5rem',
-                  textAlign: 'center',
-                  color: '#28a745',
-                  boxSizing: 'border-box',
-                  fontWeight: 'bolder',
-                  // Explicit resets to kill global interference
-                  letterSpacing: 'normal'
-                }}>
-                  Contrat : Validé (En Exécution)
-                </b>
-              </h1>
+<h1 style={{ 
+    boxSizing: 'border-box',
+    fontFamily: "'Arial', sans-serif",
+    marginBottom: '0.5rem',
+    fontWeight: '500',
+    lineHeight: '1.2',
+    fontSize: '2.5rem',
+    textAlign: 'center',
+    color: '#28a745',
+    whiteSpace: 'nowrap', // Forces the parent to hold the line together
+    overflow: 'visible'
+  }}>
+    <b style={{ 
+      display: 'inline', // CRITICAL: Makes it act as text flow rather than a block
+      width: 'auto',     // Prevents it from forcing a width
+      margin: 0,         // Removes any potential spacing
+      padding: 0,        // Removes any potential spacing
+      fontFamily: "'Arial', sans-serif",
+      fontSize: '2.5rem',
+      color: '#28a745',
+      fontWeight: 'bolder'
+    }}>
+      Contrat : Validé (En Exécution)
+    </b>
+  </h1>
             ) : (
               /* --- H4 STYLE DISPLAY (< 992px) --- */
               <h4 style={{ 
