@@ -329,7 +329,6 @@ export default function ContractVerify() {
   <table style={{ 
     width: '100%', 
     borderCollapse: 'collapse', 
-    marginTop: '16px', 
     marginBottom: '16px',
     color: '#212529',
     fontFamily: "'Arial', sans-serif",
