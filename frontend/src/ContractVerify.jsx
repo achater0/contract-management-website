@@ -73,7 +73,7 @@ export default function ContractVerify() {
   const monthName = dateObj.toLocaleDateString('fr-FR', { month: 'long' });
   const year = dateObj.getFullYear();
   
-  const formattedDateString = `Fait à Agadir, le ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${dayNum} ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}.`;
+  const formattedDateString = ` ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${dayNum} ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}.`;
 
   const onigtBlue = "#0261A4"; 
   const onigtGreen = "#28a745";
@@ -155,8 +155,7 @@ export default function ContractVerify() {
               /* --- EXACT H1 DUMP TRANSLATION --- */
 <h1 style={{ 
     fontFamily: "'Arial', sans-serif",
-    marginTop: '1rem',
-    marginBottom: '0.5rem',
+    margin: '16px 0px 8px',
     lineHeight: '1.2',
     fontSize: '40px',
     textAlign: 'center',
