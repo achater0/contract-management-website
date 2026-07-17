@@ -154,31 +154,35 @@ export default function ContractVerify() {
             {isDesktop ? (
               /* --- H1 STYLE DISPLAY (>= 992px) --- */
               <h1 style={{ 
-  boxSizing: 'border-box',
-  fontFamily: "'Arial', sans-serif", // Changed back to match theirs
-  marginBottom: '0.5rem',
-  fontWeight: '500',
-  lineHeight: '1.2',
-  fontSize: '2.5rem',
-  display: 'block',
-  marginTop: '1rem',
-  textAlign: 'center',
-  color: '#28a745',
-  letterSpacing: 'normal' // Neutralizes your global -1.68px leak
-}}>
-  <b style={{ 
-    boxSizing: 'border-box',
-    fontFamily: "'Arial', sans-serif",
-    lineHeight: '1.2',
-    fontSize: '2.5rem',
-    textAlign: 'center',
-    color: '#28a745',
-    fontWeight: 'bolder',
-    letterSpacing: 'normal' // Forces normal letter gaps
-  }}>
-    Contrat : Validé (En Exécution)
-  </b>
-</h1>
+                boxSizing: 'border-box',
+                fontFamily: "'Arial', sans-serif",
+                marginBottom: '0.5rem',
+                fontWeight: '500',
+                lineHeight: '1.2',
+                fontSize: '2.5rem',
+                display: 'block',
+                marginTop: '1rem',
+                textAlign: 'center',
+                color: '#28a745',
+                letterSpacing: 'normal',
+                whiteSpace: 'nowrap', // 1. Forces the entire string onto a single line
+                maxWidth: 'none',     // 2. Erases any global max-width leaks on h1 tags
+                width: '100%'
+              }}>
+                <b style={{ 
+                  boxSizing: 'border-box',
+                  fontFamily: "'Arial', sans-serif",
+                  lineHeight: '1.2',
+                  fontSize: '2.5rem',
+                  textAlign: 'center',
+                  color: '#28a745',
+                  fontWeight: 'bolder',
+                  letterSpacing: 'normal',
+                  whiteSpace: 'nowrap' // Extra insurance for the bold tag container
+                }}>
+                  Contrat : Validé (En Exécution)
+                </b>
+              </h1>
             ) : (
               /* --- H4 STYLE DISPLAY (< 992px) --- */
               <h4 style={{ 
@@ -194,7 +198,7 @@ export default function ContractVerify() {
               }}>
                 <b style={{ 
                   boxSizing: 'border-box',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
+                  fontFamily: "'Arial', sans-serif",
                   fontWeight: 'bolder' 
                 }}>
                   Contrat : Validé (En Exécution)
