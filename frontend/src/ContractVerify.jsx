@@ -324,53 +324,64 @@ export default function ContractVerify() {
     Par le présent contrat, l’Ingénieur Géomètre Topographe s’engage envers le maître d’ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessus.
   </p>
 
-          {/* DATA TABLE */}
+{/* DATA TABLE */}
 <div style={{ overflowX: 'auto', width: '100%' }}>
   <table style={{ 
     width: '100%', 
     borderCollapse: 'collapse', 
-    marginTop: '16px', /* mt-3 */
+    marginTop: '16px', 
     marginBottom: '16px',
     color: '#212529',
     fontFamily: "'Arial', sans-serif",
-    fontSize: '16px'
+    fontSize: '16px',
+    lineHeight: '1.6',
+    boxSizing: 'border-box'
   }}>
-    <thead>
-      <tr style={{ color: '#0261A4' }}> {/* .cb class */}
+    {/* Applied tbody styles */}
+    <tbody style={{ textAlign: 'left' }}>
+      
+      {/* HEADER ROW - Applied color #0261A4 */}
+      <tr style={{ color: '#0261A4' }}>
+        {/* FIRST TH */}
         <th style={{ 
-          padding: '12px',
+          verticalAlign: 'top',
+          border: '1px solid #7f7f7f',
+          backgroundColor: '#d3d3d3',
+          padding: '3px',
           textAlign: 'center',
-          fontWeight: 'bold',
-          borderTop: '1px solid #dee2e6',
-          borderBottom: '2px solid #dee2e6',
-          width: '40%'
+          boxSizing: 'border-box',
+          width: '40%' /* Kept from earlier to maintain column proportions */
         }}>
           Réf. foncière
         </th>
+        {/* SECOND TH */}
         <th style={{ 
-          padding: '12px',
+          verticalAlign: 'top',
+          border: '1px solid #7f7f7f',
+          backgroundColor: '#d3d3d3',
+          padding: '3px',
           textAlign: 'center',
-          fontWeight: 'bold',
-          borderTop: '1px solid #dee2e6',
-          borderBottom: '2px solid #dee2e6'
+          boxSizing: 'border-box'
         }}>
           Prestation
         </th>
       </tr>
-    </thead>
-    <tbody>
+
+      {/* DATA ROWS */}
       {prestations.length === 0 ? (
         <tr>
           <td colSpan="2" style={{ 
-            padding: '12px', 
+            padding: '3px', 
             textAlign: 'center', 
-            borderTop: '1px solid #dee2e6' 
+            border: '1px solid #7f7f7f',
+            verticalAlign: 'top'
           }}>
             Aucune prestation renseignée
           </td>
         </tr>
       ) : (
         prestations.map((presta, idx) => {
+          // --- UNTOUCHED LOGIC ---
           const associatedRef = refs[idx] || refs[0] || {}; 
           const prefixMap = {
             "Titre foncier": "T",
@@ -400,22 +411,27 @@ export default function ContractVerify() {
               paramsText = " " + paramStrings.join(' ');
             }
           }
+          // --- END UNTOUCHED LOGIC ---
 
           return (
             <tr key={idx}>
+              {/* FIRST TD */}
               <td style={{ 
-                padding: '12px', 
                 verticalAlign: 'top',
+                border: '1px solid #7f7f7f',
+                padding: '3px',
                 textAlign: 'left',
-                borderTop: '1px solid #dee2e6'
+                boxSizing: 'border-box'
               }}>
                 {associatedRef.regime ? refCellText : "-"}
               </td>
+              {/* SECOND TD */}
               <td style={{ 
-                padding: '12px',
                 verticalAlign: 'top',
+                border: '1px solid #7f7f7f',
+                padding: '3px',
                 textAlign: 'left',
-                borderTop: '1px solid #dee2e6'
+                boxSizing: 'border-box'
               }}>
                 {presta.prestation}{paramsText}
               </td>
