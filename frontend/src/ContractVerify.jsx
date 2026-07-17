@@ -442,58 +442,47 @@ export default function ContractVerify() {
   </table>
 </div>
 
-{/* --- RECLAMATION SECTION --- */}
-<div style={{
-  marginTop: '1.5rem',
-  textAlign: 'center',
-  boxSizing: 'border-box',
-  color: 'black',
-  fontFamily: "'Arial', sans-serif",
-  fontSize: '16px',
-  lineHeight: '1.6'
+          {/* --- RECLAMATION SECTION --- */}
+          {/* --- RECLAMATION SECTION --- */}
+<div style={{  
+  marginBottom: '20px',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center', 
+  gap: '15px',              
+  flexWrap: 'wrap'
 }}>
-  <p style={{
-    fontWeight: 'bold', /* fw-bold */
-    color: '#dc3545',   /* text-danger */
-    marginTop: '0',
-    marginBottom: '1rem',
-    boxSizing: 'border-box'
+  <span style={{ 
+    fontSize: '16px', 
+    color: '#dc3545', 
+    fontWeight: 'bold' /* Changed to bold to match the original site's emphasis */
   }}>
-    Vous avez une question ou une réclamation concernant ce contrat ?{'\u00A0'}
-    
-    <span 
-      style={{
-        display: 'inline-block',
-        fontWeight: 'bold', /* fw-bold */
-        textAlign: 'center',
-        verticalAlign: 'middle',
-        userSelect: 'none',
-        border: '1px solid transparent',
-        fontSize: '1rem',
-        lineHeight: '1.5',
-        backgroundColor: '#dc3545',
-        borderColor: '#dc3545',
-        borderRadius: '50rem', /* rounded-pill */
-        boxShadow: '0 0.125rem 0.25rem rgba(0,0,0,.075)', /* shadow-sm */
-        paddingTop: '0.5rem',
-        paddingBottom: '0.5rem',
-        paddingRight: '1.5rem',
-        paddingLeft: '1.5rem',
-        cursor: 'pointer',
-        textDecoration: 'none',
-        transition: 'all 0.3s ease-in-out',
-        color: '#fff'
-      }}
-      onClick={() => {
-        // The original site executed 'reclamation.create();' via eval.
-        // Replace this console.log with your actual React state/routing logic for reclamations.
-        console.log('Soumettre une réclamation clicked');
-      }}
-    >
-      Soumettre une réclamation
-    </span>
-    <br />
-  </p>
+    Vous avez une question ou une réclamation concernant ce contrat ?
+  </span>
+  
+  <button
+    type="button"
+    style={{
+      padding: '14px 28px', /* Increased from 12px 24px */
+      backgroundColor: '#dc3545',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '9999px', 
+      cursor: 'pointer',
+      fontSize: '16px',     /* Increased from 14px */
+      fontWeight: 'bold',   /* Increased from normal */
+      whiteSpace: 'nowrap',
+      boxShadow: '0 0.125rem 0.25rem rgba(0,0,0,.075)', /* Kept the subtle shadow from the site */
+      transition: 'all 0.3s ease-in-out'
+    }}
+    onClick={() => {
+      // Add your click handler here
+      console.log('Soumettre une réclamation clicked');
+    }}
+  >
+    Soumettre une réclamation
+  </button>
 </div>
         </div>
       </div>
