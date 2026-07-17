@@ -82,12 +82,11 @@ export default function ContractVerify() {
       width: '100%'
     }}>
       
-      {/* MAIN CONTAINER */}
+      {/* MAIN CONTAINER: Removed maxWidth to use all the page */}
       <div style={{ 
         width: '100%',
-        maxWidth: '1200px', 
         margin: '0', 
-        padding: '5px', 
+        padding: '15px 25px', // Added horizontal padding so it doesn't touch the absolute edge of the screen
         textAlign: 'left',
         boxSizing: 'border-box' 
       }}>
@@ -99,8 +98,8 @@ export default function ContractVerify() {
           display: 'flex', 
           flexDirection: 'row',
           alignItems: 'center', 
-          justifyContent: 'space-between', /* Pushes logo left and text right */
-          gap: '20px',
+          justifyContent: 'flex-start', // Keeps elements together instead of pushing to edges
+          gap: '50px', // Adjusts the space between logo and green text
           flexWrap: 'wrap'
         }}>
           {/* LOGO */}
@@ -108,7 +107,7 @@ export default function ContractVerify() {
             src={myHeaderImage} 
             alt="ONIGT Logo" 
             style={{ 
-              maxWidth: '550px',
+              maxWidth: '500px', // Slightly reduced so it balances better with the text
               width: '100%', 
               height: 'auto', 
               display: 'block',
@@ -120,8 +119,9 @@ export default function ContractVerify() {
           <h2 style={{ 
             color: onigtGreen, 
             textAlign: 'left', 
-            fontSize: '28px',
-            fontWeight: 'bold', /* Bolder text to match image 5 */
+            fontSize: '26px', // Slightly smaller
+            fontWeight: '800', // Extra bold for a cleaner look
+            letterSpacing: '0.5px', // Makes the text look a bit more polished
             margin: '0px'
           }}>
             Contrat : Validé (En Exécution)
@@ -140,7 +140,6 @@ export default function ContractVerify() {
 
         {/* CLIENT SECTION */}
         <div style={{ marginBottom: '16px', textAlign: 'left', paddingLeft: '0px' }}>
-          {/* Tighter margin on the title */}
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '4px', textAlign: 'left' }}>
             Le Maître d'ouvrage (Client):
           </div>
@@ -151,7 +150,6 @@ export default function ContractVerify() {
           </ul>
         </div>
         
-        {/* Custom faint divider with balanced spacing */}
         <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
 
         {/* ENGINEER SECTION */}
@@ -186,22 +184,24 @@ export default function ContractVerify() {
               <tr>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '5px 8px', /* Tighter padding for a smaller table */
+                  padding: '8px 12px', /* Balanced padding */
                   backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   width: '40%',
                   textAlign: 'center',
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
+                  fontSize: '15px' /* Slightly smaller text for headers */
                 }}>
                   Réf. foncière
                 </th>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '5px 8px', /* Tighter padding */
+                  padding: '8px 12px', /* Balanced padding */
                   backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   textAlign: 'center',
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
+                  fontSize: '15px' /* Slightly smaller text for headers */
                 }}>
                   Prestation
                 </th>
@@ -210,7 +210,7 @@ export default function ContractVerify() {
             <tbody>
               {prestations.length === 0 ? (
                 <tr>
-                  <td colSpan="2" style={{ padding: '5px 8px', textAlign: 'left', border: `1px solid ${borderColor}` }}>Aucune prestation renseignée</td>
+                  <td colSpan="2" style={{ padding: '8px 12px', textAlign: 'left', border: `1px solid ${borderColor}` }}>Aucune prestation renseignée</td>
                 </tr>
               ) : (
                 prestations.map((presta, idx) => {
@@ -248,7 +248,7 @@ export default function ContractVerify() {
                     <tr key={idx}>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '5px 8px', /* Tighter padding */
+                        padding: '8px 12px', /* Balanced padding */
                         verticalAlign: 'top',
                         textAlign: 'left'
                       }}>
@@ -256,7 +256,7 @@ export default function ContractVerify() {
                       </td>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '5px 8px', /* Tighter padding */
+                        padding: '8px 12px', /* Balanced padding */
                         verticalAlign: 'top',
                         textAlign: 'left'
                       }}>
