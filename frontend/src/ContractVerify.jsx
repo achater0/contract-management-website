@@ -450,13 +450,12 @@ export default function ContractVerify() {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',               
-  flexWrap: 'wrap'
+  flexWrap: 'wrap',
+  gap: '12px'
 }}>
   <span style={{ 
-    margin : '0px 0px 16px',
     fontSize: '16px', 
     color: '#dc3545', 
-
   }}>
     Vous avez une question ou une réclamation concernant ce contrat ?
   </span>
@@ -464,7 +463,7 @@ export default function ContractVerify() {
   <button
     type="button"
     style={{
-      padding: '8px 24px', /* Increased from 12px 24px */
+      padding: '12px 24px', /* Increased from 12px 24px */
       backgroundColor: '#dc3545',
       color: '#fff',
       border: 'none',
