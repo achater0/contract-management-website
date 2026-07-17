@@ -90,48 +90,72 @@ export default function ContractVerify() {
       }}>
         
         {/* ======================================================== */}
-        {/* PART 1: LOGO & GREEN TEXT (Equivalent to Bootstrap Row)  */}
+        {/* PART 1: LOGO & GREEN TEXT                                */}
         {/* ======================================================== */}
         <div style={{ 
+          boxSizing: 'border-box',
           display: 'flex', 
           flexWrap: 'wrap', 
-          alignItems: 'center', 
+          position: 'relative',
           width: '100%',
-          paddingTop: '15px'
+          flex: '0 0 100%',
+          maxWidth: '100%',
+          margin: '0',
+          padding: '0.5rem' /* Equivalent to p-2 */
         }}>
-          {/* Logo Container (Takes 50% width) */}
+          
+          {/* Logo Container (Equivalent to col-5) */}
           <div style={{ 
-            flex: '0 0 50%', 
-            maxWidth: '50%',
+            boxSizing: 'border-box',
+            position: 'relative',
+            width: '100%',
             paddingRight: '15px',
             paddingLeft: '15px',
-            boxSizing: 'border-box'
+            flex: '0 0 41.666667%', 
+            maxWidth: '41.666667%',
+            margin: '0'
           }}>
-            <img src={myHeaderImage} alt="ONIGT Logo" style={{ width: '100%' }} />
+            <img 
+              src={myHeaderImage} 
+              alt="ONIGT Logo" 
+              style={{ 
+                width: '100%',
+                boxSizing: 'border-box',
+                verticalAlign: 'middle',
+                borderStyle: 'none'
+              }} 
+            />
           </div>
           
-          {/* Title Container (Takes 50% width) */}
+          {/* Title Container (Equivalent to col-6 mt-2) */}
           <div style={{ 
+            boxSizing: 'border-box',
             position: 'relative',
             width: '100%',
             paddingRight: '15px',
             paddingLeft: '15px',
             flex: '0 0 50%',
             maxWidth: '50%',
-            marginTop: '0.5rem',
-            boxSizing: 'border-box'
+            marginTop: '0.5rem' /* Equivalent to mt-2 */
           }}>
-            <h1 style={{ 
-              textAlign: 'center',
-              color: onigtGreen,
-              marginTop: '1rem',
-              marginBottom: '0', 
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-              lineHeight: '1.2'
+            <h4 style={{ 
+              boxSizing: 'border-box',
+              marginTop: '0',
+              marginBottom: '0.5rem',
+              fontWeight: '500',
+              lineHeight: '1.2',
+              fontSize: '1.5rem',
+              color: '#28a745',
+              textAlign: 'left', /* Switched to left per your CSS */
+              fontFamily: "'Arial', sans-serif"
             }}>
-              <b>Contrat : Validé (En Exécution)</b>
-            </h1>
+              <b style={{ 
+                boxSizing: 'border-box',
+                fontWeight: 'bolder' 
+              }}>
+                Contrat : Validé (En Exécution)
+              </b>
+            </h4>
           </div>
         </div>
 
