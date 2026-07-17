@@ -269,7 +269,7 @@ export default function ContractVerify() {
     marginLeft: '-5px', 
     marginRight: '-5px' 
   }}>
-    <ul style={{ margin: '8px 0', paddingLeft: '40px' }}>
+    <ul style={{ margin: '0px 0px 16px', paddingLeft: '40px' }}>
       <li style={{ margin: '8px' }}> {/* m-2 class */}
         <b>{clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}</b>
       </li>
@@ -303,7 +303,7 @@ export default function ContractVerify() {
     marginLeft: '-5px', 
     marginRight: '-5px' 
   }}>
-    <ul style={{ margin: '8px 0', paddingLeft: '40px' }}>
+    <ul style={{ margin: '0px 0px 16px', paddingLeft: '40px' }}>
       <li> {/* no margin class on this li in the original */}
         <b>CHATER Othmane</b>.
       </li>
