@@ -187,7 +187,7 @@ export default function ContractVerify() {
                 lineHeight: '1.2',
                 fontSize: '1.5rem',
                 color: '#28a745',
-                textAlign: isMobile ? 'center' : 'left',
+                textAlign: 'left',
                 letterSpacing: 'normal'
               }}>
                 <b style={{ 
@@ -234,43 +234,96 @@ export default function ContractVerify() {
         {/* PART 3: THE REST (CLIENT, ENGINEER, TABLE, RECLAMATION)  */}
         {/* ======================================================== */}
         <div style={{ 
-          width: '100%',
-          padding: '15px', /* Equivalent to Bootstrap's p-3 wrapper */
-          boxSizing: 'border-box'
-        }}>
-          
-          {/* CLIENT SECTION */}
-          <div style={{ marginBottom: '16px', textAlign: 'left' }}>
-            <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '4px', textAlign: 'left' }}>
-              Le Maître d'ouvrage (Client):
-            </div>
-            <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
-              <li style={{ fontWeight: 'bold' }}>
-                {clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}
-              </li>
-            </ul>
-          </div>
-          
-          <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
+  width: '100%',
+  padding: '16px', /* p-3 */
+  boxSizing: 'border-box',
+  textAlign: 'left',
+  fontFamily: "'Arial', sans-serif",
+  fontSize: '16px',
+  lineHeight: '1.6'
+}}>
+  
+  {/* CLIENT SECTION */}
+  <div style={{ 
+    display: 'flex', 
+    flexWrap: 'wrap', 
+    alignItems: 'flex-start', 
+    marginTop: '0', 
+    marginLeft: '-5px', 
+    marginRight: '-5px',
+    color: '#0261A4' /* .cb class */
+  }}>
+    <b>Le Maître d'ouvrage (Client):</b>
+  </div>
 
-          {/* ENGINEER SECTION */}
-          <div style={{ marginBottom: '16px', textAlign: 'left' }}>
-            <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '4px', textAlign: 'left' }}>
-              Le Maître d'œuvre (Ingénieur Géomètre Topographe):
-            </div>
-            <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
-              <li style={{ fontWeight: 'bold' }}>
-                CHATER Othmane 
-              </li>
-            </ul>
-          </div>
+  <hr style={{ 
+    margin: '0', 
+    border: '0', 
+    borderTop: '1px solid rgba(0,0,0,.1)', 
+    color: '#0261A4' 
+  }} />
 
-          <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
+  <div style={{ 
+    display: 'flex', 
+    flexDirection: 'column', 
+    marginLeft: '-5px', 
+    marginRight: '-5px' 
+  }}>
+    <ul style={{ margin: '16px 0', paddingLeft: '40px' }}>
+      <li style={{ margin: '8px' }}> {/* m-2 class */}
+        <b>{clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}</b>
+      </li>
+    </ul>
+  </div>
 
-          {/* INTRODUCTORY TEXT */}
-          <p style={{ marginBottom: '16px', color: 'black', textAlign: 'left' }}>
-            Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessous.
-          </p>
+  {/* ENGINEER SECTION */}
+  <div style={{ 
+    display: 'flex', 
+    flexWrap: 'wrap', 
+    alignItems: 'flex-start', 
+    marginTop: '0', 
+    marginLeft: '-5px', 
+    marginRight: '-5px',
+    color: '#0261A4' /* .cb class */
+  }}>
+    <b>Le Maître d'œuvre (Ingénieur Géomètre Topographe):</b>
+  </div>
+
+  <hr style={{ 
+    margin: '0', 
+    border: '0', 
+    borderTop: '1px solid rgba(0,0,0,.1)', 
+    color: '#0261A4' 
+  }} />
+
+  <div style={{ 
+    display: 'flex', 
+    flexDirection: 'column', 
+    marginTop: '8px', /* mt-2 class */
+    marginLeft: '-5px', 
+    marginRight: '-5px' 
+  }}>
+    <ul style={{ margin: '16px 0', paddingLeft: '40px' }}>
+      <li> {/* no margin class on this li in the original */}
+        <b>CHATER Othmane</b>.
+      </li>
+    </ul>
+  </div>
+
+  <hr style={{ 
+    margin: '0', 
+    border: '0', 
+    borderTop: '1px solid rgba(0,0,0,.1)' 
+  }} />
+  
+  {/* INTRODUCTORY TEXT */}
+  <p style={{ 
+    marginLeft: '20px', /* corrected from margin-letf in original HTML */
+    marginTop: '10px', 
+    marginBottom: '16px' 
+  }}>
+    Par le présent contrat, l’Ingénieur Géomètre Topographe s’engage envers le maître d’ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessus.
+  </p>
 
           {/* DATA TABLE */}
           <div style={{ overflowX: 'auto', width: '100%' }}>
