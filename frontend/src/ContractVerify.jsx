@@ -112,7 +112,7 @@ export default function ContractVerify() {
           flex: '0 0 100%',
           maxWidth: '100%',
           margin: '0',
-          padding: '0.5rem' /* padding: .5rem!important */
+          padding: '8px' /* Forcing exactly 8px instead of 0.5rem */
         }}>
           
           {/* Logo Container (col-5 on desktop/tablet, col-12 on mobile) */}
@@ -123,7 +123,6 @@ export default function ContractVerify() {
             paddingRight: '15px',
             paddingLeft: '15px',
             margin: '0',
-            // Stacks to 100% width on mobile (<= 767px), stays at 41.66% on tablet/desktop
             flex: isMobile ? '0 0 100%' : '0 0 41.666667%', 
             maxWidth: isMobile ? '100%' : '41.666667%'
           }}>
@@ -146,8 +145,7 @@ export default function ContractVerify() {
             width: '100%',
             paddingRight: '15px',
             paddingLeft: '15px',
-            marginTop: '0.5rem', /* margin-top: .5rem!important */
-            // Stacks to 100% width on mobile (<= 767px), stays at 50% on tablet/desktop
+            marginTop: '0.5rem',
             flex: isMobile ? '0 0 100%' : '0 0 50%',
             maxWidth: isMobile ? '100%' : '50%'
           }}>
@@ -157,7 +155,7 @@ export default function ContractVerify() {
               /* --- H1 STYLE DISPLAY (>= 992px) --- */
               <h1 style={{ 
                 boxSizing: 'border-box',
-                fontFamily: "'Arial', sans-serif",
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
                 marginBottom: '0.5rem',
                 fontWeight: '500',
                 lineHeight: '1.2',
@@ -169,7 +167,7 @@ export default function ContractVerify() {
               }}>
                 <b style={{ 
                   boxSizing: 'border-box',
-                  fontFamily: "'Arial', sans-serif",
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
                   lineHeight: '1.2',
                   fontSize: '2.5rem',
                   textAlign: 'center',
@@ -183,18 +181,18 @@ export default function ContractVerify() {
               /* --- H4 STYLE DISPLAY (< 992px) --- */
               <h4 style={{ 
                 boxSizing: 'border-box',
-                fontFamily: "'Arial', sans-serif",
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
                 marginTop: '0',
                 marginBottom: '0.5rem',
                 fontWeight: '500',
                 lineHeight: '1.2',
                 fontSize: '1.5rem',
                 color: '#28a745',
-                // Keeps left alignment on tablet, centers if dropped down on mobile
                 textAlign: isMobile ? 'center' : 'left' 
               }}>
                 <b style={{ 
                   boxSizing: 'border-box',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
                   fontWeight: 'bolder' 
                 }}>
                   Contrat : Validé (En Exécution)
