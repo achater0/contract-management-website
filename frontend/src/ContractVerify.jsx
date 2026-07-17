@@ -90,7 +90,8 @@ export default function ContractVerify() {
       color: 'black',
       margin: '0px',
       padding: '0px',
-      width: '100%'
+      width: '100%',
+      letterSpacing: '0.1px'
     }}>
       
       {/* MAIN CONTAINER */}
@@ -168,8 +169,8 @@ export default function ContractVerify() {
       color: '#28a745',
       fontWeight: 'bolder',
       lineHeight: '1.1',
-      display: 'inline-block',
-      letterSpacing: '0.1px'
+      display: 'inline-block'
+
     }}>
       Contrat : Validé (En Exécution)
     </b>
@@ -470,8 +471,7 @@ export default function ContractVerify() {
       border: 'none',
       borderRadius: '9999px', 
       cursor: 'pointer',
-      fontSize: '16px',     /* Increased from 14px */
-      fontWeight: 'bold',   /* Increased from normal */
+      fontSize: '14px',
       whiteSpace: 'nowrap',
       boxShadow: '0 0.125rem 0.25rem rgba(0,0,0,.075)', /* Kept the subtle shadow from the site */
       transition: 'all 0.3s ease-in-out'
