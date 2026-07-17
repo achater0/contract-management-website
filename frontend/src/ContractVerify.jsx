@@ -318,7 +318,6 @@ export default function ContractVerify() {
   
   {/* INTRODUCTORY TEXT */}
   <p style={{ 
-    marginLeft: '20px', /* corrected from margin-letf in original HTML */
     marginTop: '10px', 
     marginBottom: '16px' 
   }}>
