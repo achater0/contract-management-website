@@ -453,9 +453,10 @@ export default function ContractVerify() {
   flexWrap: 'wrap'
 }}>
   <span style={{ 
+    margin : '0px 0px 16px',
     fontSize: '16px', 
     color: '#dc3545', 
-    fontWeight: 'bold' /* Changed to bold to match the original site's emphasis */
+
   }}>
     Vous avez une question ou une réclamation concernant ce contrat ?
   </span>
@@ -463,13 +464,14 @@ export default function ContractVerify() {
   <button
     type="button"
     style={{
-      padding: '14px 28px', /* Increased from 12px 24px */
+      padding: '8px 24px', /* Increased from 12px 24px */
       backgroundColor: '#dc3545',
       color: '#fff',
       border: 'none',
       borderRadius: '9999px', 
       cursor: 'pointer',
-      fontSize: '14px',     /* Increased from 14px */
+      fontSize: '16px',     /* Increased from 14px */
+      fontWeight: 'bold',
       whiteSpace: 'nowrap',
       boxShadow: '0 0.125rem 0.25rem rgba(0,0,0,.075)', /* Kept the subtle shadow from the site */
       transition: 'all 0.3s ease-in-out'
