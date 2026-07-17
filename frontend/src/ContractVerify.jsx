@@ -160,12 +160,15 @@ export default function ContractVerify() {
     fontSize: '40px',
     textAlign: 'center',
     color: '#28a745',
+    boxSizing: 'border-box'
   }}>
     <b style={{ 
       fontFamily: "'Arial', sans-serif",
       fontSize: '40px',
       color: '#28a745',
-      fontWeight: 'bolder'
+      fontWeight: 'bolder',
+      lineHeight: '1.1',
+      display: 'inline-block'
     }}>
       Contrat : Validé (En Exécution)
     </b>
