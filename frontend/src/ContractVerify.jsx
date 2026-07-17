@@ -325,104 +325,107 @@ export default function ContractVerify() {
   </p>
 
           {/* DATA TABLE */}
-          <div style={{ overflowX: 'auto', width: '100%' }}>
-            <table style={{ 
-              width: '100%', 
-              borderCollapse: 'collapse', 
-              border: `1px solid ${borderColor}`,
-              color: 'black'
-            }}>
-              <thead>
-                <tr>
-                  <th style={{ 
-                    border: `1px solid ${borderColor}`, 
-                    padding: '8px 12px',
-                    backgroundColor: animaHeaderBg, 
-                    color: onigtBlue,
-                    width: '40%',
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    fontSize: '15px' 
-                  }}>
-                    Réf. foncière
-                  </th>
-                  <th style={{ 
-                    border: `1px solid ${borderColor}`, 
-                    padding: '8px 12px',
-                    backgroundColor: animaHeaderBg, 
-                    color: onigtBlue,
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    fontSize: '15px' 
-                  }}>
-                    Prestation
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {prestations.length === 0 ? (
-                  <tr>
-                    <td colSpan="2" style={{ padding: '8px 12px', textAlign: 'left', border: `1px solid ${borderColor}` }}>
-                      Aucune prestation renseignée
-                    </td>
-                  </tr>
-                ) : (
-                  prestations.map((presta, idx) => {
-                    const associatedRef = refs[idx] || refs[0] || {}; 
-                    const prefixMap = {
-                      "Titre foncier": "T",
-                      "Réquisition": "R",
-                      "Non immatriculé": "NI",
-                      "Délimitation administrative": "DA",
-                      "Non défini": "ND"
-                    };
-                    const prefix = prefixMap[associatedRef.regime] || "";
-                    const val = associatedRef.valeur || "";
-                    const commune = associatedRef.commune || "";
-                    const zone = associatedRef.zone || "";
-                    
-                    const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
+<div style={{ overflowX: 'auto', width: '100%' }}>
+  <table style={{ 
+    width: '100%', 
+    borderCollapse: 'collapse', 
+    marginTop: '16px', /* mt-3 */
+    marginBottom: '16px',
+    color: '#212529',
+    fontFamily: "'Arial', sans-serif",
+    fontSize: '16px'
+  }}>
+    <thead>
+      <tr style={{ color: '#0261A4' }}> {/* .cb class */}
+        <th style={{ 
+          padding: '12px',
+          textAlign: 'center',
+          fontWeight: 'bold',
+          borderTop: '1px solid #dee2e6',
+          borderBottom: '2px solid #dee2e6',
+          width: '40%'
+        }}>
+          Réf. foncière
+        </th>
+        <th style={{ 
+          padding: '12px',
+          textAlign: 'center',
+          fontWeight: 'bold',
+          borderTop: '1px solid #dee2e6',
+          borderBottom: '2px solid #dee2e6'
+        }}>
+          Prestation
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {prestations.length === 0 ? (
+        <tr>
+          <td colSpan="2" style={{ 
+            padding: '12px', 
+            textAlign: 'center', 
+            borderTop: '1px solid #dee2e6' 
+          }}>
+            Aucune prestation renseignée
+          </td>
+        </tr>
+      ) : (
+        prestations.map((presta, idx) => {
+          const associatedRef = refs[idx] || refs[0] || {}; 
+          const prefixMap = {
+            "Titre foncier": "T",
+            "Réquisition": "R",
+            "Non immatriculé": "NI",
+            "Délimitation administrative": "DA",
+            "Non défini": "ND"
+          };
+          const prefix = prefixMap[associatedRef.regime] || "";
+          const val = associatedRef.valeur || "";
+          const commune = associatedRef.commune || "";
+          const zone = associatedRef.zone || "";
+          
+          const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
 
-                    let paramsText = "";
-                    if (presta.params && Object.keys(presta.params).length > 0) {
-                      const paramStrings = Object.entries(presta.params)
-                        .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
-                        .map(([k, v]) => {
-                          const cleanKey = k.replace(/_/g, ' ');
-                          const rawValue = String(v); 
-                          return `(${cleanKey} = ${rawValue})`;
-                        });
+          let paramsText = "";
+          if (presta.params && Object.keys(presta.params).length > 0) {
+            const paramStrings = Object.entries(presta.params)
+              .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
+              .map(([k, v]) => {
+                const cleanKey = k.replace(/_/g, ' ');
+                const rawValue = String(v); 
+                return `(${cleanKey} = ${rawValue})`;
+              });
 
-                      if (paramStrings.length > 0) {
-                        paramsText = " " + paramStrings.join(' ');
-                      }
-                    }
+            if (paramStrings.length > 0) {
+              paramsText = " " + paramStrings.join(' ');
+            }
+          }
 
-                    return (
-                      <tr key={idx}>
-                        <td style={{ 
-                          border: `1px solid ${borderColor}`, 
-                          padding: '8px 12px', 
-                          verticalAlign: 'top',
-                          textAlign: 'left'
-                        }}>
-                          {associatedRef.regime ? refCellText : "-"}
-                        </td>
-                        <td style={{ 
-                          border: `1px solid ${borderColor}`, 
-                          padding: '8px 12px',
-                          verticalAlign: 'top',
-                          textAlign: 'left'
-                        }}>
-                          {presta.prestation}{paramsText}
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+          return (
+            <tr key={idx}>
+              <td style={{ 
+                padding: '12px', 
+                verticalAlign: 'top',
+                textAlign: 'left',
+                borderTop: '1px solid #dee2e6'
+              }}>
+                {associatedRef.regime ? refCellText : "-"}
+              </td>
+              <td style={{ 
+                padding: '12px',
+                verticalAlign: 'top',
+                textAlign: 'left',
+                borderTop: '1px solid #dee2e6'
+              }}>
+                {presta.prestation}{paramsText}
+              </td>
+            </tr>
+          );
+        })
+      )}
+    </tbody>
+  </table>
+</div>
 
           {/* --- RECLAMATION SECTION --- */}
           <div style={{ 
