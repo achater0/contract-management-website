@@ -36,12 +36,12 @@ export default function ContractVerify() {
   }, [id]);
 
   if (loading) {
-    return <div style={{ padding: '40px', textAlign: 'left', fontFamily: 'Arial, sans-serif', fontSize: '16px' }}>Chargement...</div>;
+    return <div style={{ padding: '20px', textAlign: 'left', fontFamily: 'Arial, sans-serif', fontSize: '16px' }}>Chargement...</div>;
   }
 
   if (error || !contract) {
     return (
-      <div style={{ padding: '40px', textAlign: 'left', fontFamily: 'Arial, sans-serif', fontSize: '16px', color: '#dc3545' }}>
+      <div style={{ padding: '20px', textAlign: 'left', fontFamily: 'Arial, sans-serif', fontSize: '16px', color: '#dc3545' }}>
         <h2>❌ Erreur</h2>
         <p>{error || "Ce code QR ne correspond à aucun contrat valide."}</p>
       </div>
@@ -67,6 +67,7 @@ export default function ContractVerify() {
   const onigtBlue = "#0261A4"; 
   const onigtGreen = "#28a745";
   const borderColor = "#7f7f7f"; 
+  const animaHeaderBg = "#d1d1d1";
 
   return (
     <div style={{ 
@@ -81,32 +82,31 @@ export default function ContractVerify() {
       width: '100%'
     }}>
       
-      {/* MAIN CONTAINER: Centered with generous padding */}
+      {/* MAIN CONTAINER: Padding set to 5px */}
       <div style={{ 
         maxWidth: '1200px', 
         margin: '0 auto', 
-        padding: '40px', 
+        padding: '5px', 
         textAlign: 'left',
         boxSizing: 'border-box' 
       }}>
         
-        {/* HEADER BLOCK: Places logo and enlarged green text side-by-side */}
+        {/* HEADER BLOCK */}
         <div style={{ 
-          marginBottom: '40px', 
+          marginBottom: '30px', 
           width: '100%', 
           display: 'flex', 
           flexDirection: 'row',
           alignItems: 'center', 
           justifyContent: 'flex-start',
-          gap: '40px',
+          gap: '20px',
           flexWrap: 'wrap'
         }}>
-          {/* Logo restricted by max-width */}
           <img 
             src={myHeaderImage} 
             alt="ONIGT Logo" 
             style={{ 
-              maxWidth: '450px',
+              maxWidth: '350px',
               width: '100%', 
               height: 'auto', 
               display: 'block',
@@ -118,8 +118,8 @@ export default function ContractVerify() {
           <h2 style={{ 
             color: onigtGreen, 
             textAlign: 'left', 
-            fontSize: '32px',
-            fontWeight: 'bold',
+            fontSize: '28px',
+            fontWeight: '600',
             margin: '0px'
           }}>
             Contrat : Validé (En Exécution)
@@ -127,7 +127,7 @@ export default function ContractVerify() {
         </div>
 
         {/* REFERENCE AND DATE */}
-        <div style={{ marginBottom: '30px', paddingLeft: '0px' }}>
+        <div style={{ marginBottom: '20px', paddingLeft: '0px' }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', textAlign: 'left' }}>
             Contrat n°: {officialNumber}
           </div>
@@ -150,7 +150,7 @@ export default function ContractVerify() {
         </div>
 
         {/* ENGINEER SECTION */}
-        <div style={{ marginBottom: '25px', textAlign: 'left', paddingLeft: '0px' }}>
+        <div style={{ marginBottom: '20px', textAlign: 'left', paddingLeft: '0px' }}>
           <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
             Le Maître d'œuvre (Ingénieur Géomètre Topographe):
           </div>
@@ -181,7 +181,7 @@ export default function ContractVerify() {
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
                   padding: '10px 10px', 
-                  backgroundColor: '#e9ecef',
+                  backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   width: '40%',
                   textAlign: 'center',
@@ -192,7 +192,7 @@ export default function ContractVerify() {
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
                   padding: '10px 10px', 
-                  backgroundColor: '#e9ecef', 
+                  backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   textAlign: 'center',
                   fontWeight: 'bold'
@@ -266,7 +266,7 @@ export default function ContractVerify() {
 
         {/* --- RECLAMATION SECTION --- */}
         <div style={{ 
-          marginTop: '40px', 
+          marginTop: '30px', 
           marginBottom: '20px',
           display: 'flex',
           flexDirection: 'row',
@@ -278,7 +278,7 @@ export default function ContractVerify() {
           <span style={{ 
             fontSize: '16px', 
             color: '#dc3545', 
-            fontWeight: 'normal' 
+            fontWeight: 'normal'
           }}>
             Vous avez une question ou une réclamation concernant ce contrat ?
           </span>
@@ -286,11 +286,11 @@ export default function ContractVerify() {
           <button
             type="button"
             style={{
-              padding: '10px 25px',
-              backgroundColor: '#dc3545', // Red background
+              padding: '12px 24px', 
+              backgroundColor: '#dc3545',
               color: '#fff',
               border: 'none',
-              borderRadius: '25px', // Pill-shaped button
+              borderRadius: '9999px', 
               cursor: 'pointer',
               fontSize: '14px',
               fontWeight: 'normal',
