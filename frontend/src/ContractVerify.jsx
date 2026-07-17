@@ -151,11 +151,11 @@ export default function ContractVerify() {
           }}>
             
             {/* Semantic wrapper changing based on screen width */}
-            {isDesktop ? (
-              /* --- H1 STYLE DISPLAY (>= 992px) --- */
+{isDesktop ? (
+              /* --- EXACT H1 DUMP TRANSLATION --- */
               <h1 style={{ 
-                boxSizing: 'border-box',
                 fontFamily: "'Arial', sans-serif",
+                boxSizing: 'border-box',
                 marginBottom: '0.5rem',
                 fontWeight: '500',
                 lineHeight: '1.2',
@@ -164,21 +164,24 @@ export default function ContractVerify() {
                 marginTop: '1rem',
                 textAlign: 'center',
                 color: '#28a745',
+                // Explicit resets to kill global interference
                 letterSpacing: 'normal',
-                whiteSpace: 'nowrap', // 1. Forces the entire string onto a single line
-                maxWidth: 'none',     // 2. Erases any global max-width leaks on h1 tags
-                width: '100%'
+                WebkitTextSizeAdjust: '100%',
+                WebkitTapHighlightColor: 'transparent'
               }}>
+                {/* --- EXACT B DUMP TRANSLATION --- */}
                 <b style={{ 
-                  boxSizing: 'border-box',
+                  WebkitTextSizeAdjust: '100%',
+                  WebkitTapHighlightColor: 'transparent',
                   fontFamily: "'Arial', sans-serif",
                   lineHeight: '1.2',
                   fontSize: '2.5rem',
                   textAlign: 'center',
                   color: '#28a745',
+                  boxSizing: 'border-box',
                   fontWeight: 'bolder',
-                  letterSpacing: 'normal',
-                  whiteSpace: 'nowrap' // Extra insurance for the bold tag container
+                  // Explicit resets to kill global interference
+                  letterSpacing: 'normal'
                 }}>
                   Contrat : Validé (En Exécution)
                 </b>
@@ -186,20 +189,24 @@ export default function ContractVerify() {
             ) : (
               /* --- H4 STYLE DISPLAY (< 992px) --- */
               <h4 style={{ 
+                WebkitTextSizeAdjust: '100%',
+                WebkitTapHighlightColor: 'transparent',
                 boxSizing: 'border-box',
-                fontFamily: "'Arial', sans-serif", // Changed back to match theirs
+                fontFamily: "'Arial', sans-serif",
                 marginTop: '0',
                 marginBottom: '0.5rem',
                 fontWeight: '500',
                 lineHeight: '1.2',
                 fontSize: '1.5rem',
                 color: '#28a745',
-                textAlign: isMobile ? 'center' : 'left' 
+                textAlign: isMobile ? 'center' : 'left',
+                letterSpacing: 'normal'
               }}>
                 <b style={{ 
                   boxSizing: 'border-box',
                   fontFamily: "'Arial', sans-serif",
-                  fontWeight: 'bolder' 
+                  fontWeight: 'bolder',
+                  letterSpacing: 'normal'
                 }}>
                   Contrat : Validé (En Exécution)
                 </b>
