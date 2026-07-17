@@ -112,10 +112,10 @@ export default function ContractVerify() {
           flex: '0 0 100%',
           maxWidth: '100%',
           margin: '0',
-          padding: '0.5rem'
+          padding: '0.5rem' /* padding: .5rem!important */
         }}>
           
-          {/* Logo Container */}
+          {/* Logo Container (col-5 on desktop/tablet, col-12 on mobile) */}
           <div style={{ 
             boxSizing: 'border-box',
             position: 'relative',
@@ -123,9 +123,9 @@ export default function ContractVerify() {
             paddingRight: '15px',
             paddingLeft: '15px',
             margin: '0',
-            // If mobile (<= 767), take 100% width. Otherwise, take 41.6%
+            // Stacks to 100% width on mobile (<= 767px), stays at 41.66% on tablet/desktop
             flex: isMobile ? '0 0 100%' : '0 0 41.666667%', 
-            maxWidth: isMobile ? '100%' : '41.666667%',
+            maxWidth: isMobile ? '100%' : '41.666667%'
           }}>
             <img 
               src={myHeaderImage} 
@@ -139,38 +139,69 @@ export default function ContractVerify() {
             />
           </div>
           
-          {/* Title Container */}
+          {/* Title Container (col-6 on desktop/tablet, col-12 on mobile) */}
           <div style={{ 
             boxSizing: 'border-box',
             position: 'relative',
             width: '100%',
             paddingRight: '15px',
             paddingLeft: '15px',
-            marginTop: '0.5rem',
-            // If mobile (<= 767), drop below the image at 100% width. Otherwise, stay side-by-side at 50%
+            marginTop: '0.5rem', /* margin-top: .5rem!important */
+            // Stacks to 100% width on mobile (<= 767px), stays at 50% on tablet/desktop
             flex: isMobile ? '0 0 100%' : '0 0 50%',
-            maxWidth: isMobile ? '100%' : '50%',
-            // Optional: center the text when it drops down on mobile
-            textAlign: isMobile ? 'center' : 'left' 
+            maxWidth: isMobile ? '100%' : '50%'
           }}>
-            <h4 style={{ 
-              boxSizing: 'border-box',
-              marginTop: '0',
-              marginBottom: '0.5rem',
-              fontWeight: '500',
-              lineHeight: '1.2',
-              color: '#28a745',
-              fontFamily: "'Arial', sans-serif",
-              // If desktop (>= 992), use 40px. Otherwise use 1.5rem (24px)
-              fontSize: isDesktop ? '40px' : '1.5rem',
-            }}>
-              <b style={{ 
+            
+            {/* Semantic wrapper changing based on screen width */}
+            {isDesktop ? (
+              /* --- H1 STYLE DISPLAY (>= 992px) --- */
+              <h1 style={{ 
                 boxSizing: 'border-box',
-                fontWeight: 'bolder' 
+                fontFamily: "'Arial', sans-serif",
+                marginBottom: '0.5rem',
+                fontWeight: '500',
+                lineHeight: '1.2',
+                fontSize: '2.5rem',
+                display: 'block',
+                marginTop: '1rem',
+                textAlign: 'center',
+                color: '#28a745'
               }}>
-                Contrat : Validé (En Exécution)
-              </b>
-            </h4>
+                <b style={{ 
+                  boxSizing: 'border-box',
+                  fontFamily: "'Arial', sans-serif",
+                  lineHeight: '1.2',
+                  fontSize: '2.5rem',
+                  textAlign: 'center',
+                  color: '#28a745',
+                  fontWeight: 'bolder'
+                }}>
+                  Contrat : Validé (En Exécution)
+                </b>
+              </h1>
+            ) : (
+              /* --- H4 STYLE DISPLAY (< 992px) --- */
+              <h4 style={{ 
+                boxSizing: 'border-box',
+                fontFamily: "'Arial', sans-serif",
+                marginTop: '0',
+                marginBottom: '0.5rem',
+                fontWeight: '500',
+                lineHeight: '1.2',
+                fontSize: '1.5rem',
+                color: '#28a745',
+                // Keeps left alignment on tablet, centers if dropped down on mobile
+                textAlign: isMobile ? 'center' : 'left' 
+              }}>
+                <b style={{ 
+                  boxSizing: 'border-box',
+                  fontWeight: 'bolder' 
+                }}>
+                  Contrat : Validé (En Exécution)
+                </b>
+              </h4>
+            )}
+
           </div>
         </div>
 
