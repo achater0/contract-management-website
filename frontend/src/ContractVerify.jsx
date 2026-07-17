@@ -95,7 +95,7 @@ export default function ContractVerify() {
       <div style={{ 
         display: 'flex', 
         alignItems: 'flex-start', 
-        padding: '10px', 
+        padding: '8px', 
         gap: '20px',
         width: '100%' 
       }}>
@@ -107,24 +107,28 @@ export default function ContractVerify() {
         {/* Text Container (Takes remaining space) */}
       
 <div style={{ 
+  position: 'relative',
+  width: '100%',
+  paddingRight: '15px',
+  paddingLeft: '15px',
   flex: '0 0 50%',
   maxWidth: '50%',
-  padding: '0px 15px',
-  marginTop: '8px', // Equivalent to mt-2 (.5rem)
-  boxSizing: 'border-box',
-  position: 'relative'
+  marginTop: '0.5rem', /* Equivalent to mt-2 */
+  boxSizing: 'border-box'
 }}>
   <h1 style={{ 
-    textAlign: 'center', // Centers the text within its 50% column (like text-center)
-    color: '#28a745', // --success color
-    margin: '16px 0px 8px', // Equivalent to mt-3 (1rem)
-    fontFamily: "'Arial', sans-serif",
-    fontWeight: 'bold',
-    fontSize: 'clamp(24px, 4vw, 40px)', // Keeps your responsive sizing
+    textAlign: 'center', /* text-center */
+    color: '#28a745',    /* text-success */
+    marginTop: '1rem',   /* mt-3 */
+    marginBottom: '0', 
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', /* matching their var(--font-family-sans-serif) */
+    fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', /* Scales between an h4 size and h1 size */
     lineHeight: '1.2'
   }}>
-    Contrat : Validé (En Exécution)
+    {/* They use a <b> tag inside the heading for fw-bold */}
+    <b>Contrat : Validé (En Exécution)</b>
   </h1>
+  
 </div>
       </div>
 
