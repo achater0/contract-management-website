@@ -108,11 +108,9 @@ export default function ContractVerify() {
         <div style={{ flex: 1 }}>
           <h1 style={{ 
             color: '#28a745', 
-            fontWeight: 'bold',// Bold text for emphasis but not too heavy
-            fontWidth: 'normal', // Normal width for better readability
             textAlign: 'left',
-            fontSize: 'clamp(2rem, 2.5vw, 3rem)', // Responsive font size
-            margin: '10px 0' // a little bit to the right of the logo and a little bit down
+            font : 'bold 24px Arial, sans-serif', // Slightly larger font size for prominence
+            margin: '10px 0' 
           }}>
             Contrat : Validé (En Exécution)
           </h1>
@@ -175,7 +173,7 @@ export default function ContractVerify() {
               <tr>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '8px 12px', /* Balanced padding */
+                  padding: '0px 12px', /* Balanced padding */
                   backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   width: '40%',
