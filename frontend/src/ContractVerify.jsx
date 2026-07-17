@@ -109,7 +109,7 @@ export default function ContractVerify() {
           <h1 style={{ 
             color: '#28a745', 
             textAlign: 'left',
-            font : 'bold 24px Arial, sans-serif', // Slightly larger font size for prominence
+            font: 'bold clamp(24px, 4vw, 40px) Arial, sans-serif',
             margin: '10px 0' 
           }}>
             Contrat : Validé (En Exécution)
