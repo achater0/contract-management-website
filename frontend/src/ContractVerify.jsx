@@ -446,6 +446,7 @@ export default function ContractVerify() {
           {/* --- RECLAMATION SECTION --- */}
 <div style={{  
   marginBottom: '16px',
+  marginTop: '3px',
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
@@ -469,7 +470,6 @@ export default function ContractVerify() {
       borderRadius: '9999px', 
       cursor: 'pointer',
       fontSize: '16px',     /* Increased from 14px */
-      fontWeight: 'bold',
       whiteSpace: 'nowrap',
       boxShadow: '0 0.125rem 0.25rem rgba(0,0,0,.075)', /* Kept the subtle shadow from the site */
       transition: 'all 0.3s ease-in-out'
