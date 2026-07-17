@@ -82,11 +82,11 @@ export default function ContractVerify() {
       width: '100%'
     }}>
       
-      {/* MAIN CONTAINER: Removed maxWidth to use all the page */}
+      {/* MAIN CONTAINER */}
       <div style={{ 
         width: '100%',
         margin: '0', 
-        padding: '15px 25px', // Added horizontal padding so it doesn't touch the absolute edge of the screen
+        padding: '0', // Removed the extra padding so it uses all the space
         textAlign: 'left',
         boxSizing: 'border-box' 
       }}>
@@ -97,9 +97,9 @@ export default function ContractVerify() {
           width: '100%', 
           display: 'flex', 
           flexDirection: 'row',
-          alignItems: 'center', 
-          justifyContent: 'flex-start', // Keeps elements together instead of pushing to edges
-          gap: '50px', // Adjusts the space between logo and green text
+          alignItems: 'flex-start', // Aligns items to the top instead of the center
+          justifyContent: 'flex-start', 
+          gap: '40px',
           flexWrap: 'wrap'
         }}>
           {/* LOGO */}
@@ -107,7 +107,7 @@ export default function ContractVerify() {
             src={myHeaderImage} 
             alt="ONIGT Logo" 
             style={{ 
-              maxWidth: '500px', // Slightly reduced so it balances better with the text
+              maxWidth: '600px', // Made the logo bigger
               width: '100%', 
               height: 'auto', 
               display: 'block',
@@ -119,10 +119,11 @@ export default function ContractVerify() {
           <h2 style={{ 
             color: onigtGreen, 
             textAlign: 'left', 
-            fontSize: '26px', // Slightly smaller
-            fontWeight: '800', // Extra bold for a cleaner look
-            letterSpacing: '0.5px', // Makes the text look a bit more polished
-            margin: '0px'
+            fontSize: '32px', // Made the text bigger
+            fontWeight: '800', 
+            letterSpacing: '0.5px', 
+            margin: '0px',
+            paddingTop: '10px' // Slight push down so it perfectly aligns with the top of the logo graphics
           }}>
             Contrat : Validé (En Exécution)
           </h2>
@@ -150,7 +151,8 @@ export default function ContractVerify() {
           </ul>
         </div>
         
-        <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
+        {/* Fainter line matching standard Bootstrap */}
+        <hr style={{ border: '0', borderTop: '1px solid rgba(0,0,0,.1)', margin: '16px 0' }} />
 
         {/* ENGINEER SECTION */}
         <div style={{ marginBottom: '16px', textAlign: 'left', paddingLeft: '0px' }}>
@@ -164,7 +166,8 @@ export default function ContractVerify() {
           </ul>
         </div>
 
-        <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, margin: '16px 0' }} />
+        {/* Fainter line matching standard Bootstrap */}
+        <hr style={{ border: '0', borderTop: '1px solid rgba(0,0,0,.1)', margin: '16px 0' }} />
 
         {/* INTRODUCTORY TEXT */}
         <p style={{ marginBottom: '16px', color: 'black', textAlign: 'left', paddingLeft: '0px' }}>
@@ -184,24 +187,24 @@ export default function ContractVerify() {
               <tr>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '8px 12px', /* Balanced padding */
+                  padding: '8px 12px',
                   backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   width: '40%',
                   textAlign: 'center',
                   fontWeight: 'bold',
-                  fontSize: '15px' /* Slightly smaller text for headers */
+                  fontSize: '15px' 
                 }}>
                   Réf. foncière
                 </th>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '8px 12px', /* Balanced padding */
+                  padding: '8px 12px',
                   backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   textAlign: 'center',
                   fontWeight: 'bold',
-                  fontSize: '15px' /* Slightly smaller text for headers */
+                  fontSize: '15px' 
                 }}>
                   Prestation
                 </th>
@@ -248,7 +251,7 @@ export default function ContractVerify() {
                     <tr key={idx}>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '8px 12px', /* Balanced padding */
+                        padding: '8px 12px',
                         verticalAlign: 'top',
                         textAlign: 'left'
                       }}>
@@ -256,7 +259,7 @@ export default function ContractVerify() {
                       </td>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '8px 12px', /* Balanced padding */
+                        padding: '8px 12px',
                         verticalAlign: 'top',
                         textAlign: 'left'
                       }}>
