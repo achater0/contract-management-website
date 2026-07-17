@@ -154,22 +154,15 @@ export default function ContractVerify() {
             {isDesktop ? (
               /* --- EXACT H1 DUMP TRANSLATION --- */
 <h1 style={{ 
-    boxSizing: 'border-box',
     fontFamily: "'Arial', sans-serif",
+    marginTop: '1rem',
     marginBottom: '0.5rem',
-    fontWeight: '500',
     lineHeight: '1.2',
     fontSize: '2.5rem',
     textAlign: 'center',
     color: '#28a745',
-    whiteSpace: 'nowrap', // Forces the parent to hold the line together
-    overflow: 'visible'
   }}>
     <b style={{ 
-      display: 'inline', // CRITICAL: Makes it act as text flow rather than a block
-      width: 'auto',     // Prevents it from forcing a width
-      margin: 0,         // Removes any potential spacing
-      padding: 0,        // Removes any potential spacing
       fontFamily: "'Arial', sans-serif",
       fontSize: '2.5rem',
       color: '#28a745',
