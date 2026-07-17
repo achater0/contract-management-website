@@ -65,6 +65,7 @@ export default function ContractVerify() {
   const formattedDateString = `Fait à Agadir, le ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${dayNum} ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}.`;
 
   const onigtBlue = "#0261A4"; 
+  const onigtGreen = "#28a745";
   const borderColor = "#7f7f7f"; 
   const animaHeaderBg = "#d1d1d1";
 
@@ -81,28 +82,41 @@ export default function ContractVerify() {
       width: '100%'
     }}>
       
-      {/* HEADER BLOCK - Using your requested Bootstrap structure */}
-      <div className="row col-md-12 m-0 p-2">
-        <div className="col-md-5 m-0">
-          <img src={myHeaderImage} alt="ONIGT Logo" width="100%" />
-        </div>
-        <div className="col-md-6 mt-2">
-          <h1 className="d-none d-lg-block text-success fw-bold text-center mt-3">
-            Contrat : Validé (En Exécution)
-          </h1>
-          <h4 className="d-lg-none text-success fw-bold">
-            Contrat : Validé (En Exécution)
-          </h4>
-        </div>
-      </div>
-
+      {/* MAIN CONTAINER: Removed maxWidth to use all the page */}
       <div style={{ 
         width: '100%',
         margin: '0', 
-        padding: '8px 8px',
+        padding: '8px 8px', // Added horizontal padding so it doesn't touch the absolute edge of the screen
         textAlign: 'left',
         boxSizing: 'border-box' 
       }}>
+        
+      {/* FIXED HEADER BLOCK */}
+      <div style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        padding: '10px', 
+        gap: '20px',
+        width: '100%' 
+      }}>
+        {/* Logo Container (Takes 40% width) */}
+        <div style={{ flex: '0 0 40%' }}>
+          <img src={myHeaderImage} alt="ONIGT Logo" style={{ width: '100%' }} />
+        </div>
+        
+        {/* Text Container (Takes remaining space) */}
+        <div style={{ flex: 1 }}>
+          <h1 style={{ 
+            color: '#28a745', 
+            fontWeight: 'bold', 
+            textAlign: 'center', 
+            fontSize: 'clamp(1rem, 2.5vw, 2rem)', // Responsive font size
+            margin: 0
+          }}>
+            Contrat : Validé (En Exécution)
+          </h1>
+        </div>
+      </div>
 
         {/* REFERENCE AND DATE */}
         <div style={{ marginBottom: '20px', paddingLeft: '0px' }}>
@@ -160,24 +174,24 @@ export default function ContractVerify() {
               <tr>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '8px 12px', 
+                  padding: '8px 12px', /* Balanced padding */
                   backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   width: '40%',
                   textAlign: 'center',
                   fontWeight: 'bold',
-                  fontSize: '15px'
+                  fontSize: '15px' /* Slightly smaller text for headers */
                 }}>
                   Réf. foncière
                 </th>
                 <th style={{ 
                   border: `1px solid ${borderColor}`, 
-                  padding: '8px 12px', 
+                  padding: '8px 12px', /* Balanced padding */
                   backgroundColor: animaHeaderBg, 
                   color: onigtBlue,
                   textAlign: 'center',
                   fontWeight: 'bold',
-                  fontSize: '15px'
+                  fontSize: '15px' /* Slightly smaller text for headers */
                 }}>
                   Prestation
                 </th>
@@ -224,7 +238,7 @@ export default function ContractVerify() {
                     <tr key={idx}>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '8px 12px', 
+                        padding: '8px 12px', /* Balanced padding */
                         verticalAlign: 'top',
                         textAlign: 'left'
                       }}>
@@ -232,7 +246,7 @@ export default function ContractVerify() {
                       </td>
                       <td style={{ 
                         border: `1px solid ${borderColor}`, 
-                        padding: '8px 12px', 
+                        padding: '8px 12px', /* Balanced padding */
                         verticalAlign: 'top',
                         textAlign: 'left'
                       }}>
@@ -254,7 +268,7 @@ export default function ContractVerify() {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center', 
-          gap: '15px',            
+          gap: '15px',              
           flexWrap: 'wrap'
         }}>
           <span style={{ 
