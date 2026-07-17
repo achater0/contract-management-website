@@ -90,8 +90,7 @@ export default function ContractVerify() {
       color: 'black',
       margin: '0px',
       padding: '0px',
-      width: '100%',
-      letterSpacing: '0.1px'
+      width: '100%'
     }}>
       
       {/* MAIN CONTAINER */}
@@ -169,8 +168,8 @@ export default function ContractVerify() {
       color: '#28a745',
       fontWeight: 'bolder',
       lineHeight: '1.1',
-      display: 'inline-block'
-
+      display: 'inline-block',
+      letterSpacing: '0.1px'
     }}>
       Contrat : Validé (En Exécution)
     </b>
@@ -446,12 +445,11 @@ export default function ContractVerify() {
           {/* --- RECLAMATION SECTION --- */}
           {/* --- RECLAMATION SECTION --- */}
 <div style={{  
-  marginBottom: '20px',
+  marginBottom: '16px',
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'center', 
-  gap: '15px',              
+  justifyContent: 'center',               
   flexWrap: 'wrap'
 }}>
   <span style={{ 
@@ -471,7 +469,7 @@ export default function ContractVerify() {
       border: 'none',
       borderRadius: '9999px', 
       cursor: 'pointer',
-      fontSize: '14px',
+      fontSize: '14px',     /* Increased from 14px */
       whiteSpace: 'nowrap',
       boxShadow: '0 0.125rem 0.25rem rgba(0,0,0,.075)', /* Kept the subtle shadow from the site */
       transition: 'all 0.3s ease-in-out'
