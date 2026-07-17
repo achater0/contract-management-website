@@ -443,8 +443,7 @@ export default function ContractVerify() {
 </div>
 
           {/* --- RECLAMATION SECTION --- */}
-          <div style={{ 
-            marginTop: '30px', 
+          <div style={{  
             marginBottom: '20px',
             display: 'flex',
             flexDirection: 'row',
