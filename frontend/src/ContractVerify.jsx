@@ -1,23 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import myHeaderImage from "./image_3ec705.png";
+import myHeaderImage from "./image_3ec705.png"; // Header image import
 
 export default function ContractVerify() {
   const { id } = useParams();
   const [contract, setContract] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Design tokens based on Anima design export
-  const colors = {
-    primary: "#0073e6",      // Derived from Anima primary var
-    accent: "#2f9e44",       // Derived from Anima accent var
-    button: "#e63950",       // Derived from Anima button var
-    tableHeader: "#d1d1d1",  // Derived from Anima table-header var
-    border: "#7a7a7a",       // Derived from Anima border style
-    background: "#f2f2f2",   // Derived from Anima background var
-    foreground: "#121212"    // Derived from Anima foreground var
-  };
 
   useEffect(() => {
     const fetchContract = async () => {
@@ -47,12 +36,12 @@ export default function ContractVerify() {
   }, [id]);
 
   if (loading) {
-    return <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>Chargement...</div>;
+    return <div style={{ padding: '40px', textAlign: 'left', fontFamily: 'Arial, sans-serif', fontSize: '16px' }}>Chargement...</div>;
   }
 
   if (error || !contract) {
     return (
-      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', color: colors.button }}>
+      <div style={{ padding: '40px', textAlign: 'left', fontFamily: 'Arial, sans-serif', fontSize: '16px', color: '#dc3545' }}>
         <h2>❌ Erreur</h2>
         <p>{error || "Ce code QR ne correspond à aucun contrat valide."}</p>
       </div>
@@ -75,119 +64,237 @@ export default function ContractVerify() {
   
   const formattedDateString = `Fait à Agadir, le ${dayName.charAt(0).toUpperCase() + dayName.slice(1)} ${dayNum} ${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}.`;
 
+  const onigtBlue = "#0261A4"; 
+  const onigtGreen = "#28a745";
+  const borderColor = "#7f7f7f"; 
+
   return (
     <div style={{ 
-      fontFamily: 'Arial, Helvetica, sans-serif', 
+      fontFamily: "'Arial', sans-serif", 
       fontSize: '16px',
       lineHeight: '1.6',
-      backgroundColor: colors.background, 
+      backgroundColor: '#fff', 
       minHeight: '100vh', 
-      color: colors.foreground,
+      color: 'black',
       margin: '0px',
       padding: '0px',
       width: '100%'
     }}>
       
+      {/* MAIN CONTAINER: Centered with generous padding */}
       <div style={{ 
         maxWidth: '1200px', 
         margin: '0 auto', 
-        padding: '16px 32px', 
+        padding: '40px', 
+        textAlign: 'left',
         boxSizing: 'border-box' 
       }}>
         
-        {/* HEADER */}
-        <div style={{ marginBottom: '35px', display: 'flex', alignItems: 'center', gap: '32px' }}>
+        {/* HEADER BLOCK: Places logo and enlarged green text side-by-side */}
+        <div style={{ 
+          marginBottom: '40px', 
+          width: '100%', 
+          display: 'flex', 
+          flexDirection: 'row',
+          alignItems: 'center', 
+          justifyContent: 'flex-start',
+          gap: '40px',
+          flexWrap: 'wrap'
+        }}>
+          {/* Logo restricted by max-width */}
           <img 
             src={myHeaderImage} 
             alt="ONIGT Logo" 
             style={{ 
-              height: '202px', 
-              width: 'auto'
+              maxWidth: '450px',
+              width: '100%', 
+              height: 'auto', 
+              display: 'block',
+              objectFit: 'cover',
+              margin: '0px'
             }} 
           />
           
           <h2 style={{ 
-            color: colors.accent, 
-            fontSize: '40px',
+            color: onigtGreen, 
+            textAlign: 'left', 
+            fontSize: '32px',
             fontWeight: 'bold',
-            margin: '0px',
-            lineHeight: '1.2'
+            margin: '0px'
           }}>
             Contrat : Validé (En Exécution)
           </h2>
         </div>
 
-        {/* METADATA */}
-        <div style={{ marginBottom: '30px', color: colors.primary, fontWeight: 'bold' }}>
-          <div>Contrat n°: {officialNumber}</div>
-          <div>{formattedDateString}</div>
+        {/* REFERENCE AND DATE */}
+        <div style={{ marginBottom: '30px', paddingLeft: '0px' }}>
+          <div style={{ color: onigtBlue, fontWeight: 'bold', textAlign: 'left' }}>
+            Contrat n°: {officialNumber}
+          </div>
+          <div style={{ color: onigtBlue, fontWeight: 'bold', textAlign: 'left' }}>
+            {formattedDateString}
+          </div>
         </div>
 
-        {/* CLIENT & ENGINEER SECTIONS */}
-        <div style={{ marginBottom: '20px' }}>
-          <div style={{ color: colors.primary, fontWeight: 'bold', marginBottom: '5px' }}>Le Maître d'ouvrage (Client):</div>
-          <ul style={{ listStyleType: 'disc', paddingLeft: '35px' }}>
-            <li style={{ fontWeight: 'bold' }}>{clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}</li>
+        {/* CLIENT SECTION */}
+        <div style={{ marginBottom: '20px', textAlign: 'left', paddingLeft: '0px' }}>
+          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
+            Le Maître d'ouvrage (Client):
+          </div>
+          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
+            <li style={{ fontWeight: 'bold' }}>
+              {clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}
+            </li>
           </ul>
-          <hr style={{ border: '0', borderTop: `1px solid ${colors.border}`, marginTop: '15px' }} />
+          <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px', marginLeft: '0px' }} />
         </div>
 
-        <div style={{ marginBottom: '25px' }}>
-          <div style={{ color: colors.primary, fontWeight: 'bold', marginBottom: '5px' }}>Le Maître d'œuvre (Ingénieur Géomètre Topographe):</div>
-          <ul style={{ listStyleType: 'disc', paddingLeft: '35px' }}>
-            <li style={{ fontWeight: 'bold' }}>CHATER Othmane</li>
+        {/* ENGINEER SECTION */}
+        <div style={{ marginBottom: '25px', textAlign: 'left', paddingLeft: '0px' }}>
+          <div style={{ color: onigtBlue, fontWeight: 'bold', marginBottom: '5px', textAlign: 'left' }}>
+            Le Maître d'œuvre (Ingénieur Géomètre Topographe):
+          </div>
+          <ul style={{ listStyleType: 'disc', margin: '0px', paddingLeft: '35px', textAlign: 'left' }}>
+            <li style={{ fontWeight: 'bold' }}>
+              CHATER Othmane 
+            </li>
           </ul>
-          <hr style={{ border: '0', borderTop: `1px solid ${colors.border}`, marginTop: '15px' }} />
+          <hr style={{ border: '0', borderTop: `1px solid ${borderColor}`, marginTop: '15px', marginLeft: '0px' }} />
         </div>
 
-        <p style={{ marginBottom: '20px' }}>
+        {/* INTRODUCTORY TEXT */}
+        <p style={{ marginBottom: '20px', color: 'black', textAlign: 'left', paddingLeft: '0px' }}>
           Par le présent contrat, l'Ingénieur Géomètre Topographe s'engage envers le maître d'ouvrage de réaliser les prestations synthétisée(s) dans le tableau ci-dessous.
         </p>
 
         {/* DATA TABLE */}
-        <div style={{ overflowX: 'auto', marginBottom: '40px' }}>
+        <div style={{ overflowX: 'auto', width: '100%', paddingLeft: '0px' }}>
           <table style={{ 
             width: '100%', 
             borderCollapse: 'collapse', 
-            border: `1px solid ${colors.border}`,
+            border: `1px solid ${borderColor}`,
+            color: 'black',
+            marginLeft: '0px'
           }}>
             <thead>
-              <tr style={{ backgroundColor: colors.tableHeader }}>
-                <th style={{ border: `1px solid ${colors.border}`, padding: '8px 16px', color: colors.primary, width: '26%', fontWeight: 'bold' }}>Réf. foncière</th>
-                <th style={{ border: `1px solid ${colors.border}`, padding: '8px 16px', color: colors.primary, fontWeight: 'bold' }}>Prestation</th>
+              <tr>
+                <th style={{ 
+                  border: `1px solid ${borderColor}`, 
+                  padding: '10px 10px', 
+                  backgroundColor: '#e9ecef',
+                  color: onigtBlue,
+                  width: '40%',
+                  textAlign: 'center',
+                  fontWeight: 'bold'
+                }}>
+                  Réf. foncière
+                </th>
+                <th style={{ 
+                  border: `1px solid ${borderColor}`, 
+                  padding: '10px 10px', 
+                  backgroundColor: '#e9ecef', 
+                  color: onigtBlue,
+                  textAlign: 'center',
+                  fontWeight: 'bold'
+                }}>
+                  Prestation
+                </th>
               </tr>
             </thead>
             <tbody>
-              {prestations.map((presta, idx) => {
-                const associatedRef = refs[idx] || refs[0] || {}; 
-                const prefixMap = { "Titre foncier": "T", "Réquisition": "R", "Non immatriculé": "NI", "Délimitation administrative": "DA", "Non défini": "ND" };
-                const prefix = prefixMap[associatedRef.regime] || "";
-                const refCellText = `- /${prefix}${associatedRef.valeur ? ' ' + associatedRef.valeur : ''}, ${associatedRef.commune} ${associatedRef.zone}`;
-                
-                return (
-                  <tr key={idx}>
-                    <td style={{ border: `1px solid ${colors.border}`, padding: '8px 16px' }}>{associatedRef.regime ? refCellText : "-"}</td>
-                    <td style={{ border: `1px solid ${colors.border}`, padding: '8px 16px' }}>{presta.prestation}</td>
-                  </tr>
-                );
-              })}
+              {prestations.length === 0 ? (
+                <tr>
+                  <td colSpan="2" style={{ padding: '8px 10px', textAlign: 'left', border: `1px solid ${borderColor}` }}>Aucune prestation renseignée</td>
+                </tr>
+              ) : (
+                prestations.map((presta, idx) => {
+                  const associatedRef = refs[idx] || refs[0] || {}; 
+                  const prefixMap = {
+                    "Titre foncier": "T",
+                    "Réquisition": "R",
+                    "Non immatriculé": "NI",
+                    "Délimitation administrative": "DA",
+                    "Non défini": "ND"
+                  };
+                  const prefix = prefixMap[associatedRef.regime] || "";
+                  const val = associatedRef.valeur || "";
+                  const commune = associatedRef.commune || "";
+                  const zone = associatedRef.zone || "";
+                  
+                  const refCellText = `- /${prefix}${val ? ' ' + val : ''}, ${commune} ${zone}`;
+
+                  let paramsText = "";
+                  if (presta.params && Object.keys(presta.params).length > 0) {
+                    const paramStrings = Object.entries(presta.params)
+                      .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
+                      .map(([k, v]) => {
+                        const cleanKey = k.replace(/_/g, ' ');
+                        const rawValue = String(v); 
+                        return `(${cleanKey} = ${rawValue})`;
+                      });
+
+                    if (paramStrings.length > 0) {
+                      paramsText = " " + paramStrings.join(' ');
+                    }
+                  }
+
+                  return (
+                    <tr key={idx}>
+                      <td style={{ 
+                        border: `1px solid ${borderColor}`, 
+                        padding: '8px 10px',
+                        verticalAlign: 'top',
+                        textAlign: 'left'
+                      }}>
+                        {associatedRef.regime ? refCellText : "-"}
+                      </td>
+                      <td style={{ 
+                        border: `1px solid ${borderColor}`, 
+                        padding: '8px 10px',
+                        verticalAlign: 'top',
+                        textAlign: 'left'
+                      }}>
+                        {presta.prestation}{paramsText}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
 
-        {/* FOOTER ACTION */}
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-          <span style={{ color: colors.button }}>Vous avez une question ou une réclamation concernant ce contrat ?</span>
+        {/* --- RECLAMATION SECTION --- */}
+        <div style={{ 
+          marginTop: '40px', 
+          marginBottom: '20px',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center', 
+          gap: '15px',              
+          flexWrap: 'wrap'
+        }}>
+          <span style={{ 
+            fontSize: '16px', 
+            color: '#dc3545', 
+            fontWeight: 'normal' 
+          }}>
+            Vous avez une question ou une réclamation concernant ce contrat ?
+          </span>
+          
           <button
             type="button"
             style={{
-              padding: '12px 24px',
-              backgroundColor: colors.button,
+              padding: '10px 25px',
+              backgroundColor: '#dc3545', // Red background
               color: '#fff',
               border: 'none',
-              borderRadius: '9999px',
+              borderRadius: '25px', // Pill-shaped button
               cursor: 'pointer',
-              fontSize: '14px'
+              fontSize: '14px',
+              fontWeight: 'normal',
+              whiteSpace: 'nowrap'
             }}
           >
             Soumettre une réclamation
