@@ -451,7 +451,6 @@ export default function ContractVerify() {
   alignItems: 'center',
   justifyContent: 'center',               
   flexWrap: 'wrap',
-  gap: '12px'
 }}>
   <span style={{ 
     fontSize: '16px', 
