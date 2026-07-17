@@ -108,10 +108,11 @@ export default function ContractVerify() {
         <div style={{ flex: 1 }}>
           <h1 style={{ 
             color: '#28a745', 
-            fontWeight: 'normal',
+            fontWeight: 'bold',// Bold text for emphasis but not too heavy
+            fontWidth: 'normal', // Normal width for better readability
             textAlign: 'left',
-            fontSize: 'clamp(2rem, 2.5vw, 2.5rem)', // Responsive font size
-            margin: 0
+            fontSize: 'clamp(2rem, 2.5vw, 3rem)', // Responsive font size
+            margin: '10px 0' // a little bit to the right of the logo and a little bit down
           }}>
             Contrat : Validé (En Exécution)
           </h1>
