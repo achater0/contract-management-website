@@ -86,7 +86,7 @@ export default function ContractVerify() {
       <div style={{ 
         width: '100%',
         margin: '0', 
-        padding: '8px 8px', // Added horizontal padding so it doesn't touch the absolute edge of the screen
+        padding: '0px 8px', // Added horizontal padding so it doesn't touch the absolute edge of the screen in the left
         textAlign: 'left',
         boxSizing: 'border-box' 
       }}>
@@ -105,22 +105,27 @@ export default function ContractVerify() {
         </div>
         
         {/* Text Container (Takes remaining space) */}
-        <div style={{ flex: 1 }}>
-          <div style={{
-            margin: '8px 0px 0px',// Adjusted margin for better spacing to the right of the logo and a little space above and below
-            padding: '0px 15px'
-          }}>
-           <h1 style={{ 
-              textAlign: 'left',
-              color: '#28a745', 
-              margin: '16px 0px 8px',
-              font: 'bold clamp(24px, 4vw, 40px) Arial, sans-serif',
-              
-              }}>
-            Contrat : Validé (En Exécution)
-            </h1>
-          </div>
-        </div>
+      
+<div style={{ 
+  flex: '0 0 50%',
+  maxWidth: '50%',
+  padding: '0px 15px',
+  marginTop: '8px', // Equivalent to mt-2 (.5rem)
+  boxSizing: 'border-box',
+  position: 'relative'
+}}>
+  <h1 style={{ 
+    textAlign: 'center', // Centers the text within its 50% column (like text-center)
+    color: '#28a745', // --success color
+    margin: '16px 0px 8px', // Equivalent to mt-3 (1rem)
+    fontFamily: "'Arial', sans-serif",
+    fontWeight: 'bold',
+    fontSize: 'clamp(24px, 4vw, 40px)', // Keeps your responsive sizing
+    lineHeight: '1.2'
+  }}>
+    Contrat : Validé (En Exécution)
+  </h1>
+</div>
       </div>
 
         {/* REFERENCE AND DATE */}
