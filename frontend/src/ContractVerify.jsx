@@ -168,8 +168,7 @@ export default function ContractVerify() {
       color: '#28a745',
       fontWeight: 'bolder',
       lineHeight: '1.1',
-      display: 'inline-block',
-      letterSpacing: '0.1px'
+      display: 'inline-block'
     }}>
       Contrat : Validé (En Exécution)
     </b>
