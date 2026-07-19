@@ -597,7 +597,7 @@ const handleFormSubmit = async () => {
       Aucun contrat disponible.
     </div>
   ) : (
-    contracts.map((item) => {
+    [...contracts].sort((a, b) => (b.sequence || b.id || 0) - (a.sequence || a.id || 0)).map((item) => {
       // Parse data safely from server payload
       const d = item.details?.formData || item.details || {};
       const refs = d.references || [];
