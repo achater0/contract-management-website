@@ -270,9 +270,17 @@ export default function ContractVerify() {
     marginRight: '-5px' 
   }}>
     <ul style={{ margin: '0px 0px 16px', paddingLeft: '40px' }}>
-      <li style={{ margin: '8px' }}> {/* m-2 class */}
-        <b>{clients[0]?.client_name?.toUpperCase() || "CLIENT NON SPÉCIFIÉ"}</b>
+      {clients && clients.length > 0 ? (
+      clients.map((client, idx) => (
+        <li key={idx} style={{ margin: '8px' }}>
+          <b>{client.client_name ? client.client_name.toUpperCase() : "CLIENT NON SPÉCIFIÉ"}</b>
+        </li>
+      ))
+    ) : (
+      <li style={{ margin: '8px' }}>
+        <b>CLIENT NON SPÉCIFIÉ</b>
       </li>
+    )}
     </ul>
   </div>
 

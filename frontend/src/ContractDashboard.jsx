@@ -653,9 +653,24 @@ const handleFormSubmit = async () => {
           <div style={{ padding: '15px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               {/* Client Name (Bold & Uppercase) */}
-              <div style={{ fontWeight: '700', fontSize: '15px', color: '#212529', marginBottom: '12px', textTransform: 'uppercase' }}>
-                {d.clients?.[0]?.client_name || "CLIENT INCONNU"}
-              </div>
+              <div style={{ 
+  fontWeight: '700', 
+  fontSize: '15px', 
+  color: '#212529', 
+  marginBottom: '12px', 
+  textTransform: 'uppercase',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px'
+}}>
+  {d.clients && d.clients.length > 0 
+    ? d.clients
+        .filter(c => c.client_name)
+        .map((client, idx) => (
+          <div key={idx}>{client.client_name}</div>
+        ))
+    : <div>CLIENT INCONNU</div>}
+</div>
 
               {/* Combined Prestations & Land References Badges */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
