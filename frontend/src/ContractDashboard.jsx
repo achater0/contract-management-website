@@ -78,7 +78,7 @@ import citiesData from "./cities.json";
     );
   };
 
-  const SidebarLink = ({ viewId, icon: Icon, label }) => {
+  const SidebarLink = ({ viewId, icon: Icon, label, currentView, setCurrentView }) => {
     const isActive = currentView === viewId;
     return (
       <button
