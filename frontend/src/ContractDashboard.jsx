@@ -6,6 +6,107 @@ import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";
 import QRCode from "qrcode";
 import citiesData from "./cities.json";
 
+ const ActionButtons = ({ contractId, clientName }) => {
+    const [qrSrc, setQrSrc] = useState('');
+    
+    useEffect(() => {
+      let isMounted = true;
+      const url = `${window.location.origin}/verify/${contractId}`;
+      QRCode.toDataURL(url, { width: 250, margin: 1 })
+        .then(src => {
+          if (isMounted) setQrSrc(src);
+        })
+        .catch(err => console.error(err));
+
+      return () => { isMounted = false; };
+    }, [contractId]);
+
+    const handleDownloadTextFile = () => {
+      const fileContent = `Bonjour,\n\nCeci est le contrat pour le client : ${clientName.toUpperCase()}.\nRéférence officielle : N°604/SO/ONIGT/CN-${String(contractId).padStart(4, '0')}/2026\n\nFichier généré avec succès.`;
+      const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+      const element = document.createElement("a");
+      element.href = URL.createObjectURL(blob);
+      element.download = `Contrat_CN_${contractId}.txt`;
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    };
+
+    return (
+      <div style={{ display: 'flex', gap: '10px', width: '100%', paddingTop: '6px' }}>
+        {qrSrc && (
+          <a 
+            href={qrSrc} 
+            download={`QR_REF_${contractId}.png`} 
+            style={{ 
+              flex: '1',
+              textAlign: 'center',
+              backgroundColor: '#17a2b8',
+              color: '#fff',
+              textDecoration: 'none',
+              padding: '10px 6px',
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            Télécharger le QR
+          </a>
+        )}
+        <button 
+          type="button"
+          onClick={handleDownloadTextFile}
+          style={{ 
+            flex: '1',
+            backgroundColor: '#fff',
+            color: '#495057',
+            border: '1px solid #ced4da',
+            padding: '10px 6px',
+            borderRadius: '4px',
+            fontSize: '12px',
+            fontWeight: '700',
+            cursor: 'pointer'
+          }}
+        >
+          Télécharger le contrat
+        </button>
+      </div>
+    );
+  };
+
+  const SidebarLink = ({ viewId, icon: Icon, label }) => {
+    const isActive = currentView === viewId;
+    return (
+      <button
+        type="button"
+        onClick={() => setCurrentView(viewId)}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          width: "100%",
+          padding: "12px 14px",
+          border: "none",
+          borderRadius: isActive ? "4px" : "0px",
+          backgroundColor: isActive ? "#3a87ad" : "transparent",
+          color: isActive ? "#ffffff" : "#495057",
+          fontSize: "14px",
+          fontWeight: isActive ? "600" : "400",
+          textAlign: "left",
+          cursor: "pointer",
+          marginBottom: "4px",
+          gap: "10px"
+        }}
+      >
+        <Icon style={{ fontSize: "16px", color: isActive ? "#fff" : "#495057" }} />
+        <span>{label}</span>
+      </button>
+    );
+  };
+
 export default function ContractDashboard() {
   const [contracts, setContracts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -428,106 +529,7 @@ const handleFormSubmit = async () => {
   }
 };
 
-  const ActionButtons = ({ contractId, clientName }) => {
-    const [qrSrc, setQrSrc] = useState('');
-    
-    useEffect(() => {
-      let isMounted = true;
-      const url = `${window.location.origin}/verify/${contractId}`;
-      QRCode.toDataURL(url, { width: 250, margin: 1 })
-        .then(src => {
-          if (isMounted) setQrSrc(src);
-        })
-        .catch(err => console.error(err));
-
-      return () => { isMounted = false; };
-    }, [contractId]);
-
-    const handleDownloadTextFile = () => {
-      const fileContent = `Bonjour,\n\nCeci est le contrat pour le client : ${clientName.toUpperCase()}.\nRéférence officielle : N°604/SO/ONIGT/CN-${String(contractId).padStart(4, '0')}/2026\n\nFichier généré avec succès.`;
-      const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-      const element = document.createElement("a");
-      element.href = URL.createObjectURL(blob);
-      element.download = `Contrat_CN_${contractId}.txt`;
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    };
-
-    return (
-      <div style={{ display: 'flex', gap: '10px', width: '100%', paddingTop: '6px' }}>
-        {qrSrc && (
-          <a 
-            href={qrSrc} 
-            download={`QR_REF_${contractId}.png`} 
-            style={{ 
-              flex: '1',
-              textAlign: 'center',
-              backgroundColor: '#17a2b8',
-              color: '#fff',
-              textDecoration: 'none',
-              padding: '10px 6px',
-              borderRadius: '4px',
-              fontSize: '12px',
-              fontWeight: '700',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            Télécharger le QR
-          </a>
-        )}
-        <button 
-          type="button"
-          onClick={handleDownloadTextFile}
-          style={{ 
-            flex: '1',
-            backgroundColor: '#fff',
-            color: '#495057',
-            border: '1px solid #ced4da',
-            padding: '10px 6px',
-            borderRadius: '4px',
-            fontSize: '12px',
-            fontWeight: '700',
-            cursor: 'pointer'
-          }}
-        >
-          Télécharger le contrat
-        </button>
-      </div>
-    );
-  };
-
-  const SidebarLink = ({ viewId, icon: Icon, label }) => {
-    const isActive = currentView === viewId;
-    return (
-      <button
-        type="button"
-        onClick={() => setCurrentView(viewId)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          width: "100%",
-          padding: "12px 14px",
-          border: "none",
-          borderRadius: isActive ? "4px" : "0px",
-          backgroundColor: isActive ? "#3a87ad" : "transparent",
-          color: isActive ? "#ffffff" : "#495057",
-          fontSize: "14px",
-          fontWeight: isActive ? "600" : "400",
-          textAlign: "left",
-          cursor: "pointer",
-          marginBottom: "4px",
-          gap: "10px"
-        }}
-      >
-        <Icon style={{ fontSize: "16px", color: isActive ? "#fff" : "#495057" }} />
-        <span>{label}</span>
-      </button>
-    );
-  };
+ 
 
   return (
     <div style={{ 
@@ -566,8 +568,20 @@ const handleFormSubmit = async () => {
         </div>
 
         <div style={{ flexGrow: 1, padding: '12px 8px', overflowY: 'auto' }}>
-          <SidebarLink viewId="mes-contrats" icon={FaFileContract} label="Mes contrats" />
-          <SidebarLink viewId="reclamations" icon={FaComments} label="Réclamations" />
+          <SidebarLink 
+            viewId="mes-contrats" 
+            icon={FaFileContract} 
+            label="Mes contrats" 
+            currentView={currentView} 
+            setCurrentView={setCurrentView} 
+          />
+           <SidebarLink 
+            viewId="reclamations" 
+            icon={FaComments} 
+            label="Réclamations" 
+            currentView={currentView} 
+            setCurrentView={setCurrentView} 
+            />
         </div>
       </div>
 
