@@ -569,28 +569,38 @@ useEffect(() => {
 const handleFormSubmit = async () => {
   const token = localStorage.getItem('authToken'); 
   const processedPrestations = formData.prestations.map((presta) => {
-    const config = PRESTATION_PARAMS_CONFIG[presta.prestation];
+  const config = PRESTATION_PARAMS_CONFIG[presta.prestation];
 
-    // If we have config for this prestation, we attach the units
-    if (config) {
-      const newParams = { ...presta.params };
+  if (config) {
+    const newParams = { ...presta.params };
 
-      Object.keys(newParams).forEach((key) => {
-        const paramDef = config.find((p) => p.key === key);
-        
-        // Append the unit if: 
-        // 1. We found the param definition
-        // 2. The unit exists
-        // 3. It's not already attached (safety check)
-        if (paramDef && paramDef.unit && !String(newParams[key]).includes(paramDef.unit)) {
-          newParams[key] = `${newParams[key]} ${paramDef.unit}`;
+    Object.keys(newParams).forEach((key) => {
+      const paramDef = config.find((p) => p.key === key);
+      let val = newParams[key];
+
+      // 1. Convert to Number and round off float imprecision (e.g., 59.999 -> 60)
+      if (val !== "" && val !== null && val !== undefined) {
+        const num = Number(val);
+        if (!isNaN(num)) {
+          // If value is within 0.01 of a whole number, round it to whole integer
+          val = Math.abs(num - Math.round(num)) < 0.01 
+            ? Math.round(num) 
+            : Number(num.toFixed(2));
         }
-      });
+      }
 
-      return { ...presta, params: newParams };
-    }
-    return presta;
-  })
+      // 2. Attach unit without float noise
+      if (paramDef && paramDef.unit && !String(val).includes(paramDef.unit)) {
+        newParams[key] = `${val} ${paramDef.unit}`;
+      } else {
+        newParams[key] = val;
+      }
+    });
+
+    return { ...presta, params: newParams };
+  }
+  return presta;
+});
   const payload = {
     formData: { 
       ...formData, 
