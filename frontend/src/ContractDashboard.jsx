@@ -17,117 +17,121 @@ const ActionButtons = ({ contract }) => {
       .then(src => {
         if (isMounted) setQrSrc(src);
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error("QR Code generation error:", err));
 
     return () => { isMounted = false; };
   }, [contractId]);
 
   const handleDownloadTextFile = () => {
-  const d = contract.details?.formData || contract.details || {};
+    // 1. Safely extract formData payload
+    let d = contract.details || {};
+    if (typeof d === 'string') {
+      try { d = JSON.parse(d); } catch (e) { d = {}; }
+    }
+    if (d.formData) d = d.formData; // Fallback if double wrapped
 
-  // 1. Format Contract Creation Date in French
-  const dateObj = contract.created_at ? new Date(contract.created_at) : new Date();
-  const rawFormattedDate = dateObj.toLocaleDateString('fr-FR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  });
+    // 2. Format Contract Creation Date in French
+    const dateObj = contract.created_at ? new Date(contract.created_at) : new Date();
+    const rawFormattedDate = dateObj.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
 
-  const formattedDate = rawFormattedDate
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    const formattedDate = rawFormattedDate
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
 
-  // 2. Format Aggregated Clients Line
-  // Checks both contract.details.clients and contract.clients
-  const clientsList = d.clients || contract.clients || [];
-  let clientsText = "CLIENT NON SPÉCIFIÉ";
+    // 3. Format Aggregated Clients Line
+    const clientsList = d.clients || [];
+    let clientsText = "CLIENT NON SPÉCIFIÉ";
 
-  if (clientsList.length > 0) {
-    // Join client names with ' / '
-    const names = clientsList
-      .map(c => (c.client_name || c.name || '').toUpperCase())
-      .filter(Boolean)
-      .join(' / ');
+    if (clientsList.length > 0) {
+      const names = clientsList
+        .map(c => (c.client_name || c.name || '').toUpperCase().trim())
+        .filter(Boolean)
+        .join(' / ');
 
-    // Join CINs with '/'
-    const cines = clientsList
-      .map(c => c.cine)
-      .filter(Boolean)
-      .join('/');
+      const cines = clientsList
+        .map(c => c.cine || c.cin || '')
+        .filter(Boolean)
+        .join('/');
 
-    // Deduplicate qualities if identical (e.g. ['DEMANDEURS', 'DEMANDEURS'] -> 'DEMANDEURS') or join with '/'
-    const rawQualities = clientsList.map(c => c.quality).filter(Boolean);
-    const qualities = [...new Set(rawQualities)].join('/');
+      const rawQualities = clientsList
+        .map(c => c.quality || '')
+        .filter(Boolean);
+      const qualities = [...new Set(rawQualities)].join('/');
 
-    clientsText = `${names}, Titulaire de la C.I.N.E :${cines}, En qualité de :${qualities}.`;
-  }
+      clientsText = `${names}, Titulaire de la C.I.N.E :${cines}, En qualité de :${qualities}.`;
+    }
 
-  // 3. Format Prestations & References
-  const refs = d.references || contract.references || [];
-  const prestationsList = d.prestations || contract.prestations || [];
+    // 4. Format Prestations & Land References
+    const refs = d.references || [];
+    const prestationsList = d.prestations || [];
 
-  const prefixMap = {
-    "Titre foncier": "T/",
-    "Réquisition": "R/",
-    "Non immatriculé": "NI/",
-    "Délimitation administrative": "DA/",
-    "Non défini": "ND/"
-  };
+    const prefixMap = {
+      "Titre foncier": "T/",
+      "Réquisition": "R/",
+      "Non immatriculé": "NI/",
+      "Délimitation administrative": "DA/",
+      "Non défini": "ND/"
+    };
 
-  let prestationsText = "";
-  if (prestationsList.length > 0) {
-    prestationsText = prestationsList.map((presta, idx) => {
-      const ref = refs[idx] || refs[0];
-      let refBadge = "";
-      if (ref) {
-        const prefix = prefixMap[ref.regime] || "";
-        refBadge = `${prefix}${ref.valeur || ""}`;
-      }
-
-      // Handle presta title whether it's a string or an object
-      const prestaName = typeof presta === 'string' ? presta : (presta.prestation || presta.name || '');
-
-      // Parse dynamic parameters (e.g., Superficie = 64M2)
-      let paramsStr = '';
-      if (presta.params) {
-        if (typeof presta.params === 'object') {
-          paramsStr = Object.entries(presta.params)
-            .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)} = ${v}`)
-            .join(', ');
-        } else if (typeof presta.params === 'string') {
-          paramsStr = presta.params;
+    let prestationsText = "";
+    if (prestationsList.length > 0) {
+      prestationsText = prestationsList.map((presta, idx) => {
+        const ref = refs[idx] || refs[0];
+        let refBadge = "";
+        if (ref && ref.regime) {
+          const prefix = prefixMap[ref.regime] || "";
+          refBadge = `${prefix}${ref.valeur || ""}`;
         }
-      }
 
-      const refPart = refBadge ? ` (Réf. foncière : ${refBadge} )` : '';
-      const paramsPart = paramsStr ? ` (${paramsStr})` : '';
+        const prestaName = typeof presta === 'string' 
+          ? presta 
+          : (presta.prestation || presta.name || '');
 
-      return `${prestaName}${refPart}${paramsPart}`;
-    }).filter(Boolean).join('\n');
-  }
+        let paramsStr = '';
+        if (presta.params && typeof presta.params === 'object') {
+          paramsStr = Object.entries(presta.params)
+            .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
+            .map(([k, v]) => {
+              const cleanKey = k.replace(/_/g, ' ');
+              return `${cleanKey.charAt(0).toUpperCase() + cleanKey.slice(1)} = ${v}`;
+            })
+            .join(', ');
+        }
 
-  // 4. Contract Reference ID
-  const contractRef = `N°604/SO/ONIGT/CN-${String(contract.sequence || contract.id || 0).padStart(4, '0')}/2026`;
+        const refPart = refBadge ? ` (Réf. foncière : ${refBadge} )` : '';
+        const paramsPart = paramsStr ? ` (${paramsStr})` : '';
 
-  // 5. Build Content Block (Filtering out empty lines if prestations is empty)
-  const fileContent = [
-    contractRef,
-    clientsText,
-    prestationsText,
-    `Fait à Agadir, le ${formattedDate}, en deux exemplaires.`
-  ].filter(Boolean).join('\n');
+        return `${prestaName}${refPart}${paramsPart}`;
+      }).filter(Boolean).join('\n');
+    }
 
-  // Trigger File Download
-  const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-  const element = document.createElement("a");
-  element.href = URL.createObjectURL(blob);
-  element.download = `Contrat_CN_${contract.id}.txt`;
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
-};
+    // 5. Official ONIGT Reference Number
+    const sequenceNum = contract.sequence || 0;
+    const contractRef = `N°604/SO/ONIGT/CN-${String(sequenceNum).padStart(4, '0')}/2026`;
+
+    // 6. Build Final Text Block
+    const fileContent = [
+      contractRef,
+      clientsText,
+      prestationsText,
+      `Fait à Agadir, le ${formattedDate}, en deux exemplaires.`
+    ].filter(Boolean).join('\n');
+
+    // Trigger TXT File Download
+    const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+    const element = document.createElement("a");
+    element.href = URL.createObjectURL(blob);
+    element.download = `Contrat_CN_${contract.id}.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
 
   return (
     <div style={{ display: 'flex', gap: '10px', width: '100%', paddingTop: '6px' }}>
