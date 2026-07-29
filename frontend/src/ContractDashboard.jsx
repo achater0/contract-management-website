@@ -6,77 +6,140 @@ import { FaFileContract, FaComments, FaUserCircle } from "react-icons/fa";
 import QRCode from "qrcode";
 import citiesData from "./cities.json";
 
- const ActionButtons = ({ contractId, clientName }) => {
-    const [qrSrc, setQrSrc] = useState('');
+const ActionButtons = ({ contract }) => {
+  const [qrSrc, setQrSrc] = useState('');
+  const contractId = contract.id;
+
+  useEffect(() => {
+    let isMounted = true;
+    const url = `${window.location.origin}/verify/${contractId}`;
+    QRCode.toDataURL(url, { width: 250, margin: 1 })
+      .then(src => {
+        if (isMounted) setQrSrc(src);
+      })
+      .catch(err => console.error(err));
+
+    return () => { isMounted = false; };
+  }, [contractId]);
+
+  const handleDownloadTextFile = () => {
+    const d = contract.details?.formData || contract.details || {};
     
-    useEffect(() => {
-      let isMounted = true;
-      const url = `${window.location.origin}/verify/${contractId}`;
-      QRCode.toDataURL(url, { width: 250, margin: 1 })
-        .then(src => {
-          if (isMounted) setQrSrc(src);
-        })
-        .catch(err => console.error(err));
+    // 1. Format the contract creation date (NOT today's date) in French
+    const dateObj = contract.created_at ? new Date(contract.created_at) : new Date();
+    const rawFormattedDate = dateObj.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+    
+    // Capitalize first letters (e.g., "mercredi 15 juillet 2026" -> "Mercredi 15 Juillet 2026")
+    const formattedDate = rawFormattedDate
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
 
-      return () => { isMounted = false; };
-    }, [contractId]);
+    // 2. Format Client Info Line(s)
+    const clientsText = (d.clients && d.clients.length > 0)
+      ? d.clients.map(c => 
+          `${c.client_name?.toUpperCase()}, Titulaire de la C.I.N.E :${c.cine || ''}, En qualité de :${c.quality || ''}.`
+        ).join('\n')
+      : "CLIENT NON SPÉCIFIÉ";
 
-    const handleDownloadTextFile = () => {
-      const fileContent = `Bonjour,\n\nCeci est le contrat pour le client : ${clientName.toUpperCase()}.\nRéférence officielle : N°604/SO/ONIGT/CN-${String(contractId).padStart(4, '0')}/2026\n\nFichier généré avec succès.`;
-      const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-      const element = document.createElement("a");
-      element.href = URL.createObjectURL(blob);
-      element.download = `Contrat_CN_${contractId}.txt`;
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
+    // 3. Format Prestations & Land References Line(s)
+    const refs = d.references || [];
+    const prestations = d.prestations || [];
+    const prefixMap = {
+      "Titre foncier": "T/",
+      "Réquisition": "R/",
+      "Non immatriculé": "NI/",
+      "Délimitation administrative": "DA/",
+      "Non défini": "ND/"
     };
 
-    return (
-      <div style={{ display: 'flex', gap: '10px', width: '100%', paddingTop: '6px' }}>
-        {qrSrc && (
-          <a 
-            href={qrSrc} 
-            download={`QR_REF_${contractId}.png`} 
-            style={{ 
-              flex: '1',
-              textAlign: 'center',
-              backgroundColor: '#17a2b8',
-              color: '#fff',
-              textDecoration: 'none',
-              padding: '10px 6px',
-              borderRadius: '4px',
-              fontSize: '12px',
-              fontWeight: '700',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            Télécharger le QR
-          </a>
-        )}
-        <button 
-          type="button"
-          onClick={handleDownloadTextFile}
+    const prestationsText = prestations.map((presta, idx) => {
+      const ref = refs[idx] || refs[0];
+      let refBadge = "";
+      if (ref) {
+        const prefix = prefixMap[ref.regime] || "";
+        refBadge = `${prefix}${ref.valeur || ""}`;
+      }
+
+      // Convert dynamic params object into string format (e.g., "Superficie = 64M2")
+      const paramsStr = presta.params 
+        ? Object.entries(presta.params)
+            .map(([k, v]) => `${k.charAt(0).toUpperCase() + k.slice(1)} = ${v}`)
+            .join(', ')
+        : '';
+
+      const refPart = refBadge ? ` (Réf. foncière : ${refBadge} )` : '';
+      const paramsPart = paramsStr ? ` (${paramsStr})` : '';
+
+      return `${presta.prestation}${refPart}${paramsPart}`;
+    }).join('\n');
+
+    // 4. Contract Reference ID
+    const contractRef = `N°604/SO/ONIGT/CN-${String(contract.sequence || contract.id || 0).padStart(4, '0')}/2026`;
+
+    // 5. Build exact file content structure
+    const fileContent = `${contractRef}\n${clientsText}\n${prestationsText}\nFait à Agadir, le ${formattedDate}, en deux exemplaires.`;
+
+    // Download text file
+    const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+    const element = document.createElement("a");
+    element.href = URL.createObjectURL(blob);
+    element.download = `Contrat_CN_${contractId}.txt`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
+  return (
+    <div style={{ display: 'flex', gap: '10px', width: '100%', paddingTop: '6px' }}>
+      {qrSrc && (
+        <a 
+          href={qrSrc} 
+          download={`QR_REF_${contractId}.png`} 
           style={{ 
             flex: '1',
-            backgroundColor: '#fff',
-            color: '#495057',
-            border: '1px solid #ced4da',
+            textAlign: 'center',
+            backgroundColor: '#17a2b8',
+            color: '#fff',
+            textDecoration: 'none',
             padding: '10px 6px',
             borderRadius: '4px',
             fontSize: '12px',
             fontWeight: '700',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
-          Télécharger le contrat
-        </button>
-      </div>
-    );
-  };
+          Télécharger le QR
+        </a>
+      )}
+      <button 
+        type="button"
+        onClick={handleDownloadTextFile}
+        style={{ 
+          flex: '1',
+          backgroundColor: '#fff',
+          color: '#495057',
+          border: '1px solid #ced4da',
+          padding: '10px 6px',
+          borderRadius: '4px',
+          fontSize: '12px',
+          fontWeight: '700',
+          cursor: 'pointer'
+        }}
+      >
+        Télécharger le contrat
+      </button>
+    </div>
+  );
+};
 
   const SidebarLink = ({ viewId, icon: Icon, label, currentView, setCurrentView }) => {
     const isActive = currentView === viewId;
@@ -744,7 +807,7 @@ const handleFormSubmit = async () => {
 
             {/* Action Buttons Container */}
             <div style={{ marginTop: '15px' }}>
-              <ActionButtons contractId={item.id} clientName={d.clients?.[0]?.client_name || "Client"} />
+              <ActionButtons contract={item} />
             </div>
           </div>
         </div>
