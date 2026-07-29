@@ -23,12 +23,12 @@ const ActionButtons = ({ contract }) => {
   }, [contractId]);
 
   const handleDownloadTextFile = () => {
-    // 1. Safely extract formData payload
+    // 1. Extract formData payload
     let d = contract.details || {};
     if (typeof d === 'string') {
       try { d = JSON.parse(d); } catch (e) { d = {}; }
     }
-    if (d.formData) d = d.formData; // Fallback if double wrapped
+    if (d.formData) d = d.formData;
 
     // 2. Format Contract Creation Date in French
     const dateObj = contract.created_at ? new Date(contract.created_at) : new Date();
@@ -99,7 +99,14 @@ const ActionButtons = ({ contract }) => {
             .filter(([_, v]) => v !== "" && v !== null && v !== undefined)
             .map(([k, v]) => {
               const cleanKey = k.replace(/_/g, ' ');
-              return `${cleanKey.charAt(0).toUpperCase() + cleanKey.slice(1)} = ${v}`;
+              
+              // Rounds floating point imprecision like 59.999 to 60
+              let formattedVal = v;
+              if (!isNaN(v) && typeof v !== 'boolean' && v !== '') {
+                formattedVal = Number(Number(v).toFixed(2));
+              }
+
+              return `${cleanKey.charAt(0).toUpperCase() + cleanKey.slice(1)} = ${formattedVal}`;
             })
             .join(', ');
         }
