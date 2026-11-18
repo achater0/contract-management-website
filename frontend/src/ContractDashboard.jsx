@@ -217,6 +217,10 @@ const ActionButtons = ({ contract }) => {
 
 export default function ContractDashboard() {
   const [contracts, setContracts] = useState([]);
+  const [contractsTotal, setContractsTotal] = useState(0);
+  const [contractsPage, setContractsPage] = useState(1);
+  const [isContractsLoading, setIsContractsLoading] = useState(true);
+  const [contractsError, setContractsError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showConfirmStep, setShowConfirmStep] = useState(false);
   const [currentView, setCurrentView] = useState("mes-contrats");
@@ -502,10 +506,13 @@ const [favoritePrestat] = useState([
 
 
 useEffect(() => {
+  let isActive = true;
   const fetchContracts = async () => {
+    setIsContractsLoading(true);
+    setContractsError("");
     try {
       const apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-      const response = await fetch(`${apiUrl}/api/contracts`, {
+      const response = await fetch(`${apiUrl}/api/contracts?page=${contractsPage}&limit=12`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` }
       });
       if (!response.ok) {
@@ -517,7 +524,7 @@ useEffect(() => {
       }
       throw new Error(`Erreur serveur: ${response.status}`);
     }
-      const data = await response.json();
+    const { contracts: data, total } = await response.json();
       
       // Parse the 'data' column into an object for each contract
       const processedContracts = data.map(contract => {
@@ -531,13 +538,20 @@ useEffect(() => {
         }
       });
       
-      setContracts(processedContracts);
+      if (isActive) {
+        setContracts(processedContracts);
+        setContractsTotal(total);
+      }
     } catch (err) {
       console.error("Error fetching contracts:", err);
+      if (isActive) setContractsError("Impossible de charger les contrats. Veuillez réessayer.");
+    } finally {
+      if (isActive) setIsContractsLoading(false);
     }
   };
   fetchContracts();
-}, []);
+  return () => { isActive = false; };
+}, [contractsPage]);
 
   const handleNouveauContratClick = () => {
     setShowConfirmStep(true);
@@ -723,13 +737,23 @@ const handleFormSubmit = async () => {
               </button>
             </div>
 
+{contractsError && (
+  <div role="alert" style={{ color: '#721c24', backgroundColor: '#f8d7da', padding: '12px 16px', marginBottom: '16px', borderRadius: '4px' }}>
+    {contractsError}
+  </div>
+)}
+
 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(310px, 1fr))', gap: '20px' }}>
-  {contracts.length === 0 ? (
+  {isContractsLoading && contracts.length === 0 ? (
+    <div style={{ color: '#6c757d', fontSize: '15px', gridColumn: '1/-1', textAlign: 'center', padding: '50px', backgroundColor: '#fff', borderRadius: '4px', border: '1px solid #dee2e6' }}>
+      Chargement des contrats...
+    </div>
+  ) : contracts.length === 0 ? (
     <div style={{ color: '#6c757d', fontSize: '15px', gridColumn: '1/-1', textAlign: 'center', padding: '50px', backgroundColor: '#fff', borderRadius: '4px', border: '1px solid #dee2e6' }}>
       Aucun contrat disponible.
     </div>
   ) : (
-    [...contracts].sort((a, b) => (b.sequence || b.id || 0) - (a.sequence || a.id || 0)).map((item) => {
+    contracts.map((item) => {
       // Parse data safely from server payload
       const d = item.details?.formData || item.details || {};
       const refs = d.references || [];
@@ -870,6 +894,29 @@ const handleFormSubmit = async () => {
     })
   )}
 </div>
+{contractsTotal > 12 && (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '16px', marginTop: '24px' }}>
+    <button
+      type="button"
+      onClick={() => setContractsPage(page => Math.max(1, page - 1))}
+      disabled={contractsPage === 1 || isContractsLoading}
+      style={{ padding: '8px 14px', border: '1px solid #ced4da', borderRadius: '4px', backgroundColor: '#fff', cursor: contractsPage === 1 || isContractsLoading ? 'not-allowed' : 'pointer' }}
+    >
+      Précédent
+    </button>
+    <span style={{ color: '#495057', fontSize: '14px' }}>
+      Page {contractsPage} sur {Math.ceil(contractsTotal / 12)}
+    </span>
+    <button
+      type="button"
+      onClick={() => setContractsPage(page => Math.min(Math.ceil(contractsTotal / 12), page + 1))}
+      disabled={contractsPage >= Math.ceil(contractsTotal / 12) || isContractsLoading}
+      style={{ padding: '8px 14px', border: '1px solid #ced4da', borderRadius: '4px', backgroundColor: '#fff', cursor: contractsPage >= Math.ceil(contractsTotal / 12) || isContractsLoading ? 'not-allowed' : 'pointer' }}
+    >
+      Suivant
+    </button>
+  </div>
+)}
           </>
         ) : (
           <div style={{ backgroundColor: '#fff', padding: '40px', borderRadius: '4px', border: '1px solid #dee2e6' }}>

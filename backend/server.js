@@ -26,8 +26,30 @@ app.use(express.json());
 // Tells Express to look inside the public folder for the compiled production UI
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 1. GET ALL CONTRACTS
+// 1. GET CONTRACTS
 app.get('/api/contracts', authenticateToken, (req, res) => {
+  if (req.query.page !== undefined || req.query.limit !== undefined) {
+    const requestedPage = Number.parseInt(req.query.page, 10);
+    const requestedLimit = Number.parseInt(req.query.limit, 10);
+    const safePage = Number.isSafeInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1;
+    const limit = Number.isSafeInteger(requestedLimit) && requestedLimit > 0
+      ? Math.min(requestedLimit, 50)
+      : 12;
+
+    return db.get('SELECT COUNT(*) AS total FROM contracts', [], (countErr, countRow) => {
+      if (countErr) return res.status(500).json({ error: countErr.message });
+
+      const total = Number(countRow?.total || 0);
+      const page = Math.min(safePage, Math.max(1, Math.ceil(total / limit)));
+      const offset = (page - 1) * limit;
+      const query = `SELECT * FROM contracts ORDER BY sequence DESC LIMIT ? OFFSET ?`;
+      db.all(query, [limit, offset], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ contracts: rows || [], total, page, limit });
+      });
+    });
+  }
+
   const query = `SELECT * FROM contracts ORDER BY id DESC`;
   db.all(query, [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
